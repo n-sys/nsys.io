@@ -1,0 +1,81 @@
+syntax = "proto3";
+package nsys.api.file;
+option go_package = "nsys.io/api/file";
+
+import "google/longrunning/operations.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "nsys.io/api/ntypes/file_ntypes.proto";
+
+service FileProcessing {
+	// Upload a generic file for further processing later.
+	rpc UploadGenericFile (UploadGenericFileRequest) 
+			returns (UploadGenericFileResponse) {}
+	rpc UploadGenericFileLRO (UploadGenericFileRequest) 
+			returns (google.longrunning.Operation) {}
+
+	// Group any number of previously-uploaded files together into a 
+	// single fileset. Files may have membership in multiple filesets.
+	rpc CreateFileset (CreateFilesetRequest)
+			returns (CreateFilesetResponse) {}
+	rpc CreateFilesetLRO (CreateFilesetRequest)
+			returns (google.longrunning.Operation) {}
+
+	// Begin processing the fileset in the specified way.
+	// This is a temporary hack (therefore this will be here forever ;-)
+	rpc InitiateProcessing(InitiateProcessingRequest)
+			returns (google.protobuf.Empty) {}
+	rpc InitiateProcessingLRO (InitiateProcessingRequest)
+			returns (google.longrunning.Operation) {}
+}
+
+message UploadGenericFileRequest {
+	// The file's identifier which must be unique within the
+        // account and must match the regex '^[0-9A-Za-z.-]{1,48}$'.
+        // Automatically generated if not supplied in upload request.
+        string name = 1;
+
+	ntypes.GenericFile generic_file = 2;	
+
+	// Requested file expiration time. The time is capped to comply with 
+	// account-specific minimums and maximums. A zero value requests the 
+	// maximum allowable expiration time be used.
+	google.protobuf.Timestamp expire_time = 3;
+}
+
+message UploadGenericFileResponse {
+	// Identifier for the uploaded file.
+	string Name = 1;
+	// The actual expiration time for the file.
+	google.protobuf.Timestamp expire_time = 2;	
+}
+
+message CreateFilesetRequest {
+	// The fileset's identifier which must be unique within the
+        // account and must match the regex '^[0-9A-Za-z.-]{1,48}$'.
+        // Automatically generated if not supplied.
+        string name = 1;
+
+	// One or more files that are to become members of the fileset.
+	repeated string file_names = 2;
+
+	// Requested fileset expiration time. The time is capped so that it 
+	// is no later than the latest expiration time of any file in the set.
+	// A zero value requests the maximum allowable expiration time be used.
+	google.protobuf.Timestamp expire_time = 3;
+}
+
+message CreateFilesetResponse {
+	// Identifier for the fileset.
+	string Name = 1;
+	// The actual expiration time for the fileset.
+	google.protobuf.Timestamp expire_time = 2;	
+}
+	
+message InitiateProcessingRequest {
+	// Identifier of the object to process.
+	string name = 1;
+	// Application-specific type of processing to perform.
+	string process_code = 2;
+}
+

@@ -1,0 +1,229 @@
+syntax = "proto3";
+package nsys.api.exemplar;
+option go_package = "nsys.io/api/exemplar";
+
+import "google/longrunning/operations.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/any.proto";
+
+import "nsys.io/api/ntypes/field.proto";
+import "nsys.io/api/ntypes/geometry.proto";
+import "nsys.io/api/ntypes/image_ntypes.proto";
+import "nsys.io/api/ntypes/exemplar_ntypes.proto";
+
+service Exemplars {
+	// Upload a dimensioned image.  
+	// This image should be pristine, upright, and deskewed.
+	rpc UploadDimensionedImage (UploadDimensionedImageRequest)
+				returns (UploadDimensionedImageResponse) {}
+	rpc UploadDimensionedImageLRO (UploadDimensionedImageRequest)
+				returns (google.longrunning.Operation) {}
+
+	// Upload a PDF. The specified (or all) of its pages are rendered and oriented 
+	// before the operation is complete. 
+	rpc UploadPdf (UploadPdfRequest) 
+				returns (UploadPdfResponse) {}
+	rpc UploadPdfLRO (UploadPdfRequest) 
+				returns (google.longrunning.Operation) {}
+
+	// Fetch a previously uploaded PDF page.
+	rpc GetPdfPage (GetPdfPageRequest)
+				returns (GetPdfPageResponse) {}
+	rpc GetPdfPageLRO(GetPdfPageRequest)
+				returns (google.longrunning.Operation) {}
+
+	// Register a dimensioned image or PDF page as being an exemplar. Once
+	// registered, the image becomes independently associated with the exemplar 
+	// name and will not expire.
+	rpc CreateExemplar (CreateExemplarRequest) 
+				returns (CreateExemplarResponse) {}
+	rpc CreateExemplarLRO (CreateExemplarRequest) 
+				returns (google.longrunning.Operation) {}
+
+	// Returns information on existing exemplars.
+	rpc ListExemplars (ListExemplarsRequest) 
+				returns (ListExemplarsResponse) {}
+	rpc ListExemplarsLRO (ListExemplarsRequest) 
+				returns (google.longrunning.Operation) {}
+
+	// Fetch an exemplar.
+	rpc GetExemplar (GetExemplarRequest)
+				returns (GetExemplarResponse) {}
+	rpc GetExemplarLRO (GetExemplarRequest)
+				returns (google.longrunning.Operation) {}
+
+	// Permanently delete an exemplar and all dependent objects (i.e., fields).
+	rpc DeleteExemplar (DeleteExemplarRequest) 
+				returns (google.protobuf.Empty) {}
+	rpc DeleteExemplarLRO (DeleteExemplarRequest) 
+				returns (google.longrunning.Operation) {}
+
+	// Define a data collection field on an exemplar.
+	rpc CreateField (CreateFieldRequest) 
+				returns (CreateFieldResponse) {}
+	rpc CreateFieldLRO (CreateFieldRequest) 
+				returns (google.longrunning.Operation) {}
+
+	// Remove a field from an exemplar.
+	rpc DeleteField (DeleteFieldRequest) 
+				returns (google.protobuf.Empty) {}
+	rpc DeleteFieldLRO (DeleteFieldRequest) 
+				returns (google.longrunning.Operation) {}
+
+	// Returns the fields defined on the specified exemplar.
+	rpc ListFields (ListFieldsRequest) 
+				returns (ListFieldsResponse) {}
+	rpc ListFieldsLRO (ListFieldsRequest) 
+				returns (google.longrunning.Operation) {}
+}
+
+message UploadPdfRequest {
+	// Client-assigned identifier for the PDF file being uploaded. Must match the
+	// regex '^[0-9A-Za-z.-]{1,48}$' and must not collide with other unexpired PDFs.
+	// If not supplied, a satisfactory name is automatically generated.
+	string name = 1;
+
+	// Only the page numbers listed here will be rendered and made available for 
+	// later registration as a form exemplar. If no pages are listed, all pages will 
+	// be rendered and be made available.  The first page is page 1, not page 0.
+	repeated int32 page_numbers = 2;
+
+	// The actual PDF data.
+	bytes data = 3;
+
+	// The dominant language of the pdf.
+	ntypes.Language language = 4;
+}
+
+message UploadPdfResponse {
+	// The specified or generated name for the PDF.
+	string name = 1;
+
+	// Info on all of the processed pages. Guaranteed to be in increasing page order.
+	// The returned pages do NOT include the image data.
+	repeated ntypes.PdfPage processed_pages = 2;
+
+	// The expiration time of the PDF. If pages from the PDF have not been registered 
+	// as an exemplar prior to this time, they are forgotten. However, once a page
+	// has been registered, it becomes a permanent part of the exemplar.
+	google.protobuf.Timestamp expire_time = 3;
+}
+
+message GetPdfPageRequest {
+	// The name of the PDF to get.
+	string name = 1;
+	// The page number to get (first page is 1).
+	int32 page_number = 2;
+}
+
+message GetPdfPageResponse {
+	// The returned page.
+	ntypes.PdfPage page = 1;
+}
+
+message CreateExemplarRequest {
+	// The name of the exemplar .. aka the form name or Id. Must be unique 
+	// within the account and must also match the regex '^[0-9A-Za-z.-]{1,48}$'.
+	// If not supplied, a satisfactory name is automatically generated.
+	string name = 1;
+
+	// For client use.  Optional.
+	string description = 2;
+
+	// Any metadata of the client's choosing. Limit to a few KB. Optional.
+	google.protobuf.Any metadata = 3;	
+
+	// The name of an uploaded PDF or uploaded dimensioned image.
+	string image_or_pdf_name = 4;
+
+	// If registering a page within a PDF, the 1-based page number within the PDF 
+	// to be used as the exemplar. The page must have been designated as being a 
+	// page of interest during the original PDF upload. Do not set if creating an
+	// exemplar from an image.
+	int32 page_number = 5;
+
+	// The dominant printed language.
+	ntypes.Language language = 6;
+}
+
+message CreateExemplarResponse { 
+	// The specified or generated identifier for the exemplar.
+	string name = 1;
+}
+
+
+message UploadDimensionedImageRequest {
+	// Ideally, this image started as a page in a native PDF and was exported by Acrobat 
+	// or equiv as an exact image of what is printed. If instead it is based on a scan of 
+	// a printed form, make sure the fully deskewed and is as clean as possible.
+	string name = 1;
+	ntypes.DimensionedImage image = 2;
+}
+
+message UploadDimensionedImageResponse {
+	// The supplied or generated name the uploaded dimensioned image.
+	string name = 1;
+
+	// The expiration time of the image. If the image has not been registered
+	// as an exemplar prior to this time, it is forgotten. However, once an image
+	// has been registered, it becomes a permanent part of the exemplar.
+	google.protobuf.Timestamp expire_time = 2;
+}
+
+message GetExemplarRequest {
+	// Return the specified exemplar.
+	string exemplar_name = 1;
+	// Set true if the returned exemplar is to include the full image data.
+	bool include_image = 2;
+}
+
+message GetExemplarResponse {
+	ntypes.Exemplar exemplar = 1;
+}
+
+message ListExemplarsRequest  { 
+	// Currently returns all exemplars defined on the account.
+}
+
+message ListExemplarsResponse { 
+	// The returned exemplars do not include the image data.
+	repeated ntypes.Exemplar exemplars = 1;
+}
+
+message DeleteExemplarRequest  { 
+	// The name of the exemplar to delete. 
+	string name = 1;
+}
+
+message CreateFieldRequest {
+	// The identifier for the exemplar that the field is being defined in.
+	string exemplar_name = 1;
+	// The actual field definition. If the field definition contains no name,
+	// a satisfactory name is automatically generated and returned in the 
+	// response.
+	ntypes.Field field = 2;
+}
+
+message CreateFieldResponse {
+	string exemplar_name = 1;
+	string field_name = 2;
+}
+
+message DeleteFieldRequest {
+	// The identifier for the exemplar that the field is defined in.
+	string exemplar_name = 1;
+	// The identifier for the field within the exemplar.
+	string name = 2;
+}
+
+message ListFieldsRequest  { 
+	// The identifier for the exemplar that the fields of interest are in.
+	string exemplar_name = 1;
+}
+
+message ListFieldsResponse { 
+	repeated ntypes.Field fields = 1;
+}
+
+

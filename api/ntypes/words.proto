@@ -1,0 +1,23 @@
+syntax = "proto3";
+package nsys.api.ntypes;
+option go_package = "nsys.io/api/ntypes";
+
+import "nsys.io/api/ntypes/geometry.proto";
+
+// Messages used in the context of reporting OCR results.
+
+message Word {
+	// The text string located.
+	string text = 1;
+	// Confidence value in [0, 100].
+	int32 confidence = 2;
+	// Bounding rectangle. Coordinates and dimensions expressed in pixels.
+	RotatedRectangle rotated_rectangle = 3;
+	// Internal use only.
+	string creator = 4;  
+}
+
+message WordList {
+	repeated Word words = 1;
+}
+

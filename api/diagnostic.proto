@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package nsys.api;
+
+option go_package = "nsys.io/api";
+
+import "google/longrunning/operations.proto";
+import "google/protobuf/empty.proto";
+
+service Diagnostic {
+	// Echos back whatever is sent
+	rpc Echo    (EchoRequest) returns (EchoResponse) {}
+	rpc EchoLRO (EchoRequest) returns (google.longrunning.Operation) {}
+
+	// Discards anything sent
+	rpc Discard    (DiscardRequest) returns (google.protobuf.Empty) {}
+	rpc DiscardLRO (DiscardRequest) returns (google.longrunning.Operation) {}
+}
+
+message DiscardRequest {
+	string text = 1;
+}
+
+message EchoRequest {
+	string text = 1;
+}
+
+message EchoResponse {
+	string text = 1;
+}

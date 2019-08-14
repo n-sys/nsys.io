@@ -1,0 +1,32 @@
+syntax = "proto3";
+package nsys.api.ntypes;
+option go_package = "nsys.io/api/ntypes";
+
+import "google/protobuf/any.proto";
+
+message RawFile {
+	// The actual file data.
+	bytes data = 1;
+	// The 512/256 SHA sum for the data bytes.
+	bytes sha512_256 = 2;
+}
+
+message GenericFile {
+	// For client or documented application use.
+	string description = 1;
+
+	// For client or documented application use.
+	google.protobuf.Any metadata = 2;
+
+	// The basename of the file on the originating system, i.e., no
+	// directory path, no slashes -- the rightmost part of the name.
+	string origin_basename = 3;
+
+	// Length of the file in bytes. 
+	// Max length is always less than a gigabyte.
+	uint32 length = 4;
+
+	// The actual file data and its checksum.
+	RawFile raw_file = 5;
+}
+

@@ -1,0 +1,26 @@
+syntax = "proto3";
+package nsys.api.ntypes;
+option go_package = "nsys.io/api/ntypes";
+
+import "nsys.io/api/ntypes/geometry.proto";
+import "nsys.io/api/ntypes/image_ntypes.proto";
+
+message HandwritingPresentPuzzle {
+	// This should be a tightly cut area which encompasses the bulk of 
+	// where writing for the field should appear but does not capture 
+	// anything outside of that area.
+        ntypes.BoundedArea bounding_area = 1;
+}
+
+message HandwritingPresentCut {
+	// The raw cut image
+	ntypes.DimensionedImage raw_cut = 1;
+}
+
+message HandwritingPresentHint {
+	// TBD
+}
+
+message HandwritingPresentSolution {
+	bool present = 1;	
+}

@@ -1,0 +1,62 @@
+syntax = "proto3";
+package nsys.api.tacct;
+option go_package = "nsys.io/api/tacct";
+
+import "google/longrunning/operations.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+
+// Manage tickets aka API Keys. 
+service Tickets {
+	// ListTickets returns the tickets for a subaccount or the issuer's account.
+	rpc ListTickets    (ListTicketsRequest) returns (ListTicketsResponse)          {}
+	rpc ListTicketsLRO (ListTicketsRequest) returns (google.longrunning.Operation) {}
+
+	// CreateTicket creates an additional ticket for the requesting master account 
+	// or for one of its subaccounts. The ticket is immediately usable.
+	rpc CreateTicket    (CreateTicketRequest) returns (CreateTicketResponse)         {}
+	rpc CreateTicketLRO (CreateTicketRequest) returns (google.longrunning.Operation) {}
+
+	// DeleteTicket deletes the specified ticket for a requesting master account
+	// or one of its subaccounts. Note: Our frontend caches ticket information. 
+	// It may take several minutes for "deleted" tickets to become unusable.
+	rpc DeleteTicket    (DeleteTicketRequest) returns (google.protobuf.Empty)        {}
+	rpc DeleteTicketLRO (DeleteTicketRequest) returns (google.longrunning.Operation) {}
+}
+
+message Ticket {
+	// The actual API key used in per-RPC authentication. 
+	// We use the terms "API Key" and "ticket" somewhat interchangeably.
+	string api_key = 1;
+	// The id of the owning account.
+	string account_id = 2;
+	google.protobuf.Timestamp create_time = 3;
+	google.protobuf.Timestamp expire_time = 4;
+}
+
+message ListTicketsRequest {
+        // The subaccount to list or, if empty, the requesting account.
+	string account_id = 1;
+}
+
+message ListTicketsResponse {
+	repeated Ticket tickets = 1;
+}
+
+message CreateTicketRequest {
+	// Create a ticket for this subaccount or, if empty, the requesting master account.
+        // Subaccounts cannot create their own tickets.
+	string account_id = 1;
+	// Expiration time must be at least one hour in the future.
+	google.protobuf.Timestamp expire_time = 2;
+}
+
+message CreateTicketResponse {
+	Ticket ticket = 1;
+}
+
+message DeleteTicketRequest {
+	// The API Key from the offending ticket.
+	string api_key = 2;
+}

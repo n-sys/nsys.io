@@ -1,0 +1,247 @@
+syntax = "proto3";
+package nsys.api.image;
+option go_package = "nsys.io/api/image";
+
+import "google/protobuf/timestamp.proto";
+import "google/longrunning/operations.proto";
+
+import "nsys.io/api/ntypes/field.proto";
+import "nsys.io/api/ntypes/image_ntypes.proto";
+import "nsys.io/api/ntypes/exemplar_ntypes.proto";
+
+service ImageProcessing {
+	// The common sequence of calls if one is trying to extract field 
+	// values from a submitted image:
+	//   (1) UploadImage    -- upload an image
+	//   (2) RegisterImage  -- find a matching exemplar and 
+	//                         register the image against it
+	//   (3) SolveField(s)  -- find solutions to one or more of the 
+	//                         fields defined on the matched exemplar
+	//	
+	// Whether or not one uses the LRO variant of each method is purely
+	// a choice dependent upon client architecture and developer tastes.
+	// There is no difference in implementation on the backend.
+
+	// Upload an image in preparation for DeskewImage and/or RegisterImage.
+	rpc UploadImage (UploadImageRequest) 
+			returns (UploadImageResponse) {}
+	rpc UploadImageLRO (UploadImageRequest) 
+			returns (google.longrunning.Operation) {}
+
+	// Find the exemplar best matching a image then register that image
+	// against the exemplar, i.e., manipulate the image such that it lays
+	// cleanly over the exemplar. 
+	rpc RegisterImage (RegisterImageRequest) 
+			returns (RegisterImageResponse) {}
+	rpc RegisterImageLRO (RegisterImageRequest) 
+			returns (google.longrunning.Operation) {}
+
+	rpc GetExemplarSnapshot (GetExemplarSnapshotRequest)
+			returns (GetExemplarSnapshotResponse) {}
+	rpc GetExemplarSnapshotLRO (GetExemplarSnapshotRequest)
+			returns (google.longrunning.Operation) {}
+
+	// Solve a field on an image.
+	rpc SolveField (SolveFieldRequest) 
+			returns (SolveFieldResponse) {}
+	rpc SolveFieldLRO (SolveFieldRequest) 
+			returns (google.longrunning.Operation) {}
+	
+	// Returns a copy of the base uploaded image.
+	rpc GetBaseImage (GetBaseImageRequest)
+			returns (GetBaseImageResponse) {}
+	rpc GetBaseImageLRO (GetBaseImageRequest)
+			returns (google.longrunning.Operation) {}
+
+	// Returns a copy of the deskewed and oriented version of an image.
+	rpc GetDeskewedImage (GetDeskewedImageRequest) 
+			returns (GetDeskewedImageResponse) {}
+	rpc GetDeskewedImageLRO (GetDeskewedImageRequest) 
+			returns (google.longrunning.Operation) {}
+
+	// Returns a copy of the exemplar-registered version of an image.
+	rpc GetRegisteredImage (GetRegisteredImageRequest)
+			returns (GetRegisteredImageResponse) {}
+	rpc GetRegisteredImageLRO (GetRegisteredImageRequest)
+			returns (google.longrunning.Operation) {}
+
+	// Get a field cut from the exemplar-registered version of an image.
+	rpc GetFieldCut (GetFieldCutRequest) 
+			returns (GetFieldCutResponse) {}
+	rpc GetFieldCutLRO (GetFieldCutRequest) 
+			returns (google.longrunning.Operation) {}
+
+	// Return a list of fields which have solutions available.
+	// Only returns field identifiers.
+	rpc ListSolvedFields (ListSolvedFieldsRequest)
+			returns (ListSolvedFieldsResponse) {}
+	rpc ListSolvedFieldsLRO (ListSolvedFieldsRequest)
+			returns (google.longrunning.Operation) {}
+
+	// Query for previously-solved field solutions.  
+	// Returns the full solutions.
+	rpc GetFieldSolutions (GetFieldSolutionsRequest) 
+			returns (GetFieldSolutionsResponse) {}
+	rpc GetFieldSolutionsLRO (GetFieldSolutionsRequest) 
+			returns (google.longrunning.Operation) {}
+}
+
+message UploadImageRequest {
+	// An identifier for the uploaded image that is unique within the account.
+	// If none is supplied, one will be generated and returned in the response.
+	// Must match regex '^[0-9A-Za-z.-]{1,48}$'.
+	string name = 1;
+
+	// The image to upload.
+	ntypes.Image image = 2;
+
+	// The source of the image, if known.
+	ntypes.ImageSource image_source = 3;
+}
+
+message UploadImageResponse {
+	// The image identifier supplied by the client or assigned by the system.
+	string name = 1;
+
+	// When the image and any derived products will be dropped by the system.
+	google.protobuf.Timestamp expire_time = 2;
+
+	// Uploaded images are deskewed and oriented so that the bulk of the text 
+	// lines are /horizontal and "right side up". They are almost always a bit 
+	// larger in pixel area than the original due to rotation for any deskew. 
+	// The following values provide related metrics and values.
+
+	// If true, the system was unable to unable to confidently deskew and/or
+	// orient the image. In this case, the image only goes through an encoding
+	// transform and the deskew and rotation angles are not set. 
+	bool deskew_failed = 3;
+
+	// The number of degrees rotation that were required to bring the bulk of
+	// the longest text lines into a horizontal or vertical orientation. 
+	// Absolute values greater than 10 are strong indicator that something with 
+	// the original image is in really bad shape. 
+	double deskew_angle = 4;
+
+	// 0, 90, 180, or 270 -- the number of degrees the image had to be rotated 
+	// to get most of the printed lines "right side up" once deskewed.
+	int32 degrees_rotated = 5;
+
+	// Computed background color (used for edge fill).  
+	// If multi-color, the color covering the most area generally wins.
+	ntypes.RGBA background_color = 6;
+}
+
+message GetExemplarSnapshotRequest {
+	string image_name = 1;
+	// Return the actual exemplar image data too? 
+	bool return_image_data = 2;
+}
+
+message GetExemplarSnapshotResponse {
+	ntypes.Exemplar exemplar_snapshot = 1;
+}
+
+message SolveFieldRequest {
+	// Identifier for some image which has already been registered to an exemplar.
+	string image_name = 1;
+	
+	// Identifier of the field to solve.
+	string field_name = 2;
+
+	// Field-specific hints and parameters for solution.
+	ntypes.SolutionParameters solution_parameters = 3;
+}
+
+message SolveFieldResponse {
+	ntypes.FieldSolution field_solution = 1;
+}
+
+message ListSolvedFieldsRequest {
+	// Returns a list the identifiers for all fields which have solutions available 
+	// on the specified image. Meant to provide an efficient polling mechanism but,
+	// still, don't go crazy.
+	string image_name = 1;
+}
+
+message ListSolvedFieldsResponse {
+	// Fields which have solutions (solved puzzles).
+	repeated string field_names = 1;
+}
+
+message GetFieldSolutionsRequest {
+	// Identifier for an exemplar-registered image which (potentially anyway)
+	// has solved fields on it.
+	string image_name = 1;
+	
+	// List of fields defined on the image's exemplar that we want the 
+	// solutions for for. Solutions not available at the time of query
+	// are not mentioned in the response.
+	repeated string field_names = 2;
+}
+
+message GetFieldSolutionsResponse {
+	// Keyed on field id. Only fields that have been solved are returned.
+	// No mention is made of unsolved ones and it is not an error to query
+	// for them.
+	map <string, ntypes.FieldSolution> field_solutions = 1;
+}
+
+message GetBaseImageRequest {
+	string image_name = 1;
+}
+
+message GetBaseImageResponse {
+	ntypes.Image base_image = 1;
+}
+
+message GetDeskewedImageRequest {
+	string image_name = 1;
+}
+
+message GetDeskewedImageResponse {
+	ntypes.DeskewedImage deskewed_image = 1;
+}
+
+message RegisterImageRequest {
+	// Identifier for the upload image being registered against an exemplar.
+	string image_name = 1;
+
+	// Dominant language of the printed text in the image, if known.
+	ntypes.Language language = 2;
+
+	// List of candidate exemplars to consider for matching.  If the list
+	// empty,  all existing exemplars are considered for possible match. 
+	// If a match is found, the image registration occurs.
+	repeated string candidate_exemplars = 3;
+}
+
+message RegisterImageResponse {
+	// If present, the name of the exemplar the image was registered against.
+	string selected_exemplar = 1;
+
+	// Set if no exemplar matched closely enough. No error occurred in the 
+	// processing. Failures in the physical registration phase will be reflected 
+	// in error returns.
+	bool no_match = 2;
+}
+
+message GetRegisteredImageRequest {
+	string image_name = 1;
+}
+
+message GetRegisteredImageResponse {
+	ntypes.DimensionedImage image = 1;
+}
+
+message GetFieldCutRequest {
+	// Identifier for some image which has already been registered to an exemplar.
+	string image_name = 1;
+
+	// Identifier of the field we are returning a cut for.
+	string field_name = 2;
+}
+
+message GetFieldCutResponse {
+	ntypes.FieldCut field_cut = 1;
+}
+

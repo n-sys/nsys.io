@@ -1,0 +1,72 @@
+syntax = "proto3";
+package nsys.api.ntypes;
+option go_package = "nsys.io/api/ntypes";
+
+import "nsys.io/api/ntypes/geometry.proto";
+
+message Image {
+	// The encoded image data bytes.
+	bytes data = 1;
+	// The image encoding.
+	ImageEncoding encoding = 2;
+}
+
+message DeskewedImage {
+	// An image that the nsys service has deskewed and oriented.
+	Image image = 1;
+	// Clockwise degrees the image had to be rotated to bring text lines
+	// into a horizontal or vertical orientation.
+	double deskew_angle = 2;
+	// 0, 90, 180, or 270. The rotation that had to performed to bring
+	// the text lines into an upright and horizontal orientation.
+	int32 degrees_rotated = 3;
+	// The dominant color of the image. Probably.
+	RGBA background_color = 4;
+}
+
+message DimensionedImage {
+	// An image where the physical real-world dimensions are known.
+	// All elements of this message are required and must be set.
+	Image image = 1;
+	// Dimensions of the image in centimeters.
+	Size size = 2;
+	// Top left offset of the image. Very likely to be zero unless it's a cut.
+	Point offset = 3; 
+}
+
+enum ImageSource {
+        // Automatically determine the image type.
+        AUTO = 0;
+        // Image originated from a generic scanner of some sort. DPI unknown.
+        SCANNER = 1;
+        // Image is 300dpi JPEG2000 originating from our PDS-6000 based system.
+        SCANNER_NSYS = 2;
+        // Image is a raw photograph which likely needs document isolation and
+        // perspective correction in addition to deskew and orienting.
+        // If photo originated from scanner app or similar that does the first
+        // two already, use "auto" instead.
+        PHOTO = 3;
+}
+
+enum ImageEncoding {
+        INVALID = 0;
+        JPEG = 1;
+        PNG = 2;
+        TIFF = 3;
+}
+
+enum Language {
+	UNKNOWN = 0;
+	ENGLISH = 1;
+	SPANISH = 2;
+	GERMAN  = 3;
+	FRENCH  = 4;
+}
+
+message RGBA {
+	// RGBA color
+	uint32 r = 1;
+	uint32 g = 2;
+	uint32 b = 3;
+	uint32 a = 4;
+}

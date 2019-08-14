@@ -1,0 +1,91 @@
+syntax = "proto3";
+package nsys.api.tacct;
+option go_package = "nsys.io/api/tacct";
+
+import "google/longrunning/operations.proto";
+import "google/protobuf/empty.proto";
+
+service Accounts {
+	// GetAccount returns information on the requesting account or for a subaccount.
+	rpc GetAccount    (GetAccountRequest) returns (GetAccountResponse)           {}
+	rpc GetAccountLRO (GetAccountRequest) returns (google.longrunning.Operation) {}
+
+	// ListAccounts returns information on a specified list of subaccounts or all
+	// subaccounts. May only be issued by a master account.
+	rpc ListAccounts    (ListAccountsRequest) returns (ListAccountsResponse)         {}
+	rpc ListAccountsLRO (ListAccountsRequest) returns (google.longrunning.Operation) {}
+
+	// CreateAccount may be issued by master accounts to create subaccounts.
+	rpc CreateAccount    (CreateAccountRequest) returns (CreateAccountResponse)        {}
+	rpc CreateAccountLRO (CreateAccountRequest) returns (google.longrunning.Operation) {}
+
+	// DeleteAccount may be issued by master accounts to delete subaccounts.
+	// All tickets associated with the specified account are also invalidated.
+	// Note: Our frontend servers cache account information. It may take several 
+	// minutes for "deleted" accounts to actually become unusable.
+	rpc DeleteAccount    (DeleteAccountRequest) returns (google.protobuf.Empty)        {}
+	rpc DeleteAccountLRO (DeleteAccountRequest) returns (google.longrunning.Operation) {}
+}
+
+// Account is used to hold information often needed by service methods in realtime.
+message Account {
+	// The account ID 
+	string id = 1;   
+
+	// The ID of this account's master account. If id != master_id, this is a subaccount.
+	string master_id = 2;
+
+	// Arbitrary account description
+	string description = 3;
+
+	// Methods this account is allowed to use are specified by patterns of the form
+	// service/method, service/<methodPrefix>*, service/* or just the "*" character. 
+	// Methods without a match are denied. Patterns preceeded by a '-' (minus) cause 
+	// matches to be denied, i.e., one might specify patterns of "*" and "-serviceX/*" 
+	// to allow all services and methods except those associated with "serviceX".  
+	// Negation patterns are processed after positive ones.
+	repeated string method_filters = 4;
+
+	// Account status. All values other than "ACTIVE" mean the account is blocked from
+	// from API access. 
+	string status = 5;
+
+	// Minimum retention period in hours for submitted data and transaction logs.
+	int32 retention_hours = 6;
+}
+
+message GetAccountRequest {
+	// The subaccount ID being requested or, if empty, the current account.
+	string id = 1;
+}
+
+message GetAccountResponse {
+	Account account = 1;
+}
+
+message ListAccountsRequest {
+	// List the specified subaccounts or, if empty list, all subaccounts.
+	repeated string account_ids = 1;
+}
+
+message ListAccountsResponse {
+	repeated Account accounts = 1;
+}
+
+message CreateAccountRequest {
+	string description = 1;
+	// The subaccount inherits the requesting master account's method filters but may
+	// add additional negative filters (ones beginning with "-"). See the field of the
+	// same name in the Account structure.
+	repeated string method_filters = 2;
+}
+
+message CreateAccountResponse {
+	Account account = 1;
+}
+
+message DeleteAccountRequest {
+	// The account ID of the subaccount to be marked as deleted.
+	string account_id = 1;
+}
+

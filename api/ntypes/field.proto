@@ -1,0 +1,68 @@
+syntax = "proto3";
+package nsys.api.ntypes;
+option go_package = "nsys.io/api/ntypes";
+
+import "google/protobuf/any.proto";
+
+import "nsys.io/api/ntypes/sig_present.proto";
+import "nsys.io/api/ntypes/writing_present.proto";
+
+message Field {
+	// The field's identifier which must be unique within exemplar and match 
+	// the regex '^[0-9A-Za-z.-]{1,48}$'. Automatically generated if not 
+	// supplied in create requests.
+	string name = 1;
+
+	// Optional description for client use.
+	string description = 2;
+
+	// Optional meta data for client use. 
+	google.protobuf.Any metadata = 3;
+	
+	// All lengths used in puzzle definition are expressed in centimeters.
+	oneof puzzle {
+		SignaturePresentPuzzle signature_present = 10;
+		HandwritingPresentPuzzle handwriting_present = 11;
+	}
+}
+
+message FieldCut {
+	// Most fields have a single "cut out" from an exemplar-registered 
+	// image but not all and so we this structure is defined so that we 
+	// can generalize handling.
+
+	oneof field_cut {
+		SignaturePresentCut signature_present = 10;
+		HandwritingPresentCut handwriting_present = 11;
+	}
+}
+
+message SolutionParameters {
+	// Coming -- time constraints, level of verification, etc.
+	// ----
+
+	oneof hint {
+		// Any dynamic type-specific data needed (e.g., list of names)
+		SignaturePresentHint signature_present = 10;
+		HandwritingPresentHint handwriting_present = 11;
+	}
+}
+
+message FieldSolution {
+	// Set true if the field is impossible to solve (e.g., due to a failed 
+	// exemplar match and bad cut)
+	bool unresolvable = 1;
+
+	// Confidence in the solution in range 1 to 99. 
+	// A value of zero means an unknown level of confidence, not zero confidence.
+	int32 confidence = 2;
+
+	// Coming -- info on the solution type (all algorithm, human first, human
+	// verification level, etc.
+
+	oneof solution {
+		SignaturePresentSolution signature_present = 10;
+		HandwritingPresentSolution handwriting_present = 11;
+	}
+}
+

@@ -1,0 +1,57 @@
+syntax = "proto3";
+package nsys.api.ntypes;
+option go_package = "nsys.io/api/ntypes";
+
+message BoundedArea {
+	oneof shape {
+		Rectangle rect = 1;
+		Polygon polygon = 2;
+		Circle circle = 3;
+		RotatedRectangle rotated_rect = 4;
+	}
+}
+
+message Point {
+	double x = 1;
+	double y = 2;
+}
+
+message Line {
+	// Defines a line segment between points A and B.
+	Point a = 1;
+	Point b = 2;
+}
+
+message Size { 
+	double width = 1;
+	double height = 2;
+}
+
+message RotatedRectangle {
+	// Interpretation of rotated rectangle matches OpenCV.
+	Point center = 1;
+	Size size = 2;
+	// Angle of rotation in degrees.	
+	double angle = 3;
+}
+
+message Rectangle {
+	double min_x = 1;
+	double min_y = 2;
+	double max_x = 3;
+	double max_y = 4;
+}
+
+message Polygon {
+	// Three or more points defining the edges of a simple polygon. 
+	// Automatically closed.
+	repeated Point points = 1;
+}
+
+message Circle {
+	// Defines a circular area. 
+	Point center = 1;
+	double radius = 2;	
+}
+
+

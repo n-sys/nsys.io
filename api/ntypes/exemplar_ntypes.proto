@@ -1,0 +1,48 @@
+syntax = "proto3";
+package nsys.api.ntypes;
+option go_package = "nsys.io/api/ntypes";
+
+import "nsys.io/api/ntypes/geometry.proto";
+import "nsys.io/api/ntypes/field.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/any.proto";
+
+message PdfPage {
+	// The 1-based page number within the source PDF
+	int32 page_number = 1;
+
+	// Size of the page in centimeters after it has been oriented such that the bulk 
+	// of the text appearing on it is "right side up". 
+	ntypes.Size size = 2;
+
+	// Pages in the original PDF may need to be rotated by 90, 180, or 270 degrees 
+	// by the system so that the bulk of the printed text is "right side up". This 
+	// value reports what clockwise rotation was applied in order to achieve this.
+	int32 degrees_rotated = 3;
+
+	// The PNG image data of the rendered and oriented page. Not always present.
+	bytes png_data = 4;
+}
+
+message Exemplar {
+	// The name / id of the exemplar.
+	string name = 1;
+
+	// Client-provided optional description.
+	string description = 2;
+
+	// The time the exemplar was registered aka created.
+	google.protobuf.Timestamp create_time = 3;
+
+	// The size of the exemplar in centimeters.
+	Size size = 4;	
+
+	// The metadata supplied by the client when the exemplar was created. 
+	// Not always present.
+	google.protobuf.Any metadata = 5;
+
+	repeated Field fields = 6;
+
+	// The exemplar image in PNG format. Not always present.
+	bytes png_data = 7;
+}

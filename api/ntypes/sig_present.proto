@@ -1,0 +1,38 @@
+syntax = "proto3";
+package nsys.api.ntypes;
+option go_package = "nsys.io/api/ntypes";
+
+import "nsys.io/api/ntypes/geometry.proto";
+import "nsys.io/api/ntypes/image_ntypes.proto";
+
+message SignaturePresentPuzzle {
+	// This should be a tightly cut area defining where the bulk of any 
+	// signature should be found. The bottom of the rectangle is the 
+	// expected baseline of the signature (whether or not there is an 
+	// actual line appearing on the paper). The top of the rectangle 
+	// should be the *typical* upper bound.  
+	// The system automatically expands its search area beyond these 
+	// bounds to capture ascenders and descenders.
+	oneof signature_area {
+		ntypes.RotatedRectangle rotated_rect = 1;
+		ntypes.Rectangle rect = 2;
+	}
+} 
+
+message SignaturePresentCut {
+	// The raw cut image defined by the signature area in SignaturePresentPuzzle.
+	ntypes.DimensionedImage raw_cut = 1;
+	// The context cut image (potentially larger than defined cut on exemplar).
+	ntypes.DimensionedImage context_cut = 2;
+	// The rectangle inside the context image where the raw cut is located.
+	ntypes.Rectangle context_rect = 3;
+}
+
+message SignaturePresentHint {
+	// TBD
+}
+
+message SignaturePresentSolution {
+	bool present = 1;	
+}
+
