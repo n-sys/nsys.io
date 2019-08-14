@@ -1,2 +1,2 @@
 # nsys.io
-Notable Systems (eventual) public API / SDK
+Notable Systems Public APIs and SDKs
