@@ -26,17 +26,17 @@ namespace Nsys.Api.Ntypes {
           string.Concat(
             "CiRuc3lzLmlvL2FwaS9udHlwZXMvZmlsZV9udHlwZXMucHJvdG8SD25zeXMu",
             "YXBpLm50eXBlcxoZZ29vZ2xlL3Byb3RvYnVmL2FueS5wcm90byIrCgdSYXdG",
-            "aWxlEgwKBGRhdGEYASABKAwSEgoKc2hhNTEyXzI1NhgCIAEoDCKtAQoLR2Vu",
-            "ZXJpY0ZpbGUSDAoEbmFtZRgBIAEoCRITCgtkZXNjcmlwdGlvbhgCIAEoCRIm",
-            "CghtZXRhZGF0YRgDIAEoCzIULmdvb2dsZS5wcm90b2J1Zi5BbnkSFwoPb3Jp",
-            "Z2luX2Jhc2VuYW1lGAQgASgJEg4KBmxlbmd0aBgFIAEoDRIqCghyYXdfZmls",
-            "ZRgGIAEoCzIYLm5zeXMuYXBpLm50eXBlcy5SYXdGaWxlQhRaEm5zeXMuaW8v",
-            "YXBpL250eXBlc2IGcHJvdG8z"));
+            "aWxlEgwKBGRhdGEYASABKAwSEgoKc2hhNTEyXzI1NhgCIAEoDCKfAQoLR2Vu",
+            "ZXJpY0ZpbGUSEwoLZGVzY3JpcHRpb24YASABKAkSJgoIbWV0YWRhdGEYAiAB",
+            "KAsyFC5nb29nbGUucHJvdG9idWYuQW55EhcKD29yaWdpbl9iYXNlbmFtZRgD",
+            "IAEoCRIOCgZsZW5ndGgYBCABKA0SKgoIcmF3X2ZpbGUYBSABKAsyGC5uc3lz",
+            "LmFwaS5udHlwZXMuUmF3RmlsZUIUWhJuc3lzLmlvL2FwaS9udHlwZXNiBnBy",
+            "b3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.AnyReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Nsys.Api.Ntypes.RawFile), global::Nsys.Api.Ntypes.RawFile.Parser, new[]{ "Data", "Sha512256" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Nsys.Api.Ntypes.GenericFile), global::Nsys.Api.Ntypes.GenericFile.Parser, new[]{ "Name", "Description", "Metadata", "OriginBasename", "Length", "RawFile" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Nsys.Api.Ntypes.GenericFile), global::Nsys.Api.Ntypes.GenericFile.Parser, new[]{ "Description", "Metadata", "OriginBasename", "Length", "RawFile" }, null, null, null)
           }));
     }
     #endregion
@@ -231,7 +231,6 @@ namespace Nsys.Api.Ntypes {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public GenericFile(GenericFile other) : this() {
-      name_ = other.name_;
       description_ = other.description_;
       metadata_ = other.metadata_ != null ? other.metadata_.Clone() : null;
       originBasename_ = other.originBasename_;
@@ -245,24 +244,8 @@ namespace Nsys.Api.Ntypes {
       return new GenericFile(this);
     }
 
-    /// <summary>Field number for the "name" field.</summary>
-    public const int NameFieldNumber = 1;
-    private string name_ = "";
-    /// <summary>
-    /// The file's identifier which must be unique within the 
-    /// account and must match the regex '^[0-9A-Za-z.-]{1,48}$'. 
-    /// Automatically generated if not supplied in upload request.
-    /// </summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string Name {
-      get { return name_; }
-      set {
-        name_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-      }
-    }
-
     /// <summary>Field number for the "description" field.</summary>
-    public const int DescriptionFieldNumber = 2;
+    public const int DescriptionFieldNumber = 1;
     private string description_ = "";
     /// <summary>
     /// For client or documented application use.
@@ -276,7 +259,7 @@ namespace Nsys.Api.Ntypes {
     }
 
     /// <summary>Field number for the "metadata" field.</summary>
-    public const int MetadataFieldNumber = 3;
+    public const int MetadataFieldNumber = 2;
     private global::Google.Protobuf.WellKnownTypes.Any metadata_;
     /// <summary>
     /// For client or documented application use.
@@ -290,7 +273,7 @@ namespace Nsys.Api.Ntypes {
     }
 
     /// <summary>Field number for the "origin_basename" field.</summary>
-    public const int OriginBasenameFieldNumber = 4;
+    public const int OriginBasenameFieldNumber = 3;
     private string originBasename_ = "";
     /// <summary>
     /// The basename of the file on the originating system, i.e., no
@@ -305,7 +288,7 @@ namespace Nsys.Api.Ntypes {
     }
 
     /// <summary>Field number for the "length" field.</summary>
-    public const int LengthFieldNumber = 5;
+    public const int LengthFieldNumber = 4;
     private uint length_;
     /// <summary>
     /// Length of the file in bytes. 
@@ -320,7 +303,7 @@ namespace Nsys.Api.Ntypes {
     }
 
     /// <summary>Field number for the "raw_file" field.</summary>
-    public const int RawFileFieldNumber = 6;
+    public const int RawFileFieldNumber = 5;
     private global::Nsys.Api.Ntypes.RawFile rawFile_;
     /// <summary>
     /// The actual file data and its checksum.
@@ -346,7 +329,6 @@ namespace Nsys.Api.Ntypes {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (Name != other.Name) return false;
       if (Description != other.Description) return false;
       if (!object.Equals(Metadata, other.Metadata)) return false;
       if (OriginBasename != other.OriginBasename) return false;
@@ -358,7 +340,6 @@ namespace Nsys.Api.Ntypes {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (Name.Length != 0) hash ^= Name.GetHashCode();
       if (Description.Length != 0) hash ^= Description.GetHashCode();
       if (metadata_ != null) hash ^= Metadata.GetHashCode();
       if (OriginBasename.Length != 0) hash ^= OriginBasename.GetHashCode();
@@ -377,28 +358,24 @@ namespace Nsys.Api.Ntypes {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (Name.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(Name);
-      }
       if (Description.Length != 0) {
-        output.WriteRawTag(18);
+        output.WriteRawTag(10);
         output.WriteString(Description);
       }
       if (metadata_ != null) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(18);
         output.WriteMessage(Metadata);
       }
       if (OriginBasename.Length != 0) {
-        output.WriteRawTag(34);
+        output.WriteRawTag(26);
         output.WriteString(OriginBasename);
       }
       if (Length != 0) {
-        output.WriteRawTag(40);
+        output.WriteRawTag(32);
         output.WriteUInt32(Length);
       }
       if (rawFile_ != null) {
-        output.WriteRawTag(50);
+        output.WriteRawTag(42);
         output.WriteMessage(RawFile);
       }
       if (_unknownFields != null) {
@@ -409,9 +386,6 @@ namespace Nsys.Api.Ntypes {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (Name.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
-      }
       if (Description.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Description);
       }
@@ -437,9 +411,6 @@ namespace Nsys.Api.Ntypes {
     public void MergeFrom(GenericFile other) {
       if (other == null) {
         return;
-      }
-      if (other.Name.Length != 0) {
-        Name = other.Name;
       }
       if (other.Description.Length != 0) {
         Description = other.Description;
@@ -474,29 +445,25 @@ namespace Nsys.Api.Ntypes {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            Name = input.ReadString();
-            break;
-          }
-          case 18: {
             Description = input.ReadString();
             break;
           }
-          case 26: {
+          case 18: {
             if (metadata_ == null) {
               Metadata = new global::Google.Protobuf.WellKnownTypes.Any();
             }
             input.ReadMessage(Metadata);
             break;
           }
-          case 34: {
+          case 26: {
             OriginBasename = input.ReadString();
             break;
           }
-          case 40: {
+          case 32: {
             Length = input.ReadUInt32();
             break;
           }
-          case 50: {
+          case 42: {
             if (rawFile_ == null) {
               RawFile = new global::Nsys.Api.Ntypes.RawFile();
             }

@@ -9,7 +9,7 @@ using pb = global::Google.Protobuf;
 using pbc = global::Google.Protobuf.Collections;
 using pbr = global::Google.Protobuf.Reflection;
 using scg = global::System.Collections.Generic;
-namespace Nsys.Api.Image {
+namespace Nsys.Api.File {
 
   /// <summary>Holder for reflection information generated from nsys.io/api/file/file.proto</summary>
   public static partial class FileReflection {
@@ -24,25 +24,53 @@ namespace Nsys.Api.Image {
     static FileReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Chtuc3lzLmlvL2FwaS9maWxlL2ZpbGUucHJvdG8SDm5zeXMuYXBpLmltYWdl",
-            "GiNnb29nbGUvbG9uZ3J1bm5pbmcvb3BlcmF0aW9ucy5wcm90bxofZ29vZ2xl",
-            "L3Byb3RvYnVmL3RpbWVzdGFtcC5wcm90bxokbnN5cy5pby9hcGkvbnR5cGVz",
-            "L2ZpbGVfbnR5cGVzLnByb3RvIn8KGFVwbG9hZEdlbmVyaWNGaWxlUmVxdWVz",
-            "dBIyCgxnZW5lcmljX2ZpbGUYASABKAsyHC5uc3lzLmFwaS5udHlwZXMuR2Vu",
-            "ZXJpY0ZpbGUSLwoLZXhwaXJlX3RpbWUYAiABKAsyGi5nb29nbGUucHJvdG9i",
-            "dWYuVGltZXN0YW1wIloKGVVwbG9hZEdlbmVyaWNGaWxlUmVzcG9uc2USDAoE",
-            "TmFtZRgBIAEoCRIvCgtleHBpcmVfdGltZRgCIAEoCzIaLmdvb2dsZS5wcm90",
-            "b2J1Zi5UaW1lc3RhbXAy3wEKDkZpbGVQcm9jZXNzaW5nEmoKEVVwbG9hZEdl",
-            "bmVyaWNGaWxlEigubnN5cy5hcGkuaW1hZ2UuVXBsb2FkR2VuZXJpY0ZpbGVS",
-            "ZXF1ZXN0GikubnN5cy5hcGkuaW1hZ2UuVXBsb2FkR2VuZXJpY0ZpbGVSZXNw",
-            "b25zZSIAEmEKFFVwbG9hZEdlbmVyaWNGaWxlTFJPEigubnN5cy5hcGkuaW1h",
-            "Z2UuVXBsb2FkR2VuZXJpY0ZpbGVSZXF1ZXN0Gh0uZ29vZ2xlLmxvbmdydW5u",
-            "aW5nLk9wZXJhdGlvbiIAQhJaEG5zeXMuaW8vYXBpL2ZpbGViBnByb3RvMw=="));
+            "Chtuc3lzLmlvL2FwaS9maWxlL2ZpbGUucHJvdG8SDW5zeXMuYXBpLmZpbGUa",
+            "I2dvb2dsZS9sb25ncnVubmluZy9vcGVyYXRpb25zLnByb3RvGh9nb29nbGUv",
+            "cHJvdG9idWYvdGltZXN0YW1wLnByb3RvGhtnb29nbGUvcHJvdG9idWYvZW1w",
+            "dHkucHJvdG8aJG5zeXMuaW8vYXBpL250eXBlcy9maWxlX250eXBlcy5wcm90",
+            "byKNAQoYVXBsb2FkR2VuZXJpY0ZpbGVSZXF1ZXN0EgwKBG5hbWUYASABKAkS",
+            "MgoMZ2VuZXJpY19maWxlGAIgASgLMhwubnN5cy5hcGkubnR5cGVzLkdlbmVy",
+            "aWNGaWxlEi8KC2V4cGlyZV90aW1lGAMgASgLMhouZ29vZ2xlLnByb3RvYnVm",
+            "LlRpbWVzdGFtcCJaChlVcGxvYWRHZW5lcmljRmlsZVJlc3BvbnNlEgwKBE5h",
+            "bWUYASABKAkSLwoLZXhwaXJlX3RpbWUYAiABKAsyGi5nb29nbGUucHJvdG9i",
+            "dWYuVGltZXN0YW1wImkKFENyZWF0ZUZpbGVzZXRSZXF1ZXN0EgwKBG5hbWUY",
+            "ASABKAkSEgoKZmlsZV9uYW1lcxgCIAMoCRIvCgtleHBpcmVfdGltZRgDIAEo",
+            "CzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAiVgoVQ3JlYXRlRmlsZXNl",
+            "dFJlc3BvbnNlEgwKBE5hbWUYASABKAkSLwoLZXhwaXJlX3RpbWUYAiABKAsy",
+            "Gi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIj8KGUluaXRpYXRlUHJvY2Vz",
+            "c2luZ1JlcXVlc3QSDAoEbmFtZRgBIAEoCRIUCgxwcm9jZXNzX2NvZGUYAiAB",
+            "KAkiPAoTUHJvY2Vzc0VtYWlsUmVxdWVzdBIQCghlbWxfbmFtZRgBIAEoCRIT",
+            "Cgtzb3VyY2VfbmFtZRgCIAEoCSJpChRQcm9jZXNzRW1haWxSZXNwb25zZRIa",
+            "ChJyZW5kZXJlZF9odG1sX25hbWUYASABKAkSGAoQYXR0YWNobWVudF9uYW1l",
+            "cxgCIAMoCRIbChNpZ25vcmVkX2F0dGFjaG1lbnRzGAMgAygJMoUGCg5GaWxl",
+            "UHJvY2Vzc2luZxJoChFVcGxvYWRHZW5lcmljRmlsZRInLm5zeXMuYXBpLmZp",
+            "bGUuVXBsb2FkR2VuZXJpY0ZpbGVSZXF1ZXN0GigubnN5cy5hcGkuZmlsZS5V",
+            "cGxvYWRHZW5lcmljRmlsZVJlc3BvbnNlIgASYAoUVXBsb2FkR2VuZXJpY0Zp",
+            "bGVMUk8SJy5uc3lzLmFwaS5maWxlLlVwbG9hZEdlbmVyaWNGaWxlUmVxdWVz",
+            "dBodLmdvb2dsZS5sb25ncnVubmluZy5PcGVyYXRpb24iABJcCg1DcmVhdGVG",
+            "aWxlc2V0EiMubnN5cy5hcGkuZmlsZS5DcmVhdGVGaWxlc2V0UmVxdWVzdBok",
+            "Lm5zeXMuYXBpLmZpbGUuQ3JlYXRlRmlsZXNldFJlc3BvbnNlIgASWAoQQ3Jl",
+            "YXRlRmlsZXNldExSTxIjLm5zeXMuYXBpLmZpbGUuQ3JlYXRlRmlsZXNldFJl",
+            "cXVlc3QaHS5nb29nbGUubG9uZ3J1bm5pbmcuT3BlcmF0aW9uIgASWAoSSW5p",
+            "dGlhdGVQcm9jZXNzaW5nEigubnN5cy5hcGkuZmlsZS5Jbml0aWF0ZVByb2Nl",
+            "c3NpbmdSZXF1ZXN0GhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5IgASYgoVSW5p",
+            "dGlhdGVQcm9jZXNzaW5nTFJPEigubnN5cy5hcGkuZmlsZS5Jbml0aWF0ZVBy",
+            "b2Nlc3NpbmdSZXF1ZXN0Gh0uZ29vZ2xlLmxvbmdydW5uaW5nLk9wZXJhdGlv",
+            "biIAElkKDFByb2Nlc3NFbWFpbBIiLm5zeXMuYXBpLmZpbGUuUHJvY2Vzc0Vt",
+            "YWlsUmVxdWVzdBojLm5zeXMuYXBpLmZpbGUuUHJvY2Vzc0VtYWlsUmVzcG9u",
+            "c2UiABJWCg9Qcm9jZXNzRW1haWxMUk8SIi5uc3lzLmFwaS5maWxlLlByb2Nl",
+            "c3NFbWFpbFJlcXVlc3QaHS5nb29nbGUubG9uZ3J1bm5pbmcuT3BlcmF0aW9u",
+            "IgBCEloQbnN5cy5pby9hcGkvZmlsZWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::Google.LongRunning.OperationsReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, global::Nsys.Api.Ntypes.FileNtypesReflection.Descriptor, },
+          new pbr::FileDescriptor[] { global::Google.LongRunning.OperationsReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.EmptyReflection.Descriptor, global::Nsys.Api.Ntypes.FileNtypesReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Nsys.Api.Image.UploadGenericFileRequest), global::Nsys.Api.Image.UploadGenericFileRequest.Parser, new[]{ "GenericFile", "ExpireTime" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Nsys.Api.Image.UploadGenericFileResponse), global::Nsys.Api.Image.UploadGenericFileResponse.Parser, new[]{ "Name", "ExpireTime" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Nsys.Api.File.UploadGenericFileRequest), global::Nsys.Api.File.UploadGenericFileRequest.Parser, new[]{ "Name", "GenericFile", "ExpireTime" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Nsys.Api.File.UploadGenericFileResponse), global::Nsys.Api.File.UploadGenericFileResponse.Parser, new[]{ "Name", "ExpireTime" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Nsys.Api.File.CreateFilesetRequest), global::Nsys.Api.File.CreateFilesetRequest.Parser, new[]{ "Name", "FileNames", "ExpireTime" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Nsys.Api.File.CreateFilesetResponse), global::Nsys.Api.File.CreateFilesetResponse.Parser, new[]{ "Name", "ExpireTime" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Nsys.Api.File.InitiateProcessingRequest), global::Nsys.Api.File.InitiateProcessingRequest.Parser, new[]{ "Name", "ProcessCode" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Nsys.Api.File.ProcessEmailRequest), global::Nsys.Api.File.ProcessEmailRequest.Parser, new[]{ "EmlName", "SourceName" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Nsys.Api.File.ProcessEmailResponse), global::Nsys.Api.File.ProcessEmailResponse.Parser, new[]{ "RenderedHtmlName", "AttachmentNames", "IgnoredAttachments" }, null, null, null)
           }));
     }
     #endregion
@@ -57,7 +85,7 @@ namespace Nsys.Api.Image {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Nsys.Api.Image.FileReflection.Descriptor.MessageTypes[0]; }
+      get { return global::Nsys.Api.File.FileReflection.Descriptor.MessageTypes[0]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -74,6 +102,7 @@ namespace Nsys.Api.Image {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public UploadGenericFileRequest(UploadGenericFileRequest other) : this() {
+      name_ = other.name_;
       genericFile_ = other.genericFile_ != null ? other.genericFile_.Clone() : null;
       expireTime_ = other.expireTime_ != null ? other.expireTime_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -84,8 +113,24 @@ namespace Nsys.Api.Image {
       return new UploadGenericFileRequest(this);
     }
 
+    /// <summary>Field number for the "name" field.</summary>
+    public const int NameFieldNumber = 1;
+    private string name_ = "";
+    /// <summary>
+    /// The file's identifier which must be unique within the
+    /// account and must match the regex '^[0-9A-Za-z.-]{1,48}$'.
+    /// Automatically generated if not supplied in upload request.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Name {
+      get { return name_; }
+      set {
+        name_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
     /// <summary>Field number for the "generic_file" field.</summary>
-    public const int GenericFileFieldNumber = 1;
+    public const int GenericFileFieldNumber = 2;
     private global::Nsys.Api.Ntypes.GenericFile genericFile_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Nsys.Api.Ntypes.GenericFile GenericFile {
@@ -96,7 +141,7 @@ namespace Nsys.Api.Image {
     }
 
     /// <summary>Field number for the "expire_time" field.</summary>
-    public const int ExpireTimeFieldNumber = 2;
+    public const int ExpireTimeFieldNumber = 3;
     private global::Google.Protobuf.WellKnownTypes.Timestamp expireTime_;
     /// <summary>
     /// Requested file expiration time. The time is capped to comply with 
@@ -124,6 +169,7 @@ namespace Nsys.Api.Image {
       if (ReferenceEquals(other, this)) {
         return true;
       }
+      if (Name != other.Name) return false;
       if (!object.Equals(GenericFile, other.GenericFile)) return false;
       if (!object.Equals(ExpireTime, other.ExpireTime)) return false;
       return Equals(_unknownFields, other._unknownFields);
@@ -132,6 +178,7 @@ namespace Nsys.Api.Image {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
+      if (Name.Length != 0) hash ^= Name.GetHashCode();
       if (genericFile_ != null) hash ^= GenericFile.GetHashCode();
       if (expireTime_ != null) hash ^= ExpireTime.GetHashCode();
       if (_unknownFields != null) {
@@ -147,12 +194,16 @@ namespace Nsys.Api.Image {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (genericFile_ != null) {
+      if (Name.Length != 0) {
         output.WriteRawTag(10);
+        output.WriteString(Name);
+      }
+      if (genericFile_ != null) {
+        output.WriteRawTag(18);
         output.WriteMessage(GenericFile);
       }
       if (expireTime_ != null) {
-        output.WriteRawTag(18);
+        output.WriteRawTag(26);
         output.WriteMessage(ExpireTime);
       }
       if (_unknownFields != null) {
@@ -163,6 +214,9 @@ namespace Nsys.Api.Image {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
+      if (Name.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
+      }
       if (genericFile_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(GenericFile);
       }
@@ -179,6 +233,9 @@ namespace Nsys.Api.Image {
     public void MergeFrom(UploadGenericFileRequest other) {
       if (other == null) {
         return;
+      }
+      if (other.Name.Length != 0) {
+        Name = other.Name;
       }
       if (other.genericFile_ != null) {
         if (genericFile_ == null) {
@@ -204,13 +261,17 @@ namespace Nsys.Api.Image {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
+            Name = input.ReadString();
+            break;
+          }
+          case 18: {
             if (genericFile_ == null) {
               GenericFile = new global::Nsys.Api.Ntypes.GenericFile();
             }
             input.ReadMessage(GenericFile);
             break;
           }
-          case 18: {
+          case 26: {
             if (expireTime_ == null) {
               ExpireTime = new global::Google.Protobuf.WellKnownTypes.Timestamp();
             }
@@ -231,7 +292,7 @@ namespace Nsys.Api.Image {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Nsys.Api.Image.FileReflection.Descriptor.MessageTypes[1]; }
+      get { return global::Nsys.Api.File.FileReflection.Descriptor.MessageTypes[1]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -384,6 +445,875 @@ namespace Nsys.Api.Image {
               ExpireTime = new global::Google.Protobuf.WellKnownTypes.Timestamp();
             }
             input.ReadMessage(ExpireTime);
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class CreateFilesetRequest : pb::IMessage<CreateFilesetRequest> {
+    private static readonly pb::MessageParser<CreateFilesetRequest> _parser = new pb::MessageParser<CreateFilesetRequest>(() => new CreateFilesetRequest());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<CreateFilesetRequest> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Nsys.Api.File.FileReflection.Descriptor.MessageTypes[2]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public CreateFilesetRequest() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public CreateFilesetRequest(CreateFilesetRequest other) : this() {
+      name_ = other.name_;
+      fileNames_ = other.fileNames_.Clone();
+      expireTime_ = other.expireTime_ != null ? other.expireTime_.Clone() : null;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public CreateFilesetRequest Clone() {
+      return new CreateFilesetRequest(this);
+    }
+
+    /// <summary>Field number for the "name" field.</summary>
+    public const int NameFieldNumber = 1;
+    private string name_ = "";
+    /// <summary>
+    /// The fileset's identifier which must be unique within the
+    /// account and must match the regex '^[0-9A-Za-z.-]{1,48}$'.
+    /// Automatically generated if not supplied.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Name {
+      get { return name_; }
+      set {
+        name_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "file_names" field.</summary>
+    public const int FileNamesFieldNumber = 2;
+    private static readonly pb::FieldCodec<string> _repeated_fileNames_codec
+        = pb::FieldCodec.ForString(18);
+    private readonly pbc::RepeatedField<string> fileNames_ = new pbc::RepeatedField<string>();
+    /// <summary>
+    /// One or more files that are to become members of the fileset.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<string> FileNames {
+      get { return fileNames_; }
+    }
+
+    /// <summary>Field number for the "expire_time" field.</summary>
+    public const int ExpireTimeFieldNumber = 3;
+    private global::Google.Protobuf.WellKnownTypes.Timestamp expireTime_;
+    /// <summary>
+    /// Requested fileset expiration time. The time is capped so that it 
+    /// is no later than the latest expiration time of any file in the set.
+    /// A zero value requests the maximum allowable expiration time be used.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Google.Protobuf.WellKnownTypes.Timestamp ExpireTime {
+      get { return expireTime_; }
+      set {
+        expireTime_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as CreateFilesetRequest);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(CreateFilesetRequest other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Name != other.Name) return false;
+      if(!fileNames_.Equals(other.fileNames_)) return false;
+      if (!object.Equals(ExpireTime, other.ExpireTime)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Name.Length != 0) hash ^= Name.GetHashCode();
+      hash ^= fileNames_.GetHashCode();
+      if (expireTime_ != null) hash ^= ExpireTime.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (Name.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Name);
+      }
+      fileNames_.WriteTo(output, _repeated_fileNames_codec);
+      if (expireTime_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(ExpireTime);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (Name.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
+      }
+      size += fileNames_.CalculateSize(_repeated_fileNames_codec);
+      if (expireTime_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(ExpireTime);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(CreateFilesetRequest other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Name.Length != 0) {
+        Name = other.Name;
+      }
+      fileNames_.Add(other.fileNames_);
+      if (other.expireTime_ != null) {
+        if (expireTime_ == null) {
+          ExpireTime = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+        }
+        ExpireTime.MergeFrom(other.ExpireTime);
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            Name = input.ReadString();
+            break;
+          }
+          case 18: {
+            fileNames_.AddEntriesFrom(input, _repeated_fileNames_codec);
+            break;
+          }
+          case 26: {
+            if (expireTime_ == null) {
+              ExpireTime = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+            }
+            input.ReadMessage(ExpireTime);
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class CreateFilesetResponse : pb::IMessage<CreateFilesetResponse> {
+    private static readonly pb::MessageParser<CreateFilesetResponse> _parser = new pb::MessageParser<CreateFilesetResponse>(() => new CreateFilesetResponse());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<CreateFilesetResponse> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Nsys.Api.File.FileReflection.Descriptor.MessageTypes[3]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public CreateFilesetResponse() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public CreateFilesetResponse(CreateFilesetResponse other) : this() {
+      name_ = other.name_;
+      expireTime_ = other.expireTime_ != null ? other.expireTime_.Clone() : null;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public CreateFilesetResponse Clone() {
+      return new CreateFilesetResponse(this);
+    }
+
+    /// <summary>Field number for the "Name" field.</summary>
+    public const int NameFieldNumber = 1;
+    private string name_ = "";
+    /// <summary>
+    /// Identifier for the fileset.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Name {
+      get { return name_; }
+      set {
+        name_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "expire_time" field.</summary>
+    public const int ExpireTimeFieldNumber = 2;
+    private global::Google.Protobuf.WellKnownTypes.Timestamp expireTime_;
+    /// <summary>
+    /// The actual expiration time for the fileset.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Google.Protobuf.WellKnownTypes.Timestamp ExpireTime {
+      get { return expireTime_; }
+      set {
+        expireTime_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as CreateFilesetResponse);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(CreateFilesetResponse other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Name != other.Name) return false;
+      if (!object.Equals(ExpireTime, other.ExpireTime)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Name.Length != 0) hash ^= Name.GetHashCode();
+      if (expireTime_ != null) hash ^= ExpireTime.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (Name.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Name);
+      }
+      if (expireTime_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(ExpireTime);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (Name.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
+      }
+      if (expireTime_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(ExpireTime);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(CreateFilesetResponse other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Name.Length != 0) {
+        Name = other.Name;
+      }
+      if (other.expireTime_ != null) {
+        if (expireTime_ == null) {
+          ExpireTime = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+        }
+        ExpireTime.MergeFrom(other.ExpireTime);
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            Name = input.ReadString();
+            break;
+          }
+          case 18: {
+            if (expireTime_ == null) {
+              ExpireTime = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+            }
+            input.ReadMessage(ExpireTime);
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class InitiateProcessingRequest : pb::IMessage<InitiateProcessingRequest> {
+    private static readonly pb::MessageParser<InitiateProcessingRequest> _parser = new pb::MessageParser<InitiateProcessingRequest>(() => new InitiateProcessingRequest());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<InitiateProcessingRequest> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Nsys.Api.File.FileReflection.Descriptor.MessageTypes[4]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public InitiateProcessingRequest() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public InitiateProcessingRequest(InitiateProcessingRequest other) : this() {
+      name_ = other.name_;
+      processCode_ = other.processCode_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public InitiateProcessingRequest Clone() {
+      return new InitiateProcessingRequest(this);
+    }
+
+    /// <summary>Field number for the "name" field.</summary>
+    public const int NameFieldNumber = 1;
+    private string name_ = "";
+    /// <summary>
+    /// Identifier of the object to process.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Name {
+      get { return name_; }
+      set {
+        name_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "process_code" field.</summary>
+    public const int ProcessCodeFieldNumber = 2;
+    private string processCode_ = "";
+    /// <summary>
+    /// Application-specific type of processing to perform.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string ProcessCode {
+      get { return processCode_; }
+      set {
+        processCode_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as InitiateProcessingRequest);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(InitiateProcessingRequest other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Name != other.Name) return false;
+      if (ProcessCode != other.ProcessCode) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Name.Length != 0) hash ^= Name.GetHashCode();
+      if (ProcessCode.Length != 0) hash ^= ProcessCode.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (Name.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Name);
+      }
+      if (ProcessCode.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(ProcessCode);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (Name.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
+      }
+      if (ProcessCode.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(ProcessCode);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(InitiateProcessingRequest other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Name.Length != 0) {
+        Name = other.Name;
+      }
+      if (other.ProcessCode.Length != 0) {
+        ProcessCode = other.ProcessCode;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            Name = input.ReadString();
+            break;
+          }
+          case 18: {
+            ProcessCode = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class ProcessEmailRequest : pb::IMessage<ProcessEmailRequest> {
+    private static readonly pb::MessageParser<ProcessEmailRequest> _parser = new pb::MessageParser<ProcessEmailRequest>(() => new ProcessEmailRequest());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<ProcessEmailRequest> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Nsys.Api.File.FileReflection.Descriptor.MessageTypes[5]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ProcessEmailRequest() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ProcessEmailRequest(ProcessEmailRequest other) : this() {
+      emlName_ = other.emlName_;
+      sourceName_ = other.sourceName_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ProcessEmailRequest Clone() {
+      return new ProcessEmailRequest(this);
+    }
+
+    /// <summary>Field number for the "eml_name" field.</summary>
+    public const int EmlNameFieldNumber = 1;
+    private string emlName_ = "";
+    /// <summary>
+    /// the generic file name of an email's eml file
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string EmlName {
+      get { return emlName_; }
+      set {
+        emlName_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "source_name" field.</summary>
+    public const int SourceNameFieldNumber = 2;
+    private string sourceName_ = "";
+    /// <summary>
+    /// the source id that the results will be linked to
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string SourceName {
+      get { return sourceName_; }
+      set {
+        sourceName_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as ProcessEmailRequest);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(ProcessEmailRequest other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (EmlName != other.EmlName) return false;
+      if (SourceName != other.SourceName) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (EmlName.Length != 0) hash ^= EmlName.GetHashCode();
+      if (SourceName.Length != 0) hash ^= SourceName.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (EmlName.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(EmlName);
+      }
+      if (SourceName.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(SourceName);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (EmlName.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(EmlName);
+      }
+      if (SourceName.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(SourceName);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(ProcessEmailRequest other) {
+      if (other == null) {
+        return;
+      }
+      if (other.EmlName.Length != 0) {
+        EmlName = other.EmlName;
+      }
+      if (other.SourceName.Length != 0) {
+        SourceName = other.SourceName;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            EmlName = input.ReadString();
+            break;
+          }
+          case 18: {
+            SourceName = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class ProcessEmailResponse : pb::IMessage<ProcessEmailResponse> {
+    private static readonly pb::MessageParser<ProcessEmailResponse> _parser = new pb::MessageParser<ProcessEmailResponse>(() => new ProcessEmailResponse());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<ProcessEmailResponse> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Nsys.Api.File.FileReflection.Descriptor.MessageTypes[6]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ProcessEmailResponse() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ProcessEmailResponse(ProcessEmailResponse other) : this() {
+      renderedHtmlName_ = other.renderedHtmlName_;
+      attachmentNames_ = other.attachmentNames_.Clone();
+      ignoredAttachments_ = other.ignoredAttachments_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ProcessEmailResponse Clone() {
+      return new ProcessEmailResponse(this);
+    }
+
+    /// <summary>Field number for the "rendered_html_name" field.</summary>
+    public const int RenderedHtmlNameFieldNumber = 1;
+    private string renderedHtmlName_ = "";
+    /// <summary>
+    /// The generic file name that the rendered email is saved to
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string RenderedHtmlName {
+      get { return renderedHtmlName_; }
+      set {
+        renderedHtmlName_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "attachment_names" field.</summary>
+    public const int AttachmentNamesFieldNumber = 2;
+    private static readonly pb::FieldCodec<string> _repeated_attachmentNames_codec
+        = pb::FieldCodec.ForString(18);
+    private readonly pbc::RepeatedField<string> attachmentNames_ = new pbc::RepeatedField<string>();
+    /// <summary>
+    /// The generic file names of any other attachments in the email
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<string> AttachmentNames {
+      get { return attachmentNames_; }
+    }
+
+    /// <summary>Field number for the "ignored_attachments" field.</summary>
+    public const int IgnoredAttachmentsFieldNumber = 3;
+    private static readonly pb::FieldCodec<string> _repeated_ignoredAttachments_codec
+        = pb::FieldCodec.ForString(26);
+    private readonly pbc::RepeatedField<string> ignoredAttachments_ = new pbc::RepeatedField<string>();
+    /// <summary>
+    /// attachments to the email that we ignored
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<string> IgnoredAttachments {
+      get { return ignoredAttachments_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as ProcessEmailResponse);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(ProcessEmailResponse other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (RenderedHtmlName != other.RenderedHtmlName) return false;
+      if(!attachmentNames_.Equals(other.attachmentNames_)) return false;
+      if(!ignoredAttachments_.Equals(other.ignoredAttachments_)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (RenderedHtmlName.Length != 0) hash ^= RenderedHtmlName.GetHashCode();
+      hash ^= attachmentNames_.GetHashCode();
+      hash ^= ignoredAttachments_.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (RenderedHtmlName.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(RenderedHtmlName);
+      }
+      attachmentNames_.WriteTo(output, _repeated_attachmentNames_codec);
+      ignoredAttachments_.WriteTo(output, _repeated_ignoredAttachments_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (RenderedHtmlName.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(RenderedHtmlName);
+      }
+      size += attachmentNames_.CalculateSize(_repeated_attachmentNames_codec);
+      size += ignoredAttachments_.CalculateSize(_repeated_ignoredAttachments_codec);
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(ProcessEmailResponse other) {
+      if (other == null) {
+        return;
+      }
+      if (other.RenderedHtmlName.Length != 0) {
+        RenderedHtmlName = other.RenderedHtmlName;
+      }
+      attachmentNames_.Add(other.attachmentNames_);
+      ignoredAttachments_.Add(other.ignoredAttachments_);
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            RenderedHtmlName = input.ReadString();
+            break;
+          }
+          case 18: {
+            attachmentNames_.AddEntriesFrom(input, _repeated_attachmentNames_codec);
+            break;
+          }
+          case 26: {
+            ignoredAttachments_.AddEntriesFrom(input, _repeated_ignoredAttachments_codec);
             break;
           }
         }
