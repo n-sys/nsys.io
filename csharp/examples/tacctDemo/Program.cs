@@ -1,210 +1,221 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 using Grpc.Core;
-using Google.LongRunning;
-using Nsys.Api;       // Used for echo requests 
 using Nsys.Api.Tacct; // Used for the Tickets and Accounts services
 
 namespace TacctDemo
 {
     /// <summary>
-    /// This is a demo program showing how to use the Nsys Api
+    /// This is a CLI program which can add, delete, and list accounts and tickets.
     /// </summary>
     class Program
     {
+        /// <summary>
+        /// Usage prints the program's usage and then exits with a code of 1
+        /// </summary>
+        static void Usage()
+        {
+            var usage = @"Usage:
+  [command] [command args...]
+
+  The API key must be in the NSYS_TICKET environment variable.
+
+    Available Commands:
+
+      listAccounts
+      addAccount    [optional description]
+      deleteAccount [accountId]
+
+      listTickets  [optional accountId]
+      addTicket    [hoursToLive] [optional accountId]
+      deleteTicket [ticket]";
+
+            Console.WriteLine(usage);
+            Environment.Exit(1);
+        }
+
+        /// <summary>
+        /// Main simply finds which command needs to be run and passes all the
+        /// arguments to the corresponding method for it to deal with.
+        /// </summary>
         static void Main(string[] args)
         {
-            if (args.Length == 0) {
-                Console.WriteLine("You must pass the api key in as the first argument to this program.");
-                return;
-            }
-            var apiKey = args[0];
-
-            // first we create a grpc channel connected to our host over tls
-            var host = "api.nsys.io";
-            var port = 39111;
-            var creds = new SslCredentials();
-            var channelOptions = new List<ChannelOption>
+            if (args.Length < 1) Usage();
+            if (GetApiKey() == "")
             {
-                new ChannelOption(ChannelOptions.SslTargetNameOverride, host)
-            };
-            var channel = new Channel(host, port, creds, channelOptions);
+                Console.WriteLine("Missing API Key!");
+                Usage();
+            }
 
-            // try an echo request (defined below)
-            Echo(channel, apiKey, "what's up nsys?");
-            
-            // try an echo request as a longrunning operation (defined below)
-            EchoLRO(channel, apiKey, "this is a LRO!", 50, 5000);
-
-            // create a new subaccount (defined below)
-            var subAccount = CreateSubaccount(channel, apiKey, "my throwaway test subaccount");
-            
-            // create a new ticket (api key) for the new subaccount (defined below)
-            var newTicket = CreateTicket(channel, apiKey, subAccount.Account.Id, 2);
-            
-            // send an echo request as the subaccount using the new ticket
-            Echo(channel, newTicket.Ticket.ApiKey, "From my new subaccount!");
-
-            // List subaccounts under our main account (defined below)
-            ListSubaccounts(channel, apiKey);
-            
-            // List tickets under our main account (defined below)
-            ListTickets(channel, apiKey, "");
-
-            // List tickets under our new sub account
-            ListTickets(channel, apiKey, subAccount.Account.Id);
-
-            // delete the new subaccount (defined below)
-            DeleteAccount(channel, apiKey, subAccount.Account.Id);
-            
-            // List subaccounts under our main account to see the new account is no longer active
-            ListSubaccounts(channel, apiKey);
-
-            channel.ShutdownAsync().Wait();
+            switch (args[0])
+            {
+                case "listAccounts":
+                    ListAccounts(args);
+                    break;
+                case "addAccount":
+                    AddAccount(args);
+                    break;
+                case "deleteAccount":
+                    DeleteAccount(args);
+                    break;
+                case "listTickets":
+                    ListTickets(args);
+                    break;
+                case "addTicket":
+                    AddTicket(args);
+                    break;
+                case "deleteTicket":
+                    DeleteTicket(args);
+                    break;
+                default:
+                    Usage();
+                    break;
+            }
         }
 
         /// <summary>
-        /// Sends an echo request to the nsys api.
+        /// ListAccounts lists all accounts owned by the owner of the api key.
         /// </summary>
-        /// <param name="channel">The channel connected to the NSYS host</param>
-        /// <param name="apiKey">The API Key aka the ticket.</param>
-        /// <param name="message">The message that will be echoed.</param>
-        static void Echo(Channel channel, string apiKey, string message)
+        static void ListAccounts(string[] args)
         {
-            var diagClient = new Diagnostic.DiagnosticClient(channel);
-            var request = new EchoRequest { Text = message };
-            var requestHeaders = new Metadata { { "x-api-key", apiKey } };
-            var reply = diagClient.Echo(request, requestHeaders);
-            Console.WriteLine("synchro Echo response: " + reply.Text);
+            var chan = GetGrpcChannel();
+            var client = new Accounts.AccountsClient(chan);
+
+            var list = client.ListAccounts(new ListAccountsRequest { }, ReqHead());
+            foreach (var item in list.Accounts) Console.WriteLine(item);
+            chan.ShutdownAsync().Wait();
         }
 
         /// <summary>
-        /// Sends an echo request to the nsys api. This is just an example of how you 
-        /// might poll for responses from a LRO.
+        /// AddAccount adds a subaccount. Can take an optional description.
+        /// TODO: add optional method filters (for now it inherits filters from
+        ///       the master account)
         /// </summary>
-        /// <param name="channel">The channel connected to the NSYS host</param>
-        /// <param name="apiKey">The API Key aka the ticket.</param>
-        /// <param name="message">The message that will be echoed.</param>
-        /// <param name="pollTime">How many milliseconds to wait between polls.</param>
-        /// <param name="timeout">Timeout in number of milliseconds.</param>
-        static void EchoLRO(Channel channel, string apiKey, string message, int pollTime, int timeout)
+        static void AddAccount(string[] args)
         {
-            var diagClient = new Diagnostic.DiagnosticClient(channel);
-            var opClient = new Operations.OperationsClient(channel);
-            var request = new EchoRequest { Text = message };
-            var requestHeaders = new Metadata { { "x-api-key", apiKey } };
-            var lro = diagClient.EchoLRO(request, requestHeaders);
+            var description = "";
+            if (args.Length > 1) description = args[1];
 
-            var startTime = DateTime.Now;
-            while (!lro.Done)
-            {
-                Thread.Sleep(pollTime);
-                lro = opClient.GetOperation(new GetOperationRequest { Name = lro.Name }, requestHeaders);
-                if ((DateTime.Now - startTime).TotalMilliseconds > timeout)
-                {
-                    Console.WriteLine("Timeout on EchoLRO!");
-                    return;
-                }
-            }
+            var chan = GetGrpcChannel();
+            var client = new Accounts.AccountsClient(chan);
 
-            if (lro.Error != null)
-            {
-                Console.WriteLine("Error in EchoLRO: " + lro.Error);
-                return;
-            }
-
-            var response = lro.Response.Unpack<EchoResponse>();
-            Console.WriteLine("EchoLRO finished, response text: " + response.Text);
+            var req = new CreateAccountRequest { Description = description };
+            var resp = client.CreateAccount(req, ReqHead());
+            Console.WriteLine(resp);
+            chan.ShutdownAsync().Wait();
         }
 
         /// <summary>
-        /// Creates a ticket for the given account.
+        /// DeleteAccount deletes the given account.
         /// </summary>
-        /// <param name="channel">The channel connected to the NSYS host.</param>
-        /// <param name="apiKey">The API Key aka the ticket.</param>
-        /// <param name="accountID">The account the ticket will belong to, 
-        /// if empty will belong to whoever owns the apikey.</param>
-        /// <param name="nHoursToLive">Number of hours the api key will live.</param>
-        /// <returns>The raw response from the CreateTicket request.</returns>
-        static CreateTicketResponse CreateTicket(Channel channel, string apiKey, string accountID, int nHoursToLive)
+        static void DeleteAccount(string[] args)
         {
-            var requestHeaders = new Metadata { { "x-api-key", apiKey } };
-            var ticketClient = new Tickets.TicketsClient(channel);
-            var expireDate = DateTimeOffset.Now.AddHours(nHoursToLive).ToUnixTimeSeconds();
-            var createTicketRequest = new CreateTicketRequest
+            if (args.Length < 2) Usage();
+            var accountId = args[1];
+
+            var chan = GetGrpcChannel();
+            var client = new Accounts.AccountsClient(chan);
+
+            var req = new DeleteAccountRequest { AccountId = accountId };
+            client.DeleteAccount(req, ReqHead());
+
+            chan.ShutdownAsync().Wait();
+        }
+
+        /// <summary>
+        /// ListTickets lists all the tickets in the main account owned by the 
+        /// api key, or if available, lists the tickets in the optional sub account.
+        /// </summary>
+        static void ListTickets(string[] args)
+        {
+            var accountId = "";
+            if (args.Length > 1) accountId = args[1];
+
+            var chan = GetGrpcChannel();
+            var client = new Tickets.TicketsClient(chan);
+
+            var req = new ListTicketsRequest { AccountId = accountId };
+            var list = client.ListTickets(req, ReqHead());
+            foreach (var item in list.Tickets) Console.WriteLine(item);
+
+            chan.ShutdownAsync().Wait();
+        }
+
+        /// <summary>
+        /// AddTicket adds a ticket with the given hours to live. The ticket will
+        /// be added to the account owned by the api key, or if available, the
+        /// optional sub account.
+        /// </summary>
+        static void AddTicket(string[] args)
+        {
+            if (args.Length < 2) Usage();
+            var hours2live = double.Parse(args[1]);
+            var accountId = "";
+            if (args.Length > 2) accountId = args[2];
+
+            var chan = GetGrpcChannel();
+            var client = new Tickets.TicketsClient(chan);
+
+            var expireDate = DateTimeOffset.Now.AddHours(hours2live).ToUnixTimeSeconds();
+            var req = new CreateTicketRequest
             {
-                AccountId = accountID,
+                AccountId = accountId,
                 ExpireTime = new Google.Protobuf.WellKnownTypes.Timestamp { Seconds = expireDate }
             };
-            var createTicketResponse = ticketClient.CreateTicket(createTicketRequest, requestHeaders);
-            return createTicketResponse;
+            var resp = client.CreateTicket(req, ReqHead());
+            Console.WriteLine(resp);
+
+            chan.ShutdownAsync().Wait();
         }
 
         /// <summary>
-        /// Creates a new subaccount
+        /// DeleteTicket deletes the given ticket.
         /// </summary>
-        /// <param name="channel">The channel connected to the NSYS host.</param>
-        /// <param name="apiKey">The API Key aka the ticket.</param>
-        /// <param name="description">Description of the new subaccount.</param>
-        /// <returns>The raw response from the CreateAccountRequest.</returns>
-        static CreateAccountResponse CreateSubaccount(Channel channel, string apiKey, string description)
+        static void DeleteTicket(string[] args)
         {
-            var requestHeaders = new Metadata { { "x-api-key", apiKey } };
-            var accountsClient = new Accounts.AccountsClient(channel);
-            var newAccountRequest = new CreateAccountRequest{Description = description};
-            var createAccountResponse = accountsClient.CreateAccount(newAccountRequest, requestHeaders);
-            return createAccountResponse;
+            if (args.Length < 2) Usage();
+            var ticket = args[1];
+
+            var chan = GetGrpcChannel();
+            var client = new Tickets.TicketsClient(chan);
+
+            var req = new DeleteTicketRequest { ApiKey = ticket };
+            client.DeleteTicket(req, ReqHead());
+
+            chan.ShutdownAsync().Wait();
         }
 
         /// <summary>
-        /// List all the subaccounts under the given api key.
+        /// Returns the ApiKey from the environment
         /// </summary>
-        /// <param name="channel">The channel connected to the NSYS host.</param>
-        /// <param name="apiKey">The API Key aka the ticket.</param>
-        static void ListSubaccounts(Channel channel, string apiKey)
+        static string GetApiKey()
         {
-            var requestHeaders = new Metadata { { "x-api-key", apiKey } };
-            var accountsClient = new Accounts.AccountsClient(channel);
-            var response = accountsClient.ListAccounts(new ListAccountsRequest(), requestHeaders);
-            foreach (var account in response.Accounts) {
-                Console.WriteLine(account);
-            }
+            return Environment.GetEnvironmentVariable("NSYS_TICKET");
         }
 
         /// <summary>
-        /// Lists all the tickets for the given accountID.  If the accountID is empty it
-        /// returns the tickets for the main account.
+        /// Returns a Metadata request header with the api key
         /// </summary>
-        /// <param name="channel">The channel connected to the NSYS host.</param>
-        /// <param name="apiKey">The API Key aka the ticket.</param>
-        /// <param name="accountID">The account ID</param>
-        static void ListTickets(Channel channel, string apiKey, string accountID)
+        static Metadata ReqHead()
         {
-            var requestHeaders = new Metadata { { "x-api-key", apiKey } };
-            var ticketsClient = new Tickets.TicketsClient(channel);
-            var request = new ListTicketsRequest { AccountId = accountID };
-            var response = ticketsClient.ListTickets(request, requestHeaders);
-            Console.WriteLine("Tickets for account " + accountID);
-            foreach (var tickets in response.Tickets)
+            return new Metadata { { "x-api-key", GetApiKey() } };
+        }
+
+        /// <summary>
+        /// GetGrpcChannel returns a grpc channel connected to the nsys server.
+        /// It uses tls signed by the server side and sets the message length limits.
+        /// </summary>
+        static Channel GetGrpcChannel()
+        {
+            var host = "api.nsys.io";
+            var port = 39111;
+            var channelOptions = new List<ChannelOption>
             {
-                Console.WriteLine(tickets);
-            }
-        }
-
-        /// <summary>
-        /// Deletes the given subaccount
-        /// </summary>
-        /// <param name="channel">The channel connected to the NSYS host.</param>
-        /// <param name="apiKey">The API Key aka the ticket.</param>
-        /// <param name="accountID">The account ID</param>
-        static void DeleteAccount(Channel channel, string apiKey, string accountID)
-        {
-            var requestHeaders = new Metadata { { "x-api-key", apiKey } };
-            var accountsClient = new Accounts.AccountsClient(channel);
-            var request = new DeleteAccountRequest { AccountId = accountID };
-            accountsClient.DeleteAccount(request, requestHeaders);
-            Console.WriteLine("Account " + accountID + " deleted");
+                new ChannelOption(ChannelOptions.SslTargetNameOverride, host),
+                new ChannelOption(ChannelOptions.MaxReceiveMessageLength, 50*1024*1024),
+                new ChannelOption(ChannelOptions.MaxSendMessageLength, 50*1024*1024),
+            };
+            return new Channel(host, port, new SslCredentials(), channelOptions);
         }
     }
 }
