@@ -234,6 +234,7 @@ namespace ScanDemo
             var createExemplarReq = new CreateExemplarRequest
             {
                 Name = name,
+                Description = desc,
                 ImageOrPdfName = uploadPdfRes.Name,
                 PageNumber = pageNum
             };
@@ -312,6 +313,7 @@ namespace ScanDemo
             var uploadImgRes = client.UploadImage(uploadImgReq, ReqHead());
             Console.WriteLine("UploadImageResponse:");
             Console.WriteLine("  " + uploadImgRes);
+            name = uploadImgRes.Name;
 
             // get base image
             var getBaseReq = new GetBaseImageRequest
