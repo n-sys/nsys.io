@@ -30,3 +30,11 @@ message GenericFile {
 	RawFile raw_file = 5;
 }
 
+message EmailAttachment {
+	// The generic file id of the saved attachment.  If empty, then the file
+	// was not saved.
+	string generic_file_name = 1;
+
+	// The supplied file name for the attachment, as found in the email.
+	string supplied_name = 2;
+}

@@ -28,11 +28,19 @@ service FileProcessing {
 	rpc InitiateProcessingLRO (InitiateProcessingRequest)
 			returns (google.longrunning.Operation) {}
 
-	// Parses an email *.eml file stored as a generic file. The rendered html
-	// and other attachments are stored as new generic files tied to the source.
-	rpc ProcessEmail(ProcessEmailRequest)
-			returns (ProcessEmailResponse) {}
-	rpc ProcessEmailLRO(ProcessEmailRequest)
+	// Parses an email *.eml file stored as a generic file. Stores all
+	// attachments as new generic files and returns the email headers, body,
+	// and list of attachments.
+	rpc ParseEmail(ParseEmailRequest)
+			returns (ParseEmailResponse) {}
+	rpc ParseEmailLRO(ParseEmailRequest)
+			returns (google.longrunning.Operation) {}
+
+	// Given an email *.eml file stored as a generic file, this renders the
+	// email body as a pdf and stores the pdf as a new generic file.
+	rpc RenderEmailBody(RenderEmailBodyRequest)
+			returns (RenderEmailBodyResponse) {}
+	rpc RenderEmailBodyLRO(RenderEmailBodyRequest)
 			returns (google.longrunning.Operation) {}
 }
 
@@ -86,22 +94,49 @@ message InitiateProcessingRequest {
 	string process_code = 2;
 }
 
-
-message ProcessEmailRequest{
-	// the generic file name of an email's eml file
+message ParseEmailRequest{
+	// The name of a generic file contaning an eml file
 	string eml_name = 1;
 
-	// the source id that the results will be linked to
+	// The source id that the attachments will be linked to
 	string source_name = 2;
+
+	// The whitelist of email attachment file extensions to save, things like:
+	// ".pdf", ".png", ".tif", ".tiff", ".jpg", ".jpeg". If empty, then no
+	// attachments will be saved. In any case a list of rejected attachments
+	// will be returned.
+	repeated string attachment_whitelist = 3;
 }
 
-message ProcessEmailResponse{
-	// The generic file name that the rendered email is saved to
-	string rendered_html_name = 1;
+message ParseEmailResponse{
+	// The email headers
+	map<string, string> headers = 1;
 
-	// The generic file names of any other attachments in the email
-	repeated string attachment_names = 2;
+	// The email body (html/text)
+	string email_body = 2;
 
-	// attachments to the email that we ignored
-	repeated string ignored_attachments = 3;
+	// The saved attachment generic file IDs
+	repeated ntypes.EmailAttachment attachments = 3;
+
+	// The attachments that were rejected due to their file extensions not
+	// being in the given whitelist.
+	repeated ntypes.EmailAttachment rejected_attachments = 4;
+}
+
+message RenderEmailBodyRequest {
+	// The name of a generic file contaning an eml file
+	string eml_name = 1;
+
+	// The source id that the rendered email will be linked to
+	string source_name = 2;
+
+	// The whitelist of inline email attachments to include in the rendering,
+	// things like: ".jpg", ".jpeg", ".png", ".gif". If empty, then no inline
+	// attachments will be rendered in the email body.
+	repeated string inline_attachment_whitelist = 3;
+}
+
+message RenderEmailBodyResponse {
+	// The generic file ID of the rendered email pdf
+	string email_pdf_name = 1;
 }

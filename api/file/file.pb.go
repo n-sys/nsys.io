@@ -298,111 +298,233 @@ func (m *InitiateProcessingRequest) GetProcessCode() string {
 	return ""
 }
 
-type ProcessEmailRequest struct {
-	// the generic file name of an email's eml file
+type ParseEmailRequest struct {
+	// The name of a generic file contaning an eml file
 	EmlName string `protobuf:"bytes,1,opt,name=eml_name,json=emlName,proto3" json:"eml_name,omitempty"`
-	// the source id that the results will be linked to
-	SourceName           string   `protobuf:"bytes,2,opt,name=source_name,json=sourceName,proto3" json:"source_name,omitempty"`
+	// The source id that the attachments will be linked to
+	SourceName string `protobuf:"bytes,2,opt,name=source_name,json=sourceName,proto3" json:"source_name,omitempty"`
+	// The whitelist of email attachment file extensions to save, things like:
+	// ".pdf", ".png", ".tif", ".tiff", ".jpg", ".jpeg". If empty, then no
+	// attachments will be saved. In any case a list of rejected attachments
+	// will be returned.
+	AttachmentWhitelist  []string `protobuf:"bytes,3,rep,name=attachment_whitelist,json=attachmentWhitelist,proto3" json:"attachment_whitelist,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *ProcessEmailRequest) Reset()         { *m = ProcessEmailRequest{} }
-func (m *ProcessEmailRequest) String() string { return proto.CompactTextString(m) }
-func (*ProcessEmailRequest) ProtoMessage()    {}
-func (*ProcessEmailRequest) Descriptor() ([]byte, []int) {
+func (m *ParseEmailRequest) Reset()         { *m = ParseEmailRequest{} }
+func (m *ParseEmailRequest) String() string { return proto.CompactTextString(m) }
+func (*ParseEmailRequest) ProtoMessage()    {}
+func (*ParseEmailRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_9188e3b7e55e1162, []int{5}
 }
 
-func (m *ProcessEmailRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_ProcessEmailRequest.Unmarshal(m, b)
+func (m *ParseEmailRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ParseEmailRequest.Unmarshal(m, b)
 }
-func (m *ProcessEmailRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_ProcessEmailRequest.Marshal(b, m, deterministic)
+func (m *ParseEmailRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ParseEmailRequest.Marshal(b, m, deterministic)
 }
-func (m *ProcessEmailRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ProcessEmailRequest.Merge(m, src)
+func (m *ParseEmailRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ParseEmailRequest.Merge(m, src)
 }
-func (m *ProcessEmailRequest) XXX_Size() int {
-	return xxx_messageInfo_ProcessEmailRequest.Size(m)
+func (m *ParseEmailRequest) XXX_Size() int {
+	return xxx_messageInfo_ParseEmailRequest.Size(m)
 }
-func (m *ProcessEmailRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_ProcessEmailRequest.DiscardUnknown(m)
+func (m *ParseEmailRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_ParseEmailRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ProcessEmailRequest proto.InternalMessageInfo
+var xxx_messageInfo_ParseEmailRequest proto.InternalMessageInfo
 
-func (m *ProcessEmailRequest) GetEmlName() string {
+func (m *ParseEmailRequest) GetEmlName() string {
 	if m != nil {
 		return m.EmlName
 	}
 	return ""
 }
 
-func (m *ProcessEmailRequest) GetSourceName() string {
+func (m *ParseEmailRequest) GetSourceName() string {
 	if m != nil {
 		return m.SourceName
 	}
 	return ""
 }
 
-type ProcessEmailResponse struct {
-	// The generic file name that the rendered email is saved to
-	RenderedHtmlName string `protobuf:"bytes,1,opt,name=rendered_html_name,json=renderedHtmlName,proto3" json:"rendered_html_name,omitempty"`
-	// The generic file names of any other attachments in the email
-	AttachmentNames []string `protobuf:"bytes,2,rep,name=attachment_names,json=attachmentNames,proto3" json:"attachment_names,omitempty"`
-	// attachments to the email that we ignored
-	IgnoredAttachments   []string `protobuf:"bytes,3,rep,name=ignored_attachments,json=ignoredAttachments,proto3" json:"ignored_attachments,omitempty"`
+func (m *ParseEmailRequest) GetAttachmentWhitelist() []string {
+	if m != nil {
+		return m.AttachmentWhitelist
+	}
+	return nil
+}
+
+type ParseEmailResponse struct {
+	// The email headers
+	Headers map[string]string `protobuf:"bytes,1,rep,name=headers,proto3" json:"headers,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	// The email body (html/text)
+	EmailBody string `protobuf:"bytes,2,opt,name=email_body,json=emailBody,proto3" json:"email_body,omitempty"`
+	// The saved attachment generic file IDs
+	Attachments []*ntypes.EmailAttachment `protobuf:"bytes,3,rep,name=attachments,proto3" json:"attachments,omitempty"`
+	// The attachments that were rejected due to their file extensions not
+	// being in the given whitelist.
+	RejectedAttachments  []*ntypes.EmailAttachment `protobuf:"bytes,4,rep,name=rejected_attachments,json=rejectedAttachments,proto3" json:"rejected_attachments,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                  `json:"-"`
+	XXX_unrecognized     []byte                    `json:"-"`
+	XXX_sizecache        int32                     `json:"-"`
+}
+
+func (m *ParseEmailResponse) Reset()         { *m = ParseEmailResponse{} }
+func (m *ParseEmailResponse) String() string { return proto.CompactTextString(m) }
+func (*ParseEmailResponse) ProtoMessage()    {}
+func (*ParseEmailResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_9188e3b7e55e1162, []int{6}
+}
+
+func (m *ParseEmailResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ParseEmailResponse.Unmarshal(m, b)
+}
+func (m *ParseEmailResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ParseEmailResponse.Marshal(b, m, deterministic)
+}
+func (m *ParseEmailResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ParseEmailResponse.Merge(m, src)
+}
+func (m *ParseEmailResponse) XXX_Size() int {
+	return xxx_messageInfo_ParseEmailResponse.Size(m)
+}
+func (m *ParseEmailResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_ParseEmailResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ParseEmailResponse proto.InternalMessageInfo
+
+func (m *ParseEmailResponse) GetHeaders() map[string]string {
+	if m != nil {
+		return m.Headers
+	}
+	return nil
+}
+
+func (m *ParseEmailResponse) GetEmailBody() string {
+	if m != nil {
+		return m.EmailBody
+	}
+	return ""
+}
+
+func (m *ParseEmailResponse) GetAttachments() []*ntypes.EmailAttachment {
+	if m != nil {
+		return m.Attachments
+	}
+	return nil
+}
+
+func (m *ParseEmailResponse) GetRejectedAttachments() []*ntypes.EmailAttachment {
+	if m != nil {
+		return m.RejectedAttachments
+	}
+	return nil
+}
+
+type RenderEmailBodyRequest struct {
+	// The name of a generic file contaning an eml file
+	EmlName string `protobuf:"bytes,1,opt,name=eml_name,json=emlName,proto3" json:"eml_name,omitempty"`
+	// The source id that the rendered email will be linked to
+	SourceName string `protobuf:"bytes,2,opt,name=source_name,json=sourceName,proto3" json:"source_name,omitempty"`
+	// The whitelist of inline email attachments to include in the rendering,
+	// things like: ".jpg", ".jpeg", ".png", ".gif". If empty, then no inline
+	// attachments will be rendered in the email body.
+	InlineAttachmentWhitelist []string `protobuf:"bytes,3,rep,name=inline_attachment_whitelist,json=inlineAttachmentWhitelist,proto3" json:"inline_attachment_whitelist,omitempty"`
+	XXX_NoUnkeyedLiteral      struct{} `json:"-"`
+	XXX_unrecognized          []byte   `json:"-"`
+	XXX_sizecache             int32    `json:"-"`
+}
+
+func (m *RenderEmailBodyRequest) Reset()         { *m = RenderEmailBodyRequest{} }
+func (m *RenderEmailBodyRequest) String() string { return proto.CompactTextString(m) }
+func (*RenderEmailBodyRequest) ProtoMessage()    {}
+func (*RenderEmailBodyRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_9188e3b7e55e1162, []int{7}
+}
+
+func (m *RenderEmailBodyRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_RenderEmailBodyRequest.Unmarshal(m, b)
+}
+func (m *RenderEmailBodyRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_RenderEmailBodyRequest.Marshal(b, m, deterministic)
+}
+func (m *RenderEmailBodyRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_RenderEmailBodyRequest.Merge(m, src)
+}
+func (m *RenderEmailBodyRequest) XXX_Size() int {
+	return xxx_messageInfo_RenderEmailBodyRequest.Size(m)
+}
+func (m *RenderEmailBodyRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_RenderEmailBodyRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_RenderEmailBodyRequest proto.InternalMessageInfo
+
+func (m *RenderEmailBodyRequest) GetEmlName() string {
+	if m != nil {
+		return m.EmlName
+	}
+	return ""
+}
+
+func (m *RenderEmailBodyRequest) GetSourceName() string {
+	if m != nil {
+		return m.SourceName
+	}
+	return ""
+}
+
+func (m *RenderEmailBodyRequest) GetInlineAttachmentWhitelist() []string {
+	if m != nil {
+		return m.InlineAttachmentWhitelist
+	}
+	return nil
+}
+
+type RenderEmailBodyResponse struct {
+	// The generic file ID of the rendered email pdf
+	EmailPdfName         string   `protobuf:"bytes,1,opt,name=email_pdf_name,json=emailPdfName,proto3" json:"email_pdf_name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *ProcessEmailResponse) Reset()         { *m = ProcessEmailResponse{} }
-func (m *ProcessEmailResponse) String() string { return proto.CompactTextString(m) }
-func (*ProcessEmailResponse) ProtoMessage()    {}
-func (*ProcessEmailResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_9188e3b7e55e1162, []int{6}
+func (m *RenderEmailBodyResponse) Reset()         { *m = RenderEmailBodyResponse{} }
+func (m *RenderEmailBodyResponse) String() string { return proto.CompactTextString(m) }
+func (*RenderEmailBodyResponse) ProtoMessage()    {}
+func (*RenderEmailBodyResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_9188e3b7e55e1162, []int{8}
 }
 
-func (m *ProcessEmailResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_ProcessEmailResponse.Unmarshal(m, b)
+func (m *RenderEmailBodyResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_RenderEmailBodyResponse.Unmarshal(m, b)
 }
-func (m *ProcessEmailResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_ProcessEmailResponse.Marshal(b, m, deterministic)
+func (m *RenderEmailBodyResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_RenderEmailBodyResponse.Marshal(b, m, deterministic)
 }
-func (m *ProcessEmailResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ProcessEmailResponse.Merge(m, src)
+func (m *RenderEmailBodyResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_RenderEmailBodyResponse.Merge(m, src)
 }
-func (m *ProcessEmailResponse) XXX_Size() int {
-	return xxx_messageInfo_ProcessEmailResponse.Size(m)
+func (m *RenderEmailBodyResponse) XXX_Size() int {
+	return xxx_messageInfo_RenderEmailBodyResponse.Size(m)
 }
-func (m *ProcessEmailResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_ProcessEmailResponse.DiscardUnknown(m)
+func (m *RenderEmailBodyResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_RenderEmailBodyResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ProcessEmailResponse proto.InternalMessageInfo
+var xxx_messageInfo_RenderEmailBodyResponse proto.InternalMessageInfo
 
-func (m *ProcessEmailResponse) GetRenderedHtmlName() string {
+func (m *RenderEmailBodyResponse) GetEmailPdfName() string {
 	if m != nil {
-		return m.RenderedHtmlName
+		return m.EmailPdfName
 	}
 	return ""
-}
-
-func (m *ProcessEmailResponse) GetAttachmentNames() []string {
-	if m != nil {
-		return m.AttachmentNames
-	}
-	return nil
-}
-
-func (m *ProcessEmailResponse) GetIgnoredAttachments() []string {
-	if m != nil {
-		return m.IgnoredAttachments
-	}
-	return nil
 }
 
 func init() {
@@ -411,53 +533,67 @@ func init() {
 	proto.RegisterType((*CreateFilesetRequest)(nil), "nsys.api.file.CreateFilesetRequest")
 	proto.RegisterType((*CreateFilesetResponse)(nil), "nsys.api.file.CreateFilesetResponse")
 	proto.RegisterType((*InitiateProcessingRequest)(nil), "nsys.api.file.InitiateProcessingRequest")
-	proto.RegisterType((*ProcessEmailRequest)(nil), "nsys.api.file.ProcessEmailRequest")
-	proto.RegisterType((*ProcessEmailResponse)(nil), "nsys.api.file.ProcessEmailResponse")
+	proto.RegisterType((*ParseEmailRequest)(nil), "nsys.api.file.ParseEmailRequest")
+	proto.RegisterType((*ParseEmailResponse)(nil), "nsys.api.file.ParseEmailResponse")
+	proto.RegisterMapType((map[string]string)(nil), "nsys.api.file.ParseEmailResponse.HeadersEntry")
+	proto.RegisterType((*RenderEmailBodyRequest)(nil), "nsys.api.file.RenderEmailBodyRequest")
+	proto.RegisterType((*RenderEmailBodyResponse)(nil), "nsys.api.file.RenderEmailBodyResponse")
 }
 
 func init() { proto.RegisterFile("file.proto", fileDescriptor_9188e3b7e55e1162) }
 
 var fileDescriptor_9188e3b7e55e1162 = []byte{
-	// 611 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x55, 0xed, 0x6e, 0xd3, 0x30,
-	0x14, 0x5d, 0x36, 0x34, 0xe8, 0xed, 0xc6, 0x8a, 0xb7, 0xa1, 0x2c, 0x30, 0xad, 0xa4, 0x93, 0x28,
-	0x12, 0x4a, 0xa4, 0xf1, 0x93, 0x1f, 0x08, 0xa6, 0xf1, 0x21, 0x21, 0x06, 0x11, 0xa0, 0x81, 0x90,
-	0x42, 0xda, 0xde, 0xa5, 0x96, 0x12, 0x3b, 0xc4, 0xae, 0x44, 0x1f, 0x00, 0x9e, 0x83, 0x07, 0xe0,
-	0x21, 0x91, 0xe3, 0xa4, 0x4d, 0xd2, 0xae, 0x2d, 0x42, 0xfc, 0x8b, 0xef, 0x3d, 0x3e, 0xf7, 0x9c,
-	0x6b, 0x5f, 0x07, 0xe0, 0x92, 0x46, 0xe8, 0x24, 0x29, 0x97, 0x9c, 0x6c, 0x33, 0x31, 0x16, 0x4e,
-	0x90, 0x50, 0x47, 0x05, 0xad, 0x4e, 0xc8, 0x79, 0x18, 0xa1, 0x1b, 0x71, 0x16, 0xa6, 0x23, 0xc6,
-	0x28, 0x0b, 0x5d, 0x9e, 0x60, 0x1a, 0x48, 0xca, 0x99, 0xd0, 0x7b, 0xac, 0xa3, 0x1c, 0x94, 0xad,
-	0x7a, 0xa3, 0x4b, 0x57, 0xd2, 0x18, 0x85, 0x0c, 0xe2, 0x24, 0x07, 0xdc, 0xa9, 0x03, 0x30, 0x4e,
-	0xe4, 0x38, 0x4f, 0x1e, 0x67, 0x15, 0x29, 0x77, 0x83, 0x84, 0xba, 0x4c, 0x8e, 0x13, 0x14, 0xae,
-	0xaa, 0xed, 0xeb, 0x6f, 0x8d, 0xb2, 0x7f, 0x1b, 0x60, 0x7e, 0x48, 0x22, 0x1e, 0x0c, 0x5e, 0x20,
-	0xc3, 0x94, 0xf6, 0x9f, 0xd3, 0x08, 0x3d, 0xfc, 0x36, 0x42, 0x21, 0x09, 0x81, 0x6b, 0x2c, 0x88,
-	0xd1, 0x34, 0xda, 0x46, 0xb7, 0xe1, 0x65, 0xdf, 0xe4, 0x09, 0x6c, 0x85, 0x1a, 0xe9, 0x2b, 0x36,
-	0x73, 0xbd, 0x6d, 0x74, 0x9b, 0x27, 0x77, 0x9d, 0x89, 0xbf, 0x9c, 0xbe, 0x4c, 0xd7, 0x0c, 0xa7,
-	0x0b, 0xf2, 0x18, 0x9a, 0xf8, 0x3d, 0xa1, 0x29, 0xfa, 0xca, 0x8e, 0xb9, 0x91, 0xed, 0xb7, 0x1c,
-	0x6d, 0xc5, 0x29, 0xac, 0x38, 0xef, 0x0b, 0xaf, 0x1e, 0x68, 0xb8, 0x0a, 0xd8, 0x11, 0x1c, 0xcc,
-	0x51, 0x2b, 0x12, 0xce, 0x04, 0x2a, 0xb9, 0x6f, 0x4a, 0x72, 0xd5, 0x77, 0xbd, 0xda, 0xfa, 0x5f,
-	0x55, 0xfb, 0x69, 0xc0, 0xde, 0x69, 0x8a, 0x81, 0x44, 0x55, 0x47, 0xa0, 0x5c, 0xd4, 0x98, 0x43,
-	0x7d, 0xde, 0xbe, 0x5a, 0x08, 0x73, 0xbd, 0xbd, 0xd1, 0x6d, 0x78, 0x0d, 0x15, 0x51, 0x3a, 0xc4,
-	0xbf, 0xd9, 0x1e, 0xc2, 0x7e, 0x4d, 0xc7, 0xff, 0xb2, 0xec, 0xc1, 0xc1, 0x2b, 0x46, 0x25, 0x0d,
-	0x24, 0xbe, 0x4d, 0x79, 0x1f, 0x85, 0xa0, 0x2c, 0x5c, 0x64, 0xfb, 0x1e, 0x6c, 0x25, 0x1a, 0xe8,
-	0xf7, 0xf9, 0x40, 0x97, 0x6b, 0x78, 0xcd, 0x3c, 0x76, 0xca, 0x07, 0x68, 0xbf, 0x83, 0xdd, 0x9c,
-	0xeb, 0x2c, 0x0e, 0x68, 0x54, 0xb0, 0x1d, 0xc0, 0x0d, 0x8c, 0x23, 0xbf, 0xc4, 0x78, 0x1d, 0xe3,
-	0x28, 0xb3, 0x70, 0x04, 0x4d, 0xc1, 0x47, 0x69, 0x5f, 0x77, 0x33, 0xe7, 0x04, 0x1d, 0x52, 0x00,
-	0xfb, 0x97, 0x01, 0x7b, 0x55, 0xce, 0xbc, 0x21, 0x0f, 0x81, 0xa4, 0xc8, 0x06, 0x98, 0xe2, 0xc0,
-	0x1f, 0xca, 0x2a, 0x7d, 0xab, 0xc8, 0xbc, 0x94, 0x79, 0x9d, 0x07, 0xd0, 0x0a, 0xa4, 0x0c, 0xfa,
-	0xc3, 0x18, 0x99, 0xac, 0x9c, 0xdc, 0xce, 0x34, 0xae, 0xcf, 0xcf, 0x85, 0x5d, 0x1a, 0x32, 0xae,
-	0x78, 0xa7, 0x29, 0x61, 0x6e, 0x64, 0x68, 0x92, 0xa7, 0x9e, 0x4e, 0x33, 0x27, 0x3f, 0x36, 0xe1,
-	0xa6, 0x3a, 0xae, 0x69, 0x1b, 0xc9, 0x10, 0x6e, 0xcd, 0xdc, 0x5e, 0x72, 0xdf, 0xa9, 0x3c, 0x0d,
-	0xce, 0x55, 0xd3, 0x68, 0x75, 0x97, 0x03, 0x75, 0x13, 0xec, 0x35, 0xf2, 0x15, 0xf6, 0x66, 0xd2,
-	0xaf, 0xbd, 0xf3, 0xd5, 0x8b, 0x1d, 0x16, 0xf7, 0xa5, 0xf4, 0x42, 0x39, 0xe7, 0xc5, 0x0b, 0x65,
-	0xaf, 0x91, 0x2f, 0xb0, 0x5d, 0xb9, 0x92, 0xa4, 0x53, 0xa3, 0x9e, 0x37, 0x38, 0xd6, 0xf1, 0x62,
-	0xd0, 0x44, 0xff, 0x05, 0xb4, 0x2a, 0x29, 0xa5, 0x7d, 0xa5, 0x02, 0x4b, 0x75, 0x5f, 0x00, 0x99,
-	0xbd, 0xe0, 0xa4, 0xde, 0xdb, 0x2b, 0x67, 0xc0, 0xba, 0x3d, 0x33, 0x48, 0x67, 0xea, 0xd1, 0xb5,
-	0xd7, 0x48, 0x0f, 0xf6, 0x67, 0xb7, 0x29, 0xe1, 0xab, 0x93, 0x2f, 0x55, 0xff, 0x09, 0xb6, 0xca,
-	0xd7, 0x9e, 0xd8, 0x35, 0xea, 0x39, 0x73, 0x66, 0x75, 0x16, 0x62, 0x26, 0x2d, 0xff, 0x08, 0x3b,
-	0xe5, 0x8c, 0x12, 0xbe, 0x0a, 0xfb, 0x32, 0xc9, 0xcf, 0xc8, 0xe7, 0x56, 0xf9, 0x4f, 0xa4, 0x88,
-	0x7a, 0x9b, 0x59, 0xf3, 0x1e, 0xfd, 0x09, 0x00, 0x00, 0xff, 0xff, 0xa3, 0xe9, 0x0d, 0xf0, 0x22,
-	0x07, 0x00, 0x00,
+	// 793 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x56, 0xe1, 0x8e, 0xdb, 0x44,
+	0x10, 0x8e, 0x93, 0xc2, 0x91, 0x71, 0xae, 0x5c, 0xb7, 0x69, 0x49, 0x5c, 0xaa, 0xa6, 0xee, 0x01,
+	0xf9, 0xe5, 0x88, 0xf0, 0x07, 0x15, 0x89, 0xaa, 0x57, 0x05, 0x8a, 0x84, 0xe8, 0xc9, 0x07, 0xe2,
+	0x84, 0x4e, 0x32, 0x4e, 0x3c, 0x49, 0x16, 0xec, 0x5d, 0xe3, 0xdd, 0x00, 0xf9, 0xcb, 0x0f, 0x9e,
+	0x80, 0xc7, 0xe0, 0x15, 0x78, 0x09, 0x9e, 0x08, 0xad, 0xd7, 0x4e, 0x7c, 0x76, 0x2e, 0x0e, 0x82,
+	0xfe, 0xdb, 0x9d, 0xf9, 0xe6, 0x9b, 0x6f, 0x76, 0x32, 0xe3, 0x00, 0xcc, 0x69, 0x88, 0x4e, 0x9c,
+	0x70, 0xc9, 0xc9, 0x31, 0x13, 0x6b, 0xe1, 0xf8, 0x31, 0x75, 0x94, 0xd1, 0x7a, 0xb2, 0xe0, 0x7c,
+	0x11, 0xe2, 0x28, 0xe4, 0x6c, 0x91, 0xac, 0x18, 0xa3, 0x6c, 0x31, 0xe2, 0x31, 0x26, 0xbe, 0xa4,
+	0x9c, 0x09, 0x1d, 0x63, 0x3d, 0xca, 0x40, 0xe9, 0x6d, 0xba, 0x9a, 0x8f, 0x24, 0x8d, 0x50, 0x48,
+	0x3f, 0x8a, 0x33, 0xc0, 0x83, 0x32, 0x00, 0xa3, 0x58, 0xae, 0x33, 0xe7, 0x69, 0x9a, 0x91, 0xf2,
+	0x91, 0x1f, 0xd3, 0x11, 0x93, 0xeb, 0x18, 0xc5, 0x48, 0xe5, 0xf6, 0xf4, 0x59, 0xa3, 0xec, 0x3f,
+	0x0d, 0xe8, 0x7d, 0x13, 0x87, 0xdc, 0x0f, 0x3e, 0x47, 0x86, 0x09, 0x9d, 0x7d, 0x46, 0x43, 0x74,
+	0xf1, 0xa7, 0x15, 0x0a, 0x49, 0x08, 0xdc, 0x62, 0x7e, 0x84, 0x3d, 0x63, 0x60, 0x0c, 0xdb, 0x6e,
+	0x7a, 0x26, 0xcf, 0xa0, 0xb3, 0xd0, 0x48, 0x4f, 0xb1, 0xf5, 0x9a, 0x03, 0x63, 0x68, 0x8e, 0xdf,
+	0x75, 0x36, 0xf5, 0x65, 0xf4, 0x45, 0x3a, 0x73, 0xb1, 0xbd, 0x90, 0x4f, 0xc0, 0xc4, 0x5f, 0x63,
+	0x9a, 0xa0, 0xa7, 0xca, 0xe9, 0xb5, 0xd2, 0x78, 0xcb, 0xd1, 0xa5, 0x38, 0x79, 0x29, 0xce, 0xd7,
+	0x79, 0xad, 0x2e, 0x68, 0xb8, 0x32, 0xd8, 0x21, 0xf4, 0x77, 0xa8, 0x15, 0x31, 0x67, 0x02, 0x95,
+	0xdc, 0xaf, 0x0a, 0x72, 0xd5, 0xb9, 0x9c, 0xad, 0xf9, 0xaf, 0xb2, 0xfd, 0x6e, 0x40, 0xf7, 0x45,
+	0x82, 0xbe, 0x44, 0x95, 0x47, 0xa0, 0xdc, 0xf7, 0x30, 0x0f, 0x75, 0xbf, 0x3d, 0x75, 0x11, 0xbd,
+	0xe6, 0xa0, 0x35, 0x6c, 0xbb, 0x6d, 0x65, 0x51, 0x3a, 0xc4, 0x7f, 0x2b, 0x7b, 0x09, 0xf7, 0x4a,
+	0x3a, 0x5e, 0x57, 0xc9, 0x2e, 0xf4, 0xbf, 0x60, 0x54, 0x52, 0x5f, 0xe2, 0x79, 0xc2, 0x67, 0x28,
+	0x04, 0x65, 0x8b, 0x7d, 0x65, 0x3f, 0x86, 0x4e, 0xac, 0x81, 0xde, 0x8c, 0x07, 0x3a, 0x5d, 0xdb,
+	0x35, 0x33, 0xdb, 0x0b, 0x1e, 0xa0, 0xfd, 0x9b, 0x01, 0x77, 0xce, 0xfd, 0x44, 0xe0, 0x24, 0xf2,
+	0x69, 0x98, 0x93, 0xf5, 0xe1, 0x2d, 0x8c, 0x42, 0xaf, 0x40, 0x78, 0x84, 0x51, 0x98, 0x56, 0xf0,
+	0x08, 0x4c, 0xc1, 0x57, 0xc9, 0x4c, 0x3f, 0x66, 0x46, 0x09, 0xda, 0x94, 0x02, 0x3e, 0x84, 0xae,
+	0x2f, 0xa5, 0x3f, 0x5b, 0x46, 0xc8, 0xa4, 0xf7, 0xcb, 0x92, 0x4a, 0x0c, 0xa9, 0x90, 0xbd, 0x56,
+	0xfa, 0xea, 0x77, 0xb7, 0xbe, 0x6f, 0x73, 0x97, 0xfd, 0x77, 0x13, 0x48, 0x51, 0x44, 0xf6, 0x80,
+	0x2f, 0xe1, 0x68, 0x89, 0x7e, 0x80, 0x89, 0xe8, 0x19, 0x83, 0xd6, 0xd0, 0x1c, 0x3b, 0xce, 0xb5,
+	0x49, 0x75, 0xaa, 0x31, 0xce, 0x4b, 0x1d, 0x30, 0x61, 0x32, 0x59, 0xbb, 0x79, 0xb8, 0xea, 0x3f,
+	0x2a, 0x98, 0x37, 0xe5, 0xc1, 0x3a, 0xd3, 0xdc, 0x4e, 0x2d, 0x67, 0x3c, 0x58, 0x93, 0x33, 0x30,
+	0xb7, 0xb2, 0x44, 0xaa, 0xd4, 0x1c, 0x0f, 0x2a, 0x63, 0x93, 0x66, 0x7a, 0xbe, 0x01, 0xba, 0xc5,
+	0x20, 0x72, 0x01, 0xdd, 0x04, 0x7f, 0xc0, 0x99, 0xc4, 0xc0, 0x2b, 0x92, 0xdd, 0x3a, 0x90, 0xec,
+	0x6e, 0x1e, 0xbd, 0xb5, 0x09, 0xeb, 0x29, 0x74, 0x8a, 0x05, 0x91, 0x13, 0x68, 0xfd, 0x88, 0xeb,
+	0xac, 0x25, 0xea, 0x48, 0xba, 0xf0, 0xc6, 0xcf, 0x7e, 0xb8, 0xca, 0x1b, 0xa1, 0x2f, 0x4f, 0x9b,
+	0x1f, 0x1b, 0xf6, 0x1f, 0x06, 0xdc, 0x77, 0x91, 0x05, 0x98, 0x4c, 0xf2, 0x42, 0xff, 0x8f, 0xf6,
+	0x7e, 0x0a, 0x0f, 0x28, 0x0b, 0x29, 0x43, 0x6f, 0x4f, 0x97, 0xfb, 0x1a, 0xf2, 0x7c, 0x47, 0xaf,
+	0x9f, 0xc1, 0x3b, 0x15, 0x55, 0x59, 0xbf, 0x4f, 0xe1, 0xb6, 0xee, 0x52, 0x1c, 0xcc, 0x8b, 0xe2,
+	0x3a, 0xa9, 0xf5, 0x3c, 0x98, 0x2b, 0x01, 0xe3, 0xbf, 0x8e, 0xe0, 0xb6, 0x1a, 0xb5, 0xed, 0x08,
+	0x90, 0x25, 0xdc, 0xa9, 0x6c, 0x1e, 0xf2, 0x41, 0xe9, 0xc7, 0x72, 0xd3, 0x26, 0xb5, 0x86, 0xf5,
+	0x40, 0x2d, 0xd0, 0x6e, 0x90, 0xef, 0xa1, 0x5b, 0x71, 0x7f, 0xe9, 0xbe, 0x3a, 0x3c, 0xd9, 0xc3,
+	0x7c, 0xd6, 0x0b, 0x5f, 0x17, 0xe7, 0x55, 0xfe, 0x75, 0xb1, 0x1b, 0xe4, 0x0a, 0x8e, 0xaf, 0xad,
+	0x13, 0xf2, 0xa4, 0x44, 0xbd, 0x6b, 0xe9, 0x59, 0xa7, 0xfb, 0x41, 0x1b, 0xfd, 0x97, 0x70, 0x72,
+	0xcd, 0xa5, 0xb4, 0x1f, 0x94, 0xa0, 0x56, 0xf7, 0x25, 0x90, 0xea, 0x72, 0x22, 0xe5, 0xb7, 0xbd,
+	0x71, 0x7f, 0x59, 0xf7, 0x2b, 0x4b, 0x70, 0xa2, 0x3e, 0x98, 0x76, 0x83, 0x4c, 0xe1, 0x5e, 0x35,
+	0x4c, 0x09, 0x3f, 0x9c, 0xbc, 0x56, 0xfd, 0x05, 0xc0, 0x76, 0x99, 0x90, 0xc1, 0x9e, 0x3d, 0xa3,
+	0x09, 0x1f, 0xd7, 0x6e, 0x22, 0xbb, 0x41, 0x5c, 0x38, 0xde, 0xda, 0x95, 0xe0, 0x7a, 0xde, 0x5a,
+	0xa1, 0x53, 0x78, 0xbb, 0x34, 0x3e, 0xe4, 0xbd, 0x12, 0xeb, 0xee, 0xa1, 0xb7, 0xde, 0xaf, 0x83,
+	0x6d, 0x74, 0x5f, 0x01, 0x29, 0x39, 0x95, 0xf8, 0x03, 0xd3, 0xd4, 0x55, 0x70, 0x46, 0xbe, 0x3b,
+	0x29, 0xfe, 0xfb, 0x51, 0x5c, 0xd3, 0x37, 0xd3, 0xa6, 0x7f, 0xf4, 0x4f, 0x00, 0x00, 0x00, 0xff,
+	0xff, 0x5c, 0x54, 0x35, 0x16, 0x96, 0x09, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -483,10 +619,15 @@ type FileProcessingClient interface {
 	// This is a temporary hack (therefore this will be here forever ;-)
 	InitiateProcessing(ctx context.Context, in *InitiateProcessingRequest, opts ...grpc.CallOption) (*empty.Empty, error)
 	InitiateProcessingLRO(ctx context.Context, in *InitiateProcessingRequest, opts ...grpc.CallOption) (*longrunning.Operation, error)
-	// Parses an email *.eml file stored as a generic file. The rendered html
-	// and other attachments are stored as new generic files tied to the source.
-	ProcessEmail(ctx context.Context, in *ProcessEmailRequest, opts ...grpc.CallOption) (*ProcessEmailResponse, error)
-	ProcessEmailLRO(ctx context.Context, in *ProcessEmailRequest, opts ...grpc.CallOption) (*longrunning.Operation, error)
+	// Parses an email *.eml file stored as a generic file. Stores all
+	// attachments as new generic files and returns the email headers, body,
+	// and list of attachments.
+	ParseEmail(ctx context.Context, in *ParseEmailRequest, opts ...grpc.CallOption) (*ParseEmailResponse, error)
+	ParseEmailLRO(ctx context.Context, in *ParseEmailRequest, opts ...grpc.CallOption) (*longrunning.Operation, error)
+	// Given an email *.eml file stored as a generic file, this renders the
+	// email body as a pdf and stores the pdf as a new generic file.
+	RenderEmailBody(ctx context.Context, in *RenderEmailBodyRequest, opts ...grpc.CallOption) (*RenderEmailBodyResponse, error)
+	RenderEmailBodyLRO(ctx context.Context, in *RenderEmailBodyRequest, opts ...grpc.CallOption) (*longrunning.Operation, error)
 }
 
 type fileProcessingClient struct {
@@ -551,18 +692,36 @@ func (c *fileProcessingClient) InitiateProcessingLRO(ctx context.Context, in *In
 	return out, nil
 }
 
-func (c *fileProcessingClient) ProcessEmail(ctx context.Context, in *ProcessEmailRequest, opts ...grpc.CallOption) (*ProcessEmailResponse, error) {
-	out := new(ProcessEmailResponse)
-	err := c.cc.Invoke(ctx, "/nsys.api.file.FileProcessing/ProcessEmail", in, out, opts...)
+func (c *fileProcessingClient) ParseEmail(ctx context.Context, in *ParseEmailRequest, opts ...grpc.CallOption) (*ParseEmailResponse, error) {
+	out := new(ParseEmailResponse)
+	err := c.cc.Invoke(ctx, "/nsys.api.file.FileProcessing/ParseEmail", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *fileProcessingClient) ProcessEmailLRO(ctx context.Context, in *ProcessEmailRequest, opts ...grpc.CallOption) (*longrunning.Operation, error) {
+func (c *fileProcessingClient) ParseEmailLRO(ctx context.Context, in *ParseEmailRequest, opts ...grpc.CallOption) (*longrunning.Operation, error) {
 	out := new(longrunning.Operation)
-	err := c.cc.Invoke(ctx, "/nsys.api.file.FileProcessing/ProcessEmailLRO", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/nsys.api.file.FileProcessing/ParseEmailLRO", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *fileProcessingClient) RenderEmailBody(ctx context.Context, in *RenderEmailBodyRequest, opts ...grpc.CallOption) (*RenderEmailBodyResponse, error) {
+	out := new(RenderEmailBodyResponse)
+	err := c.cc.Invoke(ctx, "/nsys.api.file.FileProcessing/RenderEmailBody", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *fileProcessingClient) RenderEmailBodyLRO(ctx context.Context, in *RenderEmailBodyRequest, opts ...grpc.CallOption) (*longrunning.Operation, error) {
+	out := new(longrunning.Operation)
+	err := c.cc.Invoke(ctx, "/nsys.api.file.FileProcessing/RenderEmailBodyLRO", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -582,10 +741,15 @@ type FileProcessingServer interface {
 	// This is a temporary hack (therefore this will be here forever ;-)
 	InitiateProcessing(context.Context, *InitiateProcessingRequest) (*empty.Empty, error)
 	InitiateProcessingLRO(context.Context, *InitiateProcessingRequest) (*longrunning.Operation, error)
-	// Parses an email *.eml file stored as a generic file. The rendered html
-	// and other attachments are stored as new generic files tied to the source.
-	ProcessEmail(context.Context, *ProcessEmailRequest) (*ProcessEmailResponse, error)
-	ProcessEmailLRO(context.Context, *ProcessEmailRequest) (*longrunning.Operation, error)
+	// Parses an email *.eml file stored as a generic file. Stores all
+	// attachments as new generic files and returns the email headers, body,
+	// and list of attachments.
+	ParseEmail(context.Context, *ParseEmailRequest) (*ParseEmailResponse, error)
+	ParseEmailLRO(context.Context, *ParseEmailRequest) (*longrunning.Operation, error)
+	// Given an email *.eml file stored as a generic file, this renders the
+	// email body as a pdf and stores the pdf as a new generic file.
+	RenderEmailBody(context.Context, *RenderEmailBodyRequest) (*RenderEmailBodyResponse, error)
+	RenderEmailBodyLRO(context.Context, *RenderEmailBodyRequest) (*longrunning.Operation, error)
 }
 
 // UnimplementedFileProcessingServer can be embedded to have forward compatible implementations.
@@ -610,11 +774,17 @@ func (*UnimplementedFileProcessingServer) InitiateProcessing(ctx context.Context
 func (*UnimplementedFileProcessingServer) InitiateProcessingLRO(ctx context.Context, req *InitiateProcessingRequest) (*longrunning.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method InitiateProcessingLRO not implemented")
 }
-func (*UnimplementedFileProcessingServer) ProcessEmail(ctx context.Context, req *ProcessEmailRequest) (*ProcessEmailResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ProcessEmail not implemented")
+func (*UnimplementedFileProcessingServer) ParseEmail(ctx context.Context, req *ParseEmailRequest) (*ParseEmailResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ParseEmail not implemented")
 }
-func (*UnimplementedFileProcessingServer) ProcessEmailLRO(ctx context.Context, req *ProcessEmailRequest) (*longrunning.Operation, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ProcessEmailLRO not implemented")
+func (*UnimplementedFileProcessingServer) ParseEmailLRO(ctx context.Context, req *ParseEmailRequest) (*longrunning.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ParseEmailLRO not implemented")
+}
+func (*UnimplementedFileProcessingServer) RenderEmailBody(ctx context.Context, req *RenderEmailBodyRequest) (*RenderEmailBodyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RenderEmailBody not implemented")
+}
+func (*UnimplementedFileProcessingServer) RenderEmailBodyLRO(ctx context.Context, req *RenderEmailBodyRequest) (*longrunning.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RenderEmailBodyLRO not implemented")
 }
 
 func RegisterFileProcessingServer(s *grpc.Server, srv FileProcessingServer) {
@@ -729,38 +899,74 @@ func _FileProcessing_InitiateProcessingLRO_Handler(srv interface{}, ctx context.
 	return interceptor(ctx, in, info, handler)
 }
 
-func _FileProcessing_ProcessEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ProcessEmailRequest)
+func _FileProcessing_ParseEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ParseEmailRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(FileProcessingServer).ProcessEmail(ctx, in)
+		return srv.(FileProcessingServer).ParseEmail(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/nsys.api.file.FileProcessing/ProcessEmail",
+		FullMethod: "/nsys.api.file.FileProcessing/ParseEmail",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FileProcessingServer).ProcessEmail(ctx, req.(*ProcessEmailRequest))
+		return srv.(FileProcessingServer).ParseEmail(ctx, req.(*ParseEmailRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _FileProcessing_ProcessEmailLRO_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ProcessEmailRequest)
+func _FileProcessing_ParseEmailLRO_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ParseEmailRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(FileProcessingServer).ProcessEmailLRO(ctx, in)
+		return srv.(FileProcessingServer).ParseEmailLRO(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/nsys.api.file.FileProcessing/ProcessEmailLRO",
+		FullMethod: "/nsys.api.file.FileProcessing/ParseEmailLRO",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FileProcessingServer).ProcessEmailLRO(ctx, req.(*ProcessEmailRequest))
+		return srv.(FileProcessingServer).ParseEmailLRO(ctx, req.(*ParseEmailRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FileProcessing_RenderEmailBody_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RenderEmailBodyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FileProcessingServer).RenderEmailBody(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/nsys.api.file.FileProcessing/RenderEmailBody",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FileProcessingServer).RenderEmailBody(ctx, req.(*RenderEmailBodyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FileProcessing_RenderEmailBodyLRO_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RenderEmailBodyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FileProcessingServer).RenderEmailBodyLRO(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/nsys.api.file.FileProcessing/RenderEmailBodyLRO",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FileProcessingServer).RenderEmailBodyLRO(ctx, req.(*RenderEmailBodyRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -794,12 +1000,20 @@ var _FileProcessing_serviceDesc = grpc.ServiceDesc{
 			Handler:    _FileProcessing_InitiateProcessingLRO_Handler,
 		},
 		{
-			MethodName: "ProcessEmail",
-			Handler:    _FileProcessing_ProcessEmail_Handler,
+			MethodName: "ParseEmail",
+			Handler:    _FileProcessing_ParseEmail_Handler,
 		},
 		{
-			MethodName: "ProcessEmailLRO",
-			Handler:    _FileProcessing_ProcessEmailLRO_Handler,
+			MethodName: "ParseEmailLRO",
+			Handler:    _FileProcessing_ParseEmailLRO_Handler,
+		},
+		{
+			MethodName: "RenderEmailBody",
+			Handler:    _FileProcessing_RenderEmailBody_Handler,
+		},
+		{
+			MethodName: "RenderEmailBodyLRO",
+			Handler:    _FileProcessing_RenderEmailBodyLRO_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
