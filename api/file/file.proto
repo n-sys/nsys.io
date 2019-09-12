@@ -42,6 +42,21 @@ service FileProcessing {
 			returns (RenderEmailBodyResponse) {}
 	rpc RenderEmailBodyLRO(RenderEmailBodyRequest)
 			returns (google.longrunning.Operation) {}
+
+	// Given a pdf file stored as a generic file, this renders the individual
+	// pages of the pdf as png files and stores them as new generic files. It
+	// will render them at 300 DPI.
+	rpc RenderPdf(RenderPdfRequest)
+			returns (RenderPdfResponse) {}
+	rpc RenderPdfLRO(RenderPdfRequest)
+			returns (google.longrunning.Operation) {}
+
+	// Given a tiff file stored as a generic file, this splits the pages into
+	// individual png files and stores them as new generic files.
+	rpc SplitTiff(SplitTiffRequest)
+			returns (SplitTiffResponse) {}
+	rpc SplitTiffLRO(SplitTiffRequest)
+			returns (google.longrunning.Operation) {}
 }
 
 message UploadGenericFileRequest {
@@ -139,4 +154,30 @@ message RenderEmailBodyRequest {
 message RenderEmailBodyResponse {
 	// The generic file ID of the rendered email pdf
 	string email_pdf_name = 1;
+}
+
+message RenderPdfRequest {
+	// The name of a generic file containing a pdf file
+	string pdf_name = 1;
+
+	// The source id that the rendered pages will be linked to
+	string source_name = 2;
+}
+
+message RenderPdfResponse {
+	// The generic file IDs of the rendered pages
+	repeated string page_names = 1;
+}
+
+message SplitTiffRequest {
+	// The name of a generic file containing a tiff file
+	string tiff_name = 1;
+
+	// The source id that the pages will be linked to
+	string source_name = 2;
+}
+
+message SplitTiffResponse {
+	// The generic file IDs of the individual pages
+	repeated string page_names = 1;
 }
