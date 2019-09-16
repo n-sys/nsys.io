@@ -30,6 +30,21 @@ message GenericFile {
 	RawFile raw_file = 5;
 }
 
+message ParsedEmail {
+	// The email headers
+	map<string, string> headers = 1;
+
+	// The email body (html/text)
+	string email_body = 2;
+
+	// The saved attachment generic file IDs
+	repeated ntypes.EmailAttachment attachments = 3;
+
+	// The attachments that were rejected due to their file extensions not
+	// being in the given whitelist.
+	repeated ntypes.EmailAttachment rejected_attachments = 4;
+}
+
 message EmailAttachment {
 	// The generic file id of the saved attachment.  If empty, then the file
 	// was not saved.
