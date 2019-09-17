@@ -146,9 +146,6 @@ message RenderEmailBodyResponse {
 message RenderPdfRequest {
 	// The name of a generic file containing a pdf file
 	string pdf_name = 1;
-
-	// The source id that the rendered pages will be linked to
-	string source_name = 2;
 }
 
 message RenderPdfResponse {
@@ -159,9 +156,6 @@ message RenderPdfResponse {
 message SplitTiffRequest {
 	// The name of a generic file containing a tiff file
 	string tiff_name = 1;
-
-	// The source id that the pages will be linked to
-	string source_name = 2;
 }
 
 message SplitTiffResponse {
