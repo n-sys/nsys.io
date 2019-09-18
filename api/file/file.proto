@@ -96,8 +96,6 @@ message GetGenericFileResponse {
         string name = 1;
         // The actual file (SHA sum validated on the server side at read).
         ntypes.GenericFile generic_file = 2;
-        // The expiration time for the file.
-        google.protobuf.Timestamp expire_time = 3;
 }
 
 message CreateFilesetRequest {
