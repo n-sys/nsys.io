@@ -14,11 +14,11 @@ service FileProcessing {
 	rpc UploadGenericFileLRO (UploadGenericFileRequest) 
 			returns (google.longrunning.Operation) {}
 
-        // Download a previously uploaded generic file.
-        rpc GetGenericFile (GetGenericFileRequest)
-                        returns (GetGenericFileResponse) {}
-        rpc GetGenericFileLRO (GetGenericFileRequest)
-                        returns (google.longrunning.Operation) {}
+	// Download a previously uploaded generic file.
+	rpc GetGenericFile (GetGenericFileRequest)
+					returns (GetGenericFileResponse) {}
+	rpc GetGenericFileLRO (GetGenericFileRequest)
+					returns (google.longrunning.Operation) {}
 
 	// Group any number of previously-uploaded files together into a 
 	// single fileset. Files may have membership in multiple filesets.
@@ -169,6 +169,13 @@ message RenderPdfRequest {
 message RenderPdfResponse {
 	// The generic file IDs of the rendered pages
 	repeated string page_names = 1;
+
+	enum Error {
+		SUCCESS = 0;
+		ENCRYPTED = 1;
+		CORRUPTED = 2;
+	}
+	Error error = 2;
 }
 
 message SplitTiffRequest {
