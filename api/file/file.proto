@@ -34,6 +34,12 @@ service FileProcessing {
 	rpc InitiateProcessingLRO (InitiateProcessingRequest)
 			returns (google.longrunning.Operation) {}
 
+	// Given a document (.doc, .docx, .txt, .ppt, ect.) convert it to pdf
+	rpc DocToPdf(DocToPdfRequest)
+			returns(DocToPdfResponse) {}
+	rpc DocToPdfLRO(DocToPdfRequest)
+			returns(google.longrunning.Operation) {}
+
 	// Parses an email *.eml file stored as a generic file. Stores all
 	// attachments as new generic files and returns the email headers, body,
 	// and list of attachments.
@@ -125,6 +131,16 @@ message InitiateProcessingRequest {
 	string name = 1;
 	// Application-specific type of processing to perform.
 	string process_code = 2;
+}
+
+message DocToPdfRequest {
+	// The generic file id of the document to be rendered.
+	string name = 1;
+}
+
+message DocToPdfResponse{
+	// the generic file id of the rendered pdf.
+	string pdf_name = 1;
 }
 
 message ParseEmailRequest{
