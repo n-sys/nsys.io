@@ -5,6 +5,7 @@ option go_package = "nsys.io/api/file";
 import "google/longrunning/operations.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
+import "google/protobuf/any.proto";
 import "nsys.io/api/ntypes/file_ntypes.proto";
 
 service FileProcessing {
@@ -27,7 +28,7 @@ service FileProcessing {
 	rpc CreateFilesetLRO (CreateFilesetRequest)
 			returns (google.longrunning.Operation) {}
 
-	// Begin processing the fileset in the specified way.
+	// Begin processing a file or fileset in the specified way.
 	// This is a temporary hack (therefore this will be here forever ;-)
 	rpc InitiateProcessing(InitiateProcessingRequest)
 			returns (google.protobuf.Empty) {}
@@ -63,6 +64,63 @@ service FileProcessing {
 			returns (SplitTiffResponse) {}
 	rpc SplitTiffLRO(SplitTiffRequest)
 			returns (google.longrunning.Operation) {}
+
+	// Returns a list of available objects that have been completely processed 
+	// by whatever client/application specific operations InitiateProcessing() 
+	// caused to occur. 
+	rpc ListProcessedObjects(ListProcessedObjectsRequest)
+			returns (ListProcessedObjectsResponse) {}
+	rpc ListProcessedObjectsLRO(ListProcessedObjectsRequest)
+			returns (google.longrunning.Operation) {}
+
+	// Fetch any of objects identified by ListProcessedObjects()
+	rpc GetProcessedObject(GetProcessedObjectRequest)
+			returns (GetProcessedObjectResponse) {}	
+	rpc GetProcessedObjectLRO(GetProcessedObjectRequest)
+			returns (google.longrunning.Operation) {}
+
+	// Delete a processed object (as identified by ListProcessedObjects()).
+	rpc DeleteProcessedObject(DeleteProcessedObjectRequest) 
+			returns (google.protobuf.Empty) {}
+	rpc DeleteProcessedObjectLRO(DeleteProcessedObjectRequest)
+			returns (google.longrunning.Operation) {}
+}
+
+message ListProcessedObjectsRequest {
+	// Application-specific filter on returned object listing.
+	// If not specified, all object listings are returned.
+	string filter = 1;
+}
+
+message ListProcessedObjectsResponse {
+	repeated ProcessedObjectListing list_entry = 1;
+}
+
+message ProcessedObjectListing {
+	// The object's name / ID.
+	string name = 1;
+	// Application-specific description.
+	string description = 2;
+	// Application-specific extended meta information.
+	google.protobuf.Any metadata = 3;
+}
+
+message GetProcessedObjectRequest {
+	string name = 1;
+}
+
+message GetProcessedObjectResponse {
+	// The object's name / ID.
+	string name = 1;
+	// Application-specific description (same as that returned in objec listings).
+	string description = 2;
+	// The arbitrary application-specific any-encoded object.
+	google.protobuf.Any object = 3;
+}
+
+message DeleteProcessedObjectRequest {
+	// The object to delete.
+	string name = 1;
 }
 
 message UploadGenericFileRequest {
@@ -122,6 +180,8 @@ message CreateFilesetResponse {
 	
 message InitiateProcessingRequest {
 	// Identifier of the object to process.
+	// The context for interpretation of this identifier is set by the
+	// client and application specific process code.
 	string name = 1;
 	// Application-specific type of processing to perform.
 	string process_code = 2;
