@@ -57,275 +57,277 @@ func (RenderPdfResponse_Error) EnumDescriptor() ([]byte, []int) {
 	return fileDescriptor_9188e3b7e55e1162, []int{20, 0}
 }
 
-type ListProcessedObjectsRequest struct {
-	// Application-specific filter on returned object listing.
-	// If not specified, all object listings are returned.
+type ListResultsRequest struct {
+	// Application-specific filter on returned results.
+	// If not specified, all result listings are returned.
 	Filter               string   `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *ListProcessedObjectsRequest) Reset()         { *m = ListProcessedObjectsRequest{} }
-func (m *ListProcessedObjectsRequest) String() string { return proto.CompactTextString(m) }
-func (*ListProcessedObjectsRequest) ProtoMessage()    {}
-func (*ListProcessedObjectsRequest) Descriptor() ([]byte, []int) {
+func (m *ListResultsRequest) Reset()         { *m = ListResultsRequest{} }
+func (m *ListResultsRequest) String() string { return proto.CompactTextString(m) }
+func (*ListResultsRequest) ProtoMessage()    {}
+func (*ListResultsRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_9188e3b7e55e1162, []int{0}
 }
 
-func (m *ListProcessedObjectsRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_ListProcessedObjectsRequest.Unmarshal(m, b)
+func (m *ListResultsRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ListResultsRequest.Unmarshal(m, b)
 }
-func (m *ListProcessedObjectsRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_ListProcessedObjectsRequest.Marshal(b, m, deterministic)
+func (m *ListResultsRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ListResultsRequest.Marshal(b, m, deterministic)
 }
-func (m *ListProcessedObjectsRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ListProcessedObjectsRequest.Merge(m, src)
+func (m *ListResultsRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ListResultsRequest.Merge(m, src)
 }
-func (m *ListProcessedObjectsRequest) XXX_Size() int {
-	return xxx_messageInfo_ListProcessedObjectsRequest.Size(m)
+func (m *ListResultsRequest) XXX_Size() int {
+	return xxx_messageInfo_ListResultsRequest.Size(m)
 }
-func (m *ListProcessedObjectsRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_ListProcessedObjectsRequest.DiscardUnknown(m)
+func (m *ListResultsRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_ListResultsRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ListProcessedObjectsRequest proto.InternalMessageInfo
+var xxx_messageInfo_ListResultsRequest proto.InternalMessageInfo
 
-func (m *ListProcessedObjectsRequest) GetFilter() string {
+func (m *ListResultsRequest) GetFilter() string {
 	if m != nil {
 		return m.Filter
 	}
 	return ""
 }
 
-type ListProcessedObjectsResponse struct {
-	ListEntry            []*ProcessedObjectListing `protobuf:"bytes,1,rep,name=list_entry,json=listEntry,proto3" json:"list_entry,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}                  `json:"-"`
-	XXX_unrecognized     []byte                    `json:"-"`
-	XXX_sizecache        int32                     `json:"-"`
+type ListResultsResponse struct {
+	AvailableResults     []*AvailableResult `protobuf:"bytes,1,rep,name=available_results,json=availableResults,proto3" json:"available_results,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}           `json:"-"`
+	XXX_unrecognized     []byte             `json:"-"`
+	XXX_sizecache        int32              `json:"-"`
 }
 
-func (m *ListProcessedObjectsResponse) Reset()         { *m = ListProcessedObjectsResponse{} }
-func (m *ListProcessedObjectsResponse) String() string { return proto.CompactTextString(m) }
-func (*ListProcessedObjectsResponse) ProtoMessage()    {}
-func (*ListProcessedObjectsResponse) Descriptor() ([]byte, []int) {
+func (m *ListResultsResponse) Reset()         { *m = ListResultsResponse{} }
+func (m *ListResultsResponse) String() string { return proto.CompactTextString(m) }
+func (*ListResultsResponse) ProtoMessage()    {}
+func (*ListResultsResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_9188e3b7e55e1162, []int{1}
 }
 
-func (m *ListProcessedObjectsResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_ListProcessedObjectsResponse.Unmarshal(m, b)
+func (m *ListResultsResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ListResultsResponse.Unmarshal(m, b)
 }
-func (m *ListProcessedObjectsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_ListProcessedObjectsResponse.Marshal(b, m, deterministic)
+func (m *ListResultsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ListResultsResponse.Marshal(b, m, deterministic)
 }
-func (m *ListProcessedObjectsResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ListProcessedObjectsResponse.Merge(m, src)
+func (m *ListResultsResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ListResultsResponse.Merge(m, src)
 }
-func (m *ListProcessedObjectsResponse) XXX_Size() int {
-	return xxx_messageInfo_ListProcessedObjectsResponse.Size(m)
+func (m *ListResultsResponse) XXX_Size() int {
+	return xxx_messageInfo_ListResultsResponse.Size(m)
 }
-func (m *ListProcessedObjectsResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_ListProcessedObjectsResponse.DiscardUnknown(m)
+func (m *ListResultsResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_ListResultsResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ListProcessedObjectsResponse proto.InternalMessageInfo
+var xxx_messageInfo_ListResultsResponse proto.InternalMessageInfo
 
-func (m *ListProcessedObjectsResponse) GetListEntry() []*ProcessedObjectListing {
+func (m *ListResultsResponse) GetAvailableResults() []*AvailableResult {
 	if m != nil {
-		return m.ListEntry
+		return m.AvailableResults
 	}
 	return nil
 }
 
-type ProcessedObjectListing struct {
+type AvailableResult struct {
 	// The object's name / ID.
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// Application-specific description.
-	Description string `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
-	// Application-specific extended meta information.
-	Metadata             *any.Any `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	// Application-specific meta information.
+	Metadata             *any.Any `protobuf:"bytes,2,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *ProcessedObjectListing) Reset()         { *m = ProcessedObjectListing{} }
-func (m *ProcessedObjectListing) String() string { return proto.CompactTextString(m) }
-func (*ProcessedObjectListing) ProtoMessage()    {}
-func (*ProcessedObjectListing) Descriptor() ([]byte, []int) {
+func (m *AvailableResult) Reset()         { *m = AvailableResult{} }
+func (m *AvailableResult) String() string { return proto.CompactTextString(m) }
+func (*AvailableResult) ProtoMessage()    {}
+func (*AvailableResult) Descriptor() ([]byte, []int) {
 	return fileDescriptor_9188e3b7e55e1162, []int{2}
 }
 
-func (m *ProcessedObjectListing) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_ProcessedObjectListing.Unmarshal(m, b)
+func (m *AvailableResult) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_AvailableResult.Unmarshal(m, b)
 }
-func (m *ProcessedObjectListing) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_ProcessedObjectListing.Marshal(b, m, deterministic)
+func (m *AvailableResult) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_AvailableResult.Marshal(b, m, deterministic)
 }
-func (m *ProcessedObjectListing) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ProcessedObjectListing.Merge(m, src)
+func (m *AvailableResult) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_AvailableResult.Merge(m, src)
 }
-func (m *ProcessedObjectListing) XXX_Size() int {
-	return xxx_messageInfo_ProcessedObjectListing.Size(m)
+func (m *AvailableResult) XXX_Size() int {
+	return xxx_messageInfo_AvailableResult.Size(m)
 }
-func (m *ProcessedObjectListing) XXX_DiscardUnknown() {
-	xxx_messageInfo_ProcessedObjectListing.DiscardUnknown(m)
+func (m *AvailableResult) XXX_DiscardUnknown() {
+	xxx_messageInfo_AvailableResult.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ProcessedObjectListing proto.InternalMessageInfo
+var xxx_messageInfo_AvailableResult proto.InternalMessageInfo
 
-func (m *ProcessedObjectListing) GetName() string {
+func (m *AvailableResult) GetName() string {
 	if m != nil {
 		return m.Name
 	}
 	return ""
 }
 
-func (m *ProcessedObjectListing) GetDescription() string {
-	if m != nil {
-		return m.Description
-	}
-	return ""
-}
-
-func (m *ProcessedObjectListing) GetMetadata() *any.Any {
+func (m *AvailableResult) GetMetadata() *any.Any {
 	if m != nil {
 		return m.Metadata
 	}
 	return nil
 }
 
-type GetProcessedObjectRequest struct {
+type GetResultRequest struct {
 	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *GetProcessedObjectRequest) Reset()         { *m = GetProcessedObjectRequest{} }
-func (m *GetProcessedObjectRequest) String() string { return proto.CompactTextString(m) }
-func (*GetProcessedObjectRequest) ProtoMessage()    {}
-func (*GetProcessedObjectRequest) Descriptor() ([]byte, []int) {
+func (m *GetResultRequest) Reset()         { *m = GetResultRequest{} }
+func (m *GetResultRequest) String() string { return proto.CompactTextString(m) }
+func (*GetResultRequest) ProtoMessage()    {}
+func (*GetResultRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_9188e3b7e55e1162, []int{3}
 }
 
-func (m *GetProcessedObjectRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_GetProcessedObjectRequest.Unmarshal(m, b)
+func (m *GetResultRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetResultRequest.Unmarshal(m, b)
 }
-func (m *GetProcessedObjectRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_GetProcessedObjectRequest.Marshal(b, m, deterministic)
+func (m *GetResultRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetResultRequest.Marshal(b, m, deterministic)
 }
-func (m *GetProcessedObjectRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_GetProcessedObjectRequest.Merge(m, src)
+func (m *GetResultRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetResultRequest.Merge(m, src)
 }
-func (m *GetProcessedObjectRequest) XXX_Size() int {
-	return xxx_messageInfo_GetProcessedObjectRequest.Size(m)
+func (m *GetResultRequest) XXX_Size() int {
+	return xxx_messageInfo_GetResultRequest.Size(m)
 }
-func (m *GetProcessedObjectRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_GetProcessedObjectRequest.DiscardUnknown(m)
+func (m *GetResultRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetResultRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_GetProcessedObjectRequest proto.InternalMessageInfo
+var xxx_messageInfo_GetResultRequest proto.InternalMessageInfo
 
-func (m *GetProcessedObjectRequest) GetName() string {
+func (m *GetResultRequest) GetName() string {
 	if m != nil {
 		return m.Name
 	}
 	return ""
 }
 
-type GetProcessedObjectResponse struct {
-	// The object's name / ID.
+type GetResultResponse struct {
+	// The result's ID.
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// Application-specific description (same as that returned in objec listings).
-	Description string `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
-	// The arbitrary application-specific any-encoded object.
-	Object               *any.Any `protobuf:"bytes,3,opt,name=object,proto3" json:"object,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	// The originating submission (the one specified to InitiateProcessing() which then
+	// caused this result (and perhaps others) to be generated.
+	OriginatingName string `protobuf:"bytes,2,opt,name=originating_name,json=originatingName,proto3" json:"originating_name,omitempty"`
+	// Application-specific metadata (identical to that returned in results listings).
+	Metadata *any.Any `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	// Contents of the returned file are application-specific.
+	// The metadata within it does not necessarily have any relation to the metadata above.
+	GenericFile          *ntypes.GenericFile `protobuf:"bytes,4,opt,name=generic_file,json=genericFile,proto3" json:"generic_file,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}            `json:"-"`
+	XXX_unrecognized     []byte              `json:"-"`
+	XXX_sizecache        int32               `json:"-"`
 }
 
-func (m *GetProcessedObjectResponse) Reset()         { *m = GetProcessedObjectResponse{} }
-func (m *GetProcessedObjectResponse) String() string { return proto.CompactTextString(m) }
-func (*GetProcessedObjectResponse) ProtoMessage()    {}
-func (*GetProcessedObjectResponse) Descriptor() ([]byte, []int) {
+func (m *GetResultResponse) Reset()         { *m = GetResultResponse{} }
+func (m *GetResultResponse) String() string { return proto.CompactTextString(m) }
+func (*GetResultResponse) ProtoMessage()    {}
+func (*GetResultResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_9188e3b7e55e1162, []int{4}
 }
 
-func (m *GetProcessedObjectResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_GetProcessedObjectResponse.Unmarshal(m, b)
+func (m *GetResultResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetResultResponse.Unmarshal(m, b)
 }
-func (m *GetProcessedObjectResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_GetProcessedObjectResponse.Marshal(b, m, deterministic)
+func (m *GetResultResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetResultResponse.Marshal(b, m, deterministic)
 }
-func (m *GetProcessedObjectResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_GetProcessedObjectResponse.Merge(m, src)
+func (m *GetResultResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetResultResponse.Merge(m, src)
 }
-func (m *GetProcessedObjectResponse) XXX_Size() int {
-	return xxx_messageInfo_GetProcessedObjectResponse.Size(m)
+func (m *GetResultResponse) XXX_Size() int {
+	return xxx_messageInfo_GetResultResponse.Size(m)
 }
-func (m *GetProcessedObjectResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_GetProcessedObjectResponse.DiscardUnknown(m)
+func (m *GetResultResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetResultResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_GetProcessedObjectResponse proto.InternalMessageInfo
+var xxx_messageInfo_GetResultResponse proto.InternalMessageInfo
 
-func (m *GetProcessedObjectResponse) GetName() string {
+func (m *GetResultResponse) GetName() string {
 	if m != nil {
 		return m.Name
 	}
 	return ""
 }
 
-func (m *GetProcessedObjectResponse) GetDescription() string {
+func (m *GetResultResponse) GetOriginatingName() string {
 	if m != nil {
-		return m.Description
+		return m.OriginatingName
 	}
 	return ""
 }
 
-func (m *GetProcessedObjectResponse) GetObject() *any.Any {
+func (m *GetResultResponse) GetMetadata() *any.Any {
 	if m != nil {
-		return m.Object
+		return m.Metadata
 	}
 	return nil
 }
 
-type DeleteProcessedObjectRequest struct {
-	// The object to delete.
+func (m *GetResultResponse) GetGenericFile() *ntypes.GenericFile {
+	if m != nil {
+		return m.GenericFile
+	}
+	return nil
+}
+
+type DeleteResultRequest struct {
+	// The available result to delete.
 	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *DeleteProcessedObjectRequest) Reset()         { *m = DeleteProcessedObjectRequest{} }
-func (m *DeleteProcessedObjectRequest) String() string { return proto.CompactTextString(m) }
-func (*DeleteProcessedObjectRequest) ProtoMessage()    {}
-func (*DeleteProcessedObjectRequest) Descriptor() ([]byte, []int) {
+func (m *DeleteResultRequest) Reset()         { *m = DeleteResultRequest{} }
+func (m *DeleteResultRequest) String() string { return proto.CompactTextString(m) }
+func (*DeleteResultRequest) ProtoMessage()    {}
+func (*DeleteResultRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_9188e3b7e55e1162, []int{5}
 }
 
-func (m *DeleteProcessedObjectRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_DeleteProcessedObjectRequest.Unmarshal(m, b)
+func (m *DeleteResultRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DeleteResultRequest.Unmarshal(m, b)
 }
-func (m *DeleteProcessedObjectRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_DeleteProcessedObjectRequest.Marshal(b, m, deterministic)
+func (m *DeleteResultRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DeleteResultRequest.Marshal(b, m, deterministic)
 }
-func (m *DeleteProcessedObjectRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_DeleteProcessedObjectRequest.Merge(m, src)
+func (m *DeleteResultRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DeleteResultRequest.Merge(m, src)
 }
-func (m *DeleteProcessedObjectRequest) XXX_Size() int {
-	return xxx_messageInfo_DeleteProcessedObjectRequest.Size(m)
+func (m *DeleteResultRequest) XXX_Size() int {
+	return xxx_messageInfo_DeleteResultRequest.Size(m)
 }
-func (m *DeleteProcessedObjectRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_DeleteProcessedObjectRequest.DiscardUnknown(m)
+func (m *DeleteResultRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_DeleteResultRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_DeleteProcessedObjectRequest proto.InternalMessageInfo
+var xxx_messageInfo_DeleteResultRequest proto.InternalMessageInfo
 
-func (m *DeleteProcessedObjectRequest) GetName() string {
+func (m *DeleteResultRequest) GetName() string {
 	if m != nil {
 		return m.Name
 	}
@@ -1135,12 +1137,12 @@ func (m *SplitTiffResponse) GetPageNames() []string {
 
 func init() {
 	proto.RegisterEnum("nsys.api.file.RenderPdfResponse_Error", RenderPdfResponse_Error_name, RenderPdfResponse_Error_value)
-	proto.RegisterType((*ListProcessedObjectsRequest)(nil), "nsys.api.file.ListProcessedObjectsRequest")
-	proto.RegisterType((*ListProcessedObjectsResponse)(nil), "nsys.api.file.ListProcessedObjectsResponse")
-	proto.RegisterType((*ProcessedObjectListing)(nil), "nsys.api.file.ProcessedObjectListing")
-	proto.RegisterType((*GetProcessedObjectRequest)(nil), "nsys.api.file.GetProcessedObjectRequest")
-	proto.RegisterType((*GetProcessedObjectResponse)(nil), "nsys.api.file.GetProcessedObjectResponse")
-	proto.RegisterType((*DeleteProcessedObjectRequest)(nil), "nsys.api.file.DeleteProcessedObjectRequest")
+	proto.RegisterType((*ListResultsRequest)(nil), "nsys.api.file.ListResultsRequest")
+	proto.RegisterType((*ListResultsResponse)(nil), "nsys.api.file.ListResultsResponse")
+	proto.RegisterType((*AvailableResult)(nil), "nsys.api.file.AvailableResult")
+	proto.RegisterType((*GetResultRequest)(nil), "nsys.api.file.GetResultRequest")
+	proto.RegisterType((*GetResultResponse)(nil), "nsys.api.file.GetResultResponse")
+	proto.RegisterType((*DeleteResultRequest)(nil), "nsys.api.file.DeleteResultRequest")
 	proto.RegisterType((*UploadGenericFileRequest)(nil), "nsys.api.file.UploadGenericFileRequest")
 	proto.RegisterType((*UploadGenericFileResponse)(nil), "nsys.api.file.UploadGenericFileResponse")
 	proto.RegisterType((*GetGenericFileRequest)(nil), "nsys.api.file.GetGenericFileRequest")
@@ -1163,82 +1165,82 @@ func init() {
 func init() { proto.RegisterFile("file.proto", fileDescriptor_9188e3b7e55e1162) }
 
 var fileDescriptor_9188e3b7e55e1162 = []byte{
-	// 1197 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x58, 0x6f, 0x73, 0xdb, 0xc4,
-	0x13, 0x8e, 0x93, 0x5f, 0xd3, 0x78, 0x9d, 0x3f, 0xf6, 0xfd, 0x92, 0xd4, 0x56, 0x12, 0xe2, 0xaa,
-	0x49, 0x09, 0x2d, 0xb5, 0xc1, 0x0c, 0xaf, 0x60, 0xe8, 0xb4, 0x8e, 0xc9, 0x30, 0x53, 0x12, 0x8f,
-	0x92, 0x0c, 0xa5, 0xd3, 0x41, 0xc8, 0xd6, 0xda, 0x39, 0x90, 0x25, 0x55, 0xba, 0x0c, 0xf8, 0x1d,
-	0xbc, 0xe1, 0x93, 0xf0, 0x92, 0xef, 0xc3, 0xd7, 0x61, 0x4e, 0xff, 0x2c, 0x9f, 0x64, 0x49, 0xa1,
-	0xc3, 0x3b, 0xdf, 0xde, 0x73, 0xbb, 0xcf, 0xb3, 0x2b, 0xed, 0xea, 0x0c, 0x30, 0xa2, 0x06, 0xb6,
-	0x6c, 0xc7, 0x62, 0x16, 0xd9, 0x30, 0xdd, 0xa9, 0xdb, 0xd2, 0x6c, 0xda, 0xe2, 0x46, 0xe9, 0xd1,
-	0xd8, 0xb2, 0xc6, 0x06, 0xb6, 0x0d, 0xcb, 0x1c, 0x3b, 0xb7, 0xa6, 0x49, 0xcd, 0x71, 0xdb, 0xb2,
-	0xd1, 0xd1, 0x18, 0xb5, 0x4c, 0xd7, 0x3f, 0x23, 0x1d, 0x06, 0x20, 0x6f, 0x35, 0xb8, 0x1d, 0xb5,
-	0x19, 0x9d, 0xa0, 0xcb, 0xb4, 0x89, 0x1d, 0x00, 0xf6, 0x44, 0x00, 0x4e, 0x6c, 0x36, 0x0d, 0x36,
-	0x1b, 0xe2, 0xa6, 0x66, 0x86, 0x5b, 0x47, 0x1e, 0x19, 0x6a, 0xb5, 0x35, 0x9b, 0xb6, 0x4d, 0x36,
-	0xb5, 0xd1, 0x6d, 0x73, 0x5a, 0xaa, 0xff, 0xdb, 0x47, 0xc9, 0x9f, 0xc3, 0xde, 0x2b, 0xea, 0xb2,
-	0xbe, 0x63, 0x0d, 0xd1, 0x75, 0x51, 0xbf, 0x18, 0xfc, 0x84, 0x43, 0xe6, 0x2a, 0xf8, 0xee, 0x16,
-	0x5d, 0x46, 0x76, 0x61, 0x75, 0x44, 0x0d, 0x86, 0x4e, 0xbd, 0xd4, 0x2c, 0x9d, 0x94, 0x95, 0x60,
-	0x25, 0xeb, 0xb0, 0x9f, 0x7e, 0xcc, 0xb5, 0x2d, 0xd3, 0x45, 0x72, 0x0a, 0x60, 0x50, 0x97, 0xa9,
-	0x68, 0x32, 0x67, 0x5a, 0x2f, 0x35, 0x57, 0x4e, 0x2a, 0x9d, 0xe3, 0xd6, 0x5c, 0x7a, 0x5a, 0xc2,
-	0x61, 0xee, 0x8f, 0x9a, 0x63, 0xa5, 0xcc, 0x0f, 0xf6, 0xf8, 0x39, 0xf9, 0xb7, 0x12, 0xec, 0xa6,
-	0xa3, 0x08, 0x81, 0xff, 0x99, 0xda, 0x04, 0x03, 0x5a, 0xde, 0x6f, 0xd2, 0x84, 0x8a, 0x8e, 0xee,
-	0xd0, 0xa1, 0x36, 0x4f, 0x70, 0x7d, 0xd9, 0xdb, 0x8a, 0x9b, 0xc8, 0x27, 0xb0, 0x36, 0x41, 0xa6,
-	0xe9, 0x1a, 0xd3, 0xea, 0x2b, 0xcd, 0xd2, 0x49, 0xa5, 0xb3, 0xdd, 0xf2, 0x33, 0xd8, 0x0a, 0x33,
-	0xd8, 0x7a, 0x61, 0x4e, 0x95, 0x08, 0x25, 0xb7, 0xa1, 0x71, 0x86, 0xa2, 0xce, 0x30, 0x3b, 0x29,
-	0x24, 0x38, 0x67, 0x29, 0xed, 0x44, 0x90, 0x98, 0x7f, 0xc7, 0xfb, 0x63, 0x58, 0xb5, 0x3c, 0x3f,
-	0x99, 0xac, 0x03, 0x8c, 0xdc, 0x81, 0xfd, 0x53, 0x34, 0x90, 0xe1, 0x1d, 0x68, 0xff, 0x55, 0x82,
-	0xfa, 0xb5, 0x6d, 0x58, 0x9a, 0x7e, 0x86, 0x26, 0x3a, 0x74, 0xf8, 0x35, 0x35, 0x30, 0xe3, 0x00,
-	0x79, 0x0e, 0xeb, 0x63, 0x1f, 0xa9, 0xf2, 0x6a, 0x7a, 0xac, 0x2b, 0x9d, 0xfd, 0x59, 0x8d, 0x83,
-	0xc7, 0x2c, 0xee, 0xae, 0x32, 0x9e, 0x2d, 0xc8, 0x17, 0x50, 0xc1, 0x5f, 0x6d, 0xea, 0xa0, 0xca,
-	0x9f, 0xf8, 0x40, 0x98, 0x94, 0x10, 0x76, 0x15, 0xbe, 0x0e, 0x0a, 0xf8, 0x70, 0x6e, 0x90, 0x0d,
-	0x68, 0xa4, 0xb0, 0x9d, 0xe5, 0xf8, 0x3c, 0x46, 0x97, 0xff, 0x16, 0xa3, 0x2d, 0xdf, 0x29, 0xda,
-	0x53, 0xd8, 0x39, 0x43, 0x56, 0x2c, 0x31, 0xf2, 0x04, 0x76, 0x45, 0x70, 0x46, 0xed, 0xdf, 0x37,
-	0x8d, 0xf2, 0x1f, 0x25, 0xd8, 0xee, 0x3a, 0xa8, 0x31, 0xe4, 0x4b, 0x17, 0xb3, 0xaa, 0x4c, 0x0e,
-	0xfc, 0x76, 0xa5, 0xf2, 0x85, 0x5b, 0x5f, 0x6e, 0xae, 0x9c, 0x94, 0x95, 0x32, 0xb7, 0xf0, 0x1c,
-	0xb9, 0xef, 0x57, 0x92, 0x1b, 0xd8, 0x11, 0x78, 0xfc, 0x57, 0xe5, 0x50, 0xa0, 0xf1, 0x8d, 0x49,
-	0x19, 0xd5, 0xa2, 0x27, 0x9c, 0xf7, 0x8d, 0x0c, 0xd9, 0x0f, 0x61, 0xdd, 0xf6, 0x81, 0xea, 0xd0,
-	0xd2, 0x31, 0x7c, 0xc3, 0x02, 0x5b, 0xd7, 0xd2, 0x51, 0x3e, 0x86, 0xad, 0x53, 0x6b, 0x78, 0x65,
-	0xf5, 0xf5, 0x51, 0x56, 0x71, 0x9f, 0x41, 0x75, 0x06, 0x0b, 0xf4, 0x35, 0x60, 0xcd, 0xd6, 0x47,
-	0x6a, 0x0c, 0x7b, 0xdf, 0xd6, 0x47, 0x5c, 0xa6, 0xac, 0x41, 0xad, 0xaf, 0x39, 0x2e, 0xf6, 0x26,
-	0x1a, 0x35, 0x42, 0xbf, 0x0d, 0x58, 0xc3, 0x89, 0x31, 0x87, 0xc7, 0x89, 0xe1, 0xa5, 0xe5, 0x53,
-	0xd8, 0xd6, 0x18, 0xd3, 0x86, 0x37, 0x13, 0x34, 0x99, 0xfa, 0xcb, 0x0d, 0x65, 0xc8, 0xbb, 0x61,
-	0x50, 0xa9, 0xff, 0xcf, 0xf6, 0xbe, 0x0b, 0xb7, 0xe4, 0xdf, 0x4b, 0x40, 0xe2, 0x31, 0x02, 0x52,
-	0x4f, 0xa0, 0x66, 0x73, 0xab, 0xae, 0x22, 0xb7, 0xc7, 0xa3, 0x6d, 0xf9, 0x1b, 0x1e, 0xfe, 0x3c,
-	0x78, 0x06, 0xe3, 0xd8, 0x85, 0xcf, 0x60, 0x7f, 0x76, 0x4e, 0xa9, 0xc4, 0x9c, 0xc8, 0x2e, 0xec,
-	0x2a, 0x68, 0xea, 0xe8, 0x78, 0xcb, 0x97, 0x96, 0x3e, 0x2d, 0xa0, 0xf5, 0x2b, 0xd8, 0xa3, 0xa6,
-	0x41, 0x4d, 0x54, 0x33, 0x24, 0x37, 0x7c, 0xc8, 0x8b, 0x14, 0xe1, 0xcf, 0xe1, 0x41, 0x22, 0x68,
-	0x20, 0xfe, 0x08, 0x36, 0x7d, 0xd5, 0x42, 0x5d, 0xd6, 0x3d, 0x6b, 0x3f, 0x28, 0xce, 0x33, 0xa8,
-	0xfa, 0x0e, 0x62, 0x35, 0xcf, 0xa8, 0xe5, 0x9f, 0x25, 0xa8, 0xc5, 0xf0, 0x41, 0xa8, 0x03, 0x00,
-	0x5b, 0x1b, 0x87, 0x6f, 0x54, 0xc9, 0x7f, 0xa3, 0xb8, 0xc5, 0x7f, 0xa3, 0xbe, 0x84, 0x7b, 0xe8,
-	0x38, 0x96, 0xe3, 0xe5, 0x74, 0xb3, 0xf3, 0x58, 0x18, 0x81, 0x09, 0x7f, 0xad, 0x1e, 0x47, 0x2b,
-	0xfe, 0x21, 0xb9, 0x03, 0xf7, 0xbc, 0x35, 0xa9, 0xc0, 0xfd, 0xcb, 0xeb, 0x6e, 0xb7, 0x77, 0x79,
-	0x59, 0x5d, 0x22, 0x1b, 0x50, 0xee, 0x9d, 0x77, 0x95, 0xef, 0xfb, 0x57, 0xbd, 0xd3, 0x6a, 0x89,
-	0x2f, 0xbb, 0x17, 0x8a, 0x72, 0xed, 0x2d, 0x97, 0xe5, 0x36, 0x54, 0x2f, 0x6d, 0x83, 0xb2, 0x2b,
-	0x3a, 0x8a, 0x54, 0xed, 0x41, 0x99, 0xd1, 0xd1, 0x9c, 0xac, 0x35, 0x6e, 0xf0, 0x74, 0x75, 0xa0,
-	0x16, 0x3b, 0x50, 0x48, 0x56, 0xe7, 0xef, 0x1a, 0x6c, 0xf2, 0xd7, 0x7c, 0xf6, 0xfa, 0x91, 0x1b,
-	0xa8, 0x25, 0x3a, 0x32, 0xf9, 0x50, 0xd0, 0xbb, 0x68, 0xc2, 0x48, 0x27, 0xf9, 0x40, 0x9f, 0x99,
-	0xbc, 0x44, 0x7e, 0x84, 0xed, 0xc4, 0xf6, 0x2b, 0xe5, 0xa2, 0x78, 0xb0, 0x83, 0xb0, 0xcf, 0xc4,
-	0x3e, 0xcc, 0x5a, 0x17, 0xe1, 0x87, 0x99, 0xbc, 0x44, 0x54, 0xd8, 0x9c, 0x6f, 0xe1, 0xe4, 0x48,
-	0xf0, 0x9d, 0x3a, 0x0e, 0xa4, 0xe3, 0x1c, 0x54, 0x24, 0xe1, 0x0d, 0xd4, 0xe6, 0xf7, 0x38, 0xff,
-	0x62, 0x31, 0x72, 0xc9, 0xbf, 0x85, 0x8d, 0xb9, 0x3e, 0x4c, 0x1e, 0x09, 0x7e, 0xd3, 0xa6, 0x85,
-	0x74, 0x94, 0x0d, 0x8a, 0x98, 0xbf, 0x86, 0xea, 0xdc, 0x16, 0x27, 0x5e, 0x28, 0x40, 0x2e, 0xef,
-	0xd7, 0x40, 0x92, 0x5d, 0x9d, 0x88, 0x0f, 0xc6, 0xc2, 0xc6, 0x2f, 0xed, 0x26, 0xa6, 0x47, 0x8f,
-	0x7f, 0x28, 0xcb, 0x4b, 0x64, 0x00, 0x3b, 0xc9, 0x63, 0x9c, 0x78, 0x71, 0xe7, 0xb9, 0xec, 0xbf,
-	0x85, 0xb5, 0x70, 0x30, 0x90, 0x0f, 0x04, 0xb7, 0xc2, 0x60, 0x91, 0x0e, 0x17, 0xee, 0x47, 0x69,
-	0x3e, 0x87, 0x4a, 0x68, 0xe5, 0x44, 0xf3, 0x3c, 0xe6, 0xd2, 0xbb, 0x04, 0x98, 0x0d, 0x09, 0xd2,
-	0x14, 0xbf, 0xc4, 0xc5, 0x19, 0x25, 0x3d, 0xcc, 0x40, 0x44, 0x24, 0x15, 0xd8, 0x98, 0xd9, 0x39,
-	0xcd, 0x7c, 0xbf, 0xb9, 0x44, 0x07, 0xb0, 0x25, 0x74, 0x75, 0x72, 0x9c, 0xda, 0x34, 0xc5, 0x51,
-	0x23, 0x3d, 0xce, 0x83, 0x45, 0xbc, 0xdf, 0x02, 0x11, 0x36, 0x39, 0xf9, 0x82, 0x61, 0x72, 0x15,
-	0xf4, 0xa1, 0x1c, 0xb5, 0x75, 0x72, 0xb8, 0xb8, 0xe1, 0xfb, 0xee, 0x9a, 0x79, 0x13, 0xc1, 0xf3,
-	0xb8, 0x1e, 0x99, 0x39, 0xd3, 0x5c, 0xa7, 0x45, 0x38, 0x46, 0x3d, 0x3f, 0xe1, 0x4e, 0x1c, 0x1f,
-	0x09, 0x8e, 0x89, 0x71, 0xe1, 0x73, 0x8c, 0xcc, 0x69, 0x1c, 0x13, 0x4e, 0x73, 0x39, 0xbe, 0x83,
-	0xed, 0xb4, 0x2b, 0x26, 0x79, 0x22, 0x78, 0xce, 0xb8, 0xbe, 0x4a, 0x4f, 0x0b, 0x61, 0x23, 0x11,
-	0x23, 0x78, 0x90, 0x86, 0xe0, 0x7a, 0xee, 0x12, 0x35, 0x57, 0xda, 0xcf, 0x40, 0x92, 0x57, 0xc4,
-	0x44, 0x37, 0x5a, 0x78, 0xef, 0x94, 0x3e, 0x2a, 0x80, 0x8c, 0x44, 0x0d, 0xbc, 0xcb, 0x8b, 0x78,
-	0x8d, 0x4e, 0xe9, 0x7e, 0x8b, 0xe3, 0xe5, 0x0a, 0xfa, 0x01, 0x76, 0x52, 0x6f, 0x9c, 0x44, 0x2c,
-	0x40, 0xd6, 0xbd, 0x34, 0xa3, 0x83, 0xdf, 0x40, 0x3d, 0xf5, 0x24, 0x97, 0x71, 0xa7, 0x10, 0x79,
-	0x4a, 0x5e, 0x92, 0x37, 0xd5, 0xf8, 0xff, 0x26, 0xdc, 0xe3, 0x60, 0xd5, 0xe3, 0xf3, 0xd9, 0x3f,
-	0x01, 0x00, 0x00, 0xff, 0xff, 0x8b, 0x41, 0x93, 0xfd, 0xeb, 0x11, 0x00, 0x00,
+	// 1192 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x58, 0xdf, 0x72, 0xe3, 0xb4,
+	0x17, 0xae, 0xd3, 0xfd, 0xd3, 0x9c, 0xb4, 0x8d, 0xa3, 0xfe, 0xf9, 0x25, 0xee, 0xaf, 0x34, 0xeb,
+	0x6d, 0x4b, 0x17, 0xd8, 0x04, 0xc2, 0x25, 0x0c, 0x3b, 0xdd, 0x34, 0x74, 0x18, 0x4a, 0x9b, 0x71,
+	0xdb, 0xdd, 0x65, 0x67, 0x67, 0x8c, 0xd2, 0x28, 0xa9, 0x66, 0x1c, 0xdb, 0xd8, 0x2a, 0xd0, 0x4b,
+	0x6e, 0x78, 0x12, 0x2e, 0x79, 0x0d, 0x1e, 0x82, 0xb7, 0x61, 0x64, 0xd9, 0x8e, 0x23, 0x27, 0xb6,
+	0x77, 0x76, 0xb8, 0x8b, 0xce, 0xf9, 0xf4, 0xe9, 0x3b, 0x47, 0xd2, 0x39, 0x56, 0x00, 0x46, 0xd4,
+	0x22, 0x2d, 0xd7, 0x73, 0x98, 0x83, 0xd6, 0x6c, 0xff, 0xde, 0x6f, 0x61, 0x97, 0xb6, 0xb8, 0x51,
+	0x7b, 0x3a, 0x76, 0x9c, 0xb1, 0x45, 0xda, 0x96, 0x63, 0x8f, 0xbd, 0x3b, 0xdb, 0xa6, 0xf6, 0xb8,
+	0xed, 0xb8, 0xc4, 0xc3, 0x8c, 0x3a, 0xb6, 0x2f, 0xe6, 0x68, 0x7b, 0x21, 0x28, 0x18, 0x0d, 0xee,
+	0x46, 0x6d, 0x46, 0x27, 0xc4, 0x67, 0x78, 0xe2, 0x86, 0x80, 0x1d, 0x19, 0x40, 0x26, 0x2e, 0xbb,
+	0x0f, 0x9d, 0x0d, 0xd9, 0x89, 0xed, 0xc8, 0xb5, 0x1f, 0x88, 0xa1, 0x4e, 0x1b, 0xbb, 0xb4, 0x6d,
+	0xb3, 0x7b, 0x97, 0xf8, 0x6d, 0x2e, 0xcb, 0x14, 0xbf, 0x05, 0x4a, 0xff, 0x0c, 0xd0, 0x19, 0xf5,
+	0x99, 0x41, 0xfc, 0x3b, 0x8b, 0xf9, 0x06, 0xf9, 0xf9, 0x8e, 0xf8, 0x0c, 0x6d, 0xc3, 0xa3, 0x11,
+	0xb5, 0x18, 0xf1, 0xea, 0x4a, 0x53, 0x39, 0x2a, 0x1b, 0xe1, 0x48, 0x1f, 0xc0, 0xc6, 0x0c, 0xda,
+	0x77, 0x1d, 0xdb, 0x27, 0xe8, 0x7b, 0xa8, 0xe1, 0x5f, 0x30, 0xb5, 0xf0, 0xc0, 0x22, 0xa6, 0x27,
+	0x9c, 0x75, 0xa5, 0xb9, 0x7c, 0x54, 0xe9, 0x7c, 0xd4, 0x9a, 0xc9, 0x49, 0xeb, 0x38, 0xc2, 0x09,
+	0x0e, 0x43, 0xc5, 0xb3, 0x06, 0x5f, 0x7f, 0x0d, 0x55, 0x09, 0x84, 0x10, 0x3c, 0xb0, 0xf1, 0x84,
+	0x84, 0x62, 0x82, 0xdf, 0xe8, 0x73, 0x58, 0x99, 0x10, 0x86, 0x87, 0x98, 0xe1, 0x7a, 0xa9, 0xa9,
+	0x1c, 0x55, 0x3a, 0x9b, 0x2d, 0x91, 0x8c, 0x56, 0x94, 0x8c, 0xd6, 0xb1, 0x7d, 0x6f, 0xc4, 0x28,
+	0xfd, 0x10, 0xd4, 0x53, 0x12, 0x6a, 0x8f, 0x02, 0x9d, 0xc3, 0xac, 0xff, 0xad, 0x40, 0x2d, 0x01,
+	0x0c, 0x63, 0x9c, 0xa7, 0xe1, 0x19, 0xa8, 0x8e, 0x47, 0xc7, 0xd4, 0xc6, 0x8c, 0xda, 0x63, 0x33,
+	0xf0, 0x97, 0x02, 0x7f, 0x35, 0x61, 0x3f, 0x97, 0xe5, 0x2e, 0x17, 0x91, 0x8b, 0x5e, 0xc0, 0xea,
+	0x98, 0xd8, 0xc4, 0xa3, 0x37, 0x26, 0xcf, 0x5c, 0xfd, 0x41, 0x30, 0xeb, 0xff, 0xd3, 0x7c, 0x86,
+	0xfb, 0x78, 0x2a, 0x40, 0xdf, 0x52, 0x8b, 0x18, 0x95, 0xf1, 0x74, 0xa0, 0x3f, 0x83, 0x8d, 0x13,
+	0x62, 0x11, 0x46, 0xf2, 0x43, 0xfe, 0x4b, 0x81, 0xfa, 0xb5, 0x6b, 0x39, 0x78, 0x98, 0x64, 0x5b,
+	0x3c, 0x21, 0x25, 0xae, 0xf4, 0x9e, 0xe2, 0xd0, 0x57, 0x50, 0x21, 0xbf, 0xb9, 0xd4, 0x23, 0x26,
+	0x3f, 0xef, 0x61, 0x4a, 0xb4, 0x54, 0x4a, 0xae, 0xa2, 0xcb, 0x60, 0x80, 0x80, 0x73, 0x83, 0x6e,
+	0x41, 0x63, 0x8e, 0xda, 0xe9, 0x46, 0x9d, 0x27, 0xe4, 0x06, 0xd9, 0x97, 0x56, 0x2b, 0xbd, 0xd7,
+	0x6a, 0x9f, 0xc2, 0xd6, 0x29, 0x61, 0xc5, 0x12, 0xa3, 0x4f, 0x60, 0x5b, 0x06, 0x67, 0x1c, 0xa0,
+	0x0f, 0x4d, 0xa3, 0xfe, 0x87, 0x02, 0x9b, 0x5d, 0x8f, 0x60, 0x46, 0xf8, 0xd0, 0x27, 0x59, 0xbb,
+	0x8c, 0x76, 0x45, 0xb1, 0x0a, 0xce, 0xa9, 0x5f, 0x2f, 0x35, 0x97, 0x8f, 0xca, 0x46, 0x99, 0x5b,
+	0x78, 0x8e, 0xfc, 0x0f, 0xdb, 0x92, 0x5b, 0xd8, 0x92, 0x74, 0xfc, 0x57, 0xdb, 0x61, 0x40, 0xe3,
+	0x3b, 0x9b, 0x32, 0x8a, 0x19, 0xe9, 0x7b, 0xce, 0x0d, 0xf1, 0x7d, 0x6a, 0x8f, 0xb3, 0xc2, 0x7e,
+	0x02, 0xab, 0xae, 0x00, 0x9a, 0x37, 0xce, 0x30, 0xba, 0xa1, 0x95, 0xd0, 0xd6, 0x75, 0x86, 0x44,
+	0x3f, 0x80, 0xea, 0x89, 0x73, 0x73, 0xe5, 0xf4, 0x87, 0xa3, 0xac, 0xcd, 0x7d, 0x0e, 0xea, 0x14,
+	0x16, 0xc6, 0xd7, 0x80, 0x15, 0x77, 0x38, 0x32, 0x13, 0xd8, 0xc7, 0xee, 0x70, 0xc4, 0xc3, 0xd4,
+	0x31, 0xd4, 0xfa, 0xd8, 0xf3, 0x49, 0x6f, 0x82, 0xa9, 0x15, 0xf1, 0x36, 0x60, 0x85, 0x4c, 0xac,
+	0x19, 0x3c, 0x99, 0x58, 0x41, 0x5a, 0xbe, 0x80, 0x4d, 0xcc, 0x18, 0xbe, 0xb9, 0x9d, 0x10, 0x9b,
+	0x99, 0xbf, 0xde, 0x52, 0x46, 0x2c, 0xea, 0xb3, 0x70, 0xa7, 0x36, 0xa6, 0xbe, 0xd7, 0x91, 0x4b,
+	0xff, 0x5d, 0x01, 0x94, 0x5c, 0x23, 0x14, 0xf5, 0x09, 0xd4, 0x5c, 0x6e, 0x1d, 0x9a, 0x84, 0xdb,
+	0x93, 0xab, 0x55, 0x85, 0x23, 0xc0, 0x9f, 0x87, 0x67, 0x30, 0x89, 0x5d, 0x78, 0x06, 0xfb, 0xd3,
+	0x79, 0x46, 0x25, 0x41, 0xa2, 0xfb, 0xb0, 0x6d, 0x10, 0x7b, 0x48, 0xbc, 0x60, 0xf8, 0xd2, 0x19,
+	0xde, 0x17, 0x88, 0xf5, 0x1b, 0xd8, 0xa1, 0xb6, 0x45, 0x6d, 0x62, 0x66, 0x84, 0xdc, 0x10, 0x90,
+	0xe3, 0x39, 0x81, 0xbf, 0x80, 0xff, 0xa5, 0x16, 0x0d, 0x83, 0xdf, 0x87, 0x75, 0x11, 0xb5, 0xb4,
+	0x2f, 0xab, 0x81, 0xb5, 0x1f, 0x6e, 0xce, 0x73, 0x50, 0x05, 0x41, 0x62, 0xcf, 0x33, 0xf6, 0xf2,
+	0x4f, 0x05, 0x6a, 0x09, 0x7c, 0xb8, 0xd4, 0x2e, 0x80, 0x8b, 0xc7, 0xd1, 0x8d, 0x52, 0xc4, 0x8d,
+	0xe2, 0x16, 0x71, 0xa3, 0xbe, 0x86, 0x87, 0xc4, 0xf3, 0x1c, 0x2f, 0xc8, 0xe9, 0x7a, 0xe7, 0x50,
+	0xea, 0x85, 0x29, 0xbe, 0x56, 0x8f, 0xa3, 0x0d, 0x31, 0x49, 0xef, 0xc0, 0xc3, 0x60, 0x8c, 0x2a,
+	0xf0, 0xf8, 0xf2, 0xba, 0xdb, 0xed, 0x5d, 0x5e, 0xaa, 0x4b, 0x68, 0x0d, 0xca, 0xbd, 0xf3, 0xae,
+	0xf1, 0x63, 0xff, 0xaa, 0x77, 0xa2, 0x2a, 0x7c, 0xd8, 0xbd, 0x30, 0x8c, 0xeb, 0x60, 0x58, 0xd2,
+	0xdb, 0xa0, 0x5e, 0xba, 0x16, 0x65, 0x57, 0x74, 0x14, 0x47, 0xb5, 0x03, 0x65, 0x46, 0x47, 0x33,
+	0x61, 0xad, 0x70, 0x43, 0x10, 0x57, 0x07, 0x6a, 0x89, 0x09, 0x85, 0xc2, 0xea, 0xfc, 0xa3, 0xc2,
+	0x3a, 0xbf, 0xe6, 0xd3, 0xeb, 0x87, 0x6e, 0xa1, 0x96, 0xaa, 0xc8, 0xe8, 0x63, 0x29, 0xde, 0x45,
+	0x1d, 0x46, 0x3b, 0xca, 0x07, 0x0a, 0x65, 0xfa, 0x12, 0xfa, 0x09, 0x36, 0x53, 0xee, 0x33, 0xe3,
+	0xa2, 0xf8, 0x62, 0xbb, 0x51, 0x9d, 0x49, 0x7c, 0x96, 0xb5, 0x2e, 0xa2, 0xcf, 0x32, 0x7d, 0x09,
+	0x99, 0xb0, 0x3e, 0x5b, 0xc2, 0xd1, 0xbe, 0xc4, 0x3d, 0xb7, 0x1d, 0x68, 0x07, 0x39, 0xa8, 0x38,
+	0x84, 0xb7, 0xc1, 0xf7, 0x85, 0xa4, 0xbf, 0xd8, 0x1a, 0xb9, 0xe2, 0xdf, 0xc1, 0xda, 0x4c, 0x1d,
+	0x46, 0x4f, 0x25, 0xde, 0x79, 0xdd, 0x42, 0xdb, 0xcf, 0x06, 0xc5, 0xca, 0xdf, 0x80, 0x3a, 0xe3,
+	0xe2, 0xc2, 0x0b, 0x2d, 0x90, 0xab, 0xfb, 0x0d, 0xa0, 0x74, 0x55, 0x47, 0xf2, 0xc1, 0x58, 0x58,
+	0xf8, 0xb5, 0xed, 0x54, 0xf7, 0xe8, 0xf1, 0xcf, 0x64, 0x7d, 0x09, 0x0d, 0x60, 0x2b, 0x3d, 0x8d,
+	0x0b, 0x2f, 0x4e, 0x9e, 0xab, 0xfe, 0x07, 0x58, 0x89, 0x1a, 0x03, 0x92, 0xbf, 0x78, 0xa5, 0xc6,
+	0xa2, 0xed, 0x2d, 0xf4, 0xc7, 0x69, 0x3e, 0x87, 0x4a, 0x64, 0xe5, 0x42, 0xf3, 0x18, 0x73, 0xe5,
+	0x5d, 0x02, 0x4c, 0x9b, 0x04, 0x6a, 0x4a, 0x74, 0xa9, 0x1e, 0xa5, 0x3d, 0xc9, 0x40, 0xc4, 0x22,
+	0x0d, 0x58, 0x9b, 0xda, 0xb9, 0xcc, 0x7c, 0xde, 0x5c, 0xa1, 0x03, 0xa8, 0x4a, 0x55, 0x1d, 0x1d,
+	0xcc, 0x2d, 0x9a, 0x72, 0xab, 0xd1, 0x0e, 0xf3, 0x60, 0xb1, 0xee, 0x77, 0x80, 0x24, 0x27, 0x17,
+	0x5f, 0x70, 0x99, 0xdc, 0x08, 0xfa, 0x50, 0x8e, 0xcb, 0x3a, 0xda, 0x5b, 0x5c, 0xf0, 0x05, 0x5d,
+	0x33, 0xaf, 0x23, 0x04, 0x8c, 0xab, 0xb1, 0x99, 0x2b, 0xcd, 0x25, 0x2d, 0xa2, 0x31, 0xae, 0xf9,
+	0x29, 0x3a, 0xb9, 0x7d, 0xa4, 0x34, 0xa6, 0xda, 0x85, 0xd0, 0x18, 0x9b, 0xe7, 0x69, 0x4c, 0x91,
+	0xe6, 0x6a, 0x7c, 0x05, 0x95, 0xc4, 0x4b, 0x13, 0xc9, 0x27, 0x32, 0xfd, 0x66, 0xd5, 0xf4, 0x2c,
+	0x48, 0xac, 0xf4, 0x0a, 0xd6, 0x13, 0x0e, 0xae, 0xb5, 0x00, 0x75, 0x91, 0x8c, 0xc6, 0x2f, 0xc6,
+	0x54, 0xf0, 0xf2, 0xa3, 0x33, 0x95, 0xd1, 0xd4, 0x63, 0x53, 0x64, 0x34, 0x36, 0xcf, 0xcb, 0x68,
+	0x8a, 0x34, 0x57, 0xe3, 0x19, 0xac, 0x26, 0x9f, 0x83, 0x48, 0xce, 0xd7, 0x9c, 0xb7, 0x62, 0x46,
+	0x55, 0x7d, 0x05, 0xd5, 0xe4, 0x04, 0x2e, 0xb1, 0x08, 0x61, 0x9e, 0xca, 0x97, 0xe8, 0xad, 0x9a,
+	0xfc, 0xdf, 0x82, 0x13, 0x0d, 0x1e, 0x05, 0xab, 0x7f, 0xf9, 0x6f, 0x00, 0x00, 0x00, 0xff, 0xff,
+	0xbc, 0x7e, 0x4b, 0xff, 0x6b, 0x11, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -1265,6 +1267,8 @@ type FileProcessingClient interface {
 	CreateFilesetLRO(ctx context.Context, in *CreateFilesetRequest, opts ...grpc.CallOption) (*longrunning.Operation, error)
 	// Begin processing a file or fileset in the specified way.
 	// This is a temporary hack (therefore this will be here forever ;-)
+	// The results of the processing are obtained by polling for them
+	// using the ListResults() RPC and fetching via GetResult().
 	InitiateProcessing(ctx context.Context, in *InitiateProcessingRequest, opts ...grpc.CallOption) (*empty.Empty, error)
 	InitiateProcessingLRO(ctx context.Context, in *InitiateProcessingRequest, opts ...grpc.CallOption) (*longrunning.Operation, error)
 	// Given a document (.doc, .docx, .txt, .ppt, ect.) convert it to pdf
@@ -1288,17 +1292,16 @@ type FileProcessingClient interface {
 	// individual png files and stores them as new generic files.
 	SplitTiff(ctx context.Context, in *SplitTiffRequest, opts ...grpc.CallOption) (*SplitTiffResponse, error)
 	SplitTiffLRO(ctx context.Context, in *SplitTiffRequest, opts ...grpc.CallOption) (*longrunning.Operation, error)
-	// Returns a list of available objects that have been completely processed
-	// by whatever client/application specific operations InitiateProcessing()
-	// caused to occur.
-	ListProcessedObjects(ctx context.Context, in *ListProcessedObjectsRequest, opts ...grpc.CallOption) (*ListProcessedObjectsResponse, error)
-	ListProcessedObjectsLRO(ctx context.Context, in *ListProcessedObjectsRequest, opts ...grpc.CallOption) (*longrunning.Operation, error)
-	// Fetch any of objects identified by ListProcessedObjects()
-	GetProcessedObject(ctx context.Context, in *GetProcessedObjectRequest, opts ...grpc.CallOption) (*GetProcessedObjectResponse, error)
-	GetProcessedObjectLRO(ctx context.Context, in *GetProcessedObjectRequest, opts ...grpc.CallOption) (*longrunning.Operation, error)
-	// Delete a processed object (as identified by ListProcessedObjects()).
-	DeleteProcessedObject(ctx context.Context, in *DeleteProcessedObjectRequest, opts ...grpc.CallOption) (*empty.Empty, error)
-	DeleteProcessedObjectLRO(ctx context.Context, in *DeleteProcessedObjectRequest, opts ...grpc.CallOption) (*longrunning.Operation, error)
+	// Returns a list of available processed results (i.e., the final outputs
+	// of the client/application-specific operations triggered by InitiateProcessing()
+	ListResults(ctx context.Context, in *ListResultsRequest, opts ...grpc.CallOption) (*ListResultsResponse, error)
+	ListResultsLRO(ctx context.Context, in *ListResultsRequest, opts ...grpc.CallOption) (*longrunning.Operation, error)
+	// Fetch any available result.
+	GetResult(ctx context.Context, in *GetResultRequest, opts ...grpc.CallOption) (*GetResultResponse, error)
+	GetResultLRO(ctx context.Context, in *GetResultRequest, opts ...grpc.CallOption) (*longrunning.Operation, error)
+	// Delete any available result.
+	DeleteResult(ctx context.Context, in *DeleteResultRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	DeleteResultLRO(ctx context.Context, in *DeleteResultRequest, opts ...grpc.CallOption) (*longrunning.Operation, error)
 }
 
 type fileProcessingClient struct {
@@ -1471,54 +1474,54 @@ func (c *fileProcessingClient) SplitTiffLRO(ctx context.Context, in *SplitTiffRe
 	return out, nil
 }
 
-func (c *fileProcessingClient) ListProcessedObjects(ctx context.Context, in *ListProcessedObjectsRequest, opts ...grpc.CallOption) (*ListProcessedObjectsResponse, error) {
-	out := new(ListProcessedObjectsResponse)
-	err := c.cc.Invoke(ctx, "/nsys.api.file.FileProcessing/ListProcessedObjects", in, out, opts...)
+func (c *fileProcessingClient) ListResults(ctx context.Context, in *ListResultsRequest, opts ...grpc.CallOption) (*ListResultsResponse, error) {
+	out := new(ListResultsResponse)
+	err := c.cc.Invoke(ctx, "/nsys.api.file.FileProcessing/ListResults", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *fileProcessingClient) ListProcessedObjectsLRO(ctx context.Context, in *ListProcessedObjectsRequest, opts ...grpc.CallOption) (*longrunning.Operation, error) {
+func (c *fileProcessingClient) ListResultsLRO(ctx context.Context, in *ListResultsRequest, opts ...grpc.CallOption) (*longrunning.Operation, error) {
 	out := new(longrunning.Operation)
-	err := c.cc.Invoke(ctx, "/nsys.api.file.FileProcessing/ListProcessedObjectsLRO", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/nsys.api.file.FileProcessing/ListResultsLRO", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *fileProcessingClient) GetProcessedObject(ctx context.Context, in *GetProcessedObjectRequest, opts ...grpc.CallOption) (*GetProcessedObjectResponse, error) {
-	out := new(GetProcessedObjectResponse)
-	err := c.cc.Invoke(ctx, "/nsys.api.file.FileProcessing/GetProcessedObject", in, out, opts...)
+func (c *fileProcessingClient) GetResult(ctx context.Context, in *GetResultRequest, opts ...grpc.CallOption) (*GetResultResponse, error) {
+	out := new(GetResultResponse)
+	err := c.cc.Invoke(ctx, "/nsys.api.file.FileProcessing/GetResult", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *fileProcessingClient) GetProcessedObjectLRO(ctx context.Context, in *GetProcessedObjectRequest, opts ...grpc.CallOption) (*longrunning.Operation, error) {
+func (c *fileProcessingClient) GetResultLRO(ctx context.Context, in *GetResultRequest, opts ...grpc.CallOption) (*longrunning.Operation, error) {
 	out := new(longrunning.Operation)
-	err := c.cc.Invoke(ctx, "/nsys.api.file.FileProcessing/GetProcessedObjectLRO", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/nsys.api.file.FileProcessing/GetResultLRO", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *fileProcessingClient) DeleteProcessedObject(ctx context.Context, in *DeleteProcessedObjectRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
+func (c *fileProcessingClient) DeleteResult(ctx context.Context, in *DeleteResultRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
 	out := new(empty.Empty)
-	err := c.cc.Invoke(ctx, "/nsys.api.file.FileProcessing/DeleteProcessedObject", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/nsys.api.file.FileProcessing/DeleteResult", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *fileProcessingClient) DeleteProcessedObjectLRO(ctx context.Context, in *DeleteProcessedObjectRequest, opts ...grpc.CallOption) (*longrunning.Operation, error) {
+func (c *fileProcessingClient) DeleteResultLRO(ctx context.Context, in *DeleteResultRequest, opts ...grpc.CallOption) (*longrunning.Operation, error) {
 	out := new(longrunning.Operation)
-	err := c.cc.Invoke(ctx, "/nsys.api.file.FileProcessing/DeleteProcessedObjectLRO", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/nsys.api.file.FileProcessing/DeleteResultLRO", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1539,6 +1542,8 @@ type FileProcessingServer interface {
 	CreateFilesetLRO(context.Context, *CreateFilesetRequest) (*longrunning.Operation, error)
 	// Begin processing a file or fileset in the specified way.
 	// This is a temporary hack (therefore this will be here forever ;-)
+	// The results of the processing are obtained by polling for them
+	// using the ListResults() RPC and fetching via GetResult().
 	InitiateProcessing(context.Context, *InitiateProcessingRequest) (*empty.Empty, error)
 	InitiateProcessingLRO(context.Context, *InitiateProcessingRequest) (*longrunning.Operation, error)
 	// Given a document (.doc, .docx, .txt, .ppt, ect.) convert it to pdf
@@ -1562,17 +1567,16 @@ type FileProcessingServer interface {
 	// individual png files and stores them as new generic files.
 	SplitTiff(context.Context, *SplitTiffRequest) (*SplitTiffResponse, error)
 	SplitTiffLRO(context.Context, *SplitTiffRequest) (*longrunning.Operation, error)
-	// Returns a list of available objects that have been completely processed
-	// by whatever client/application specific operations InitiateProcessing()
-	// caused to occur.
-	ListProcessedObjects(context.Context, *ListProcessedObjectsRequest) (*ListProcessedObjectsResponse, error)
-	ListProcessedObjectsLRO(context.Context, *ListProcessedObjectsRequest) (*longrunning.Operation, error)
-	// Fetch any of objects identified by ListProcessedObjects()
-	GetProcessedObject(context.Context, *GetProcessedObjectRequest) (*GetProcessedObjectResponse, error)
-	GetProcessedObjectLRO(context.Context, *GetProcessedObjectRequest) (*longrunning.Operation, error)
-	// Delete a processed object (as identified by ListProcessedObjects()).
-	DeleteProcessedObject(context.Context, *DeleteProcessedObjectRequest) (*empty.Empty, error)
-	DeleteProcessedObjectLRO(context.Context, *DeleteProcessedObjectRequest) (*longrunning.Operation, error)
+	// Returns a list of available processed results (i.e., the final outputs
+	// of the client/application-specific operations triggered by InitiateProcessing()
+	ListResults(context.Context, *ListResultsRequest) (*ListResultsResponse, error)
+	ListResultsLRO(context.Context, *ListResultsRequest) (*longrunning.Operation, error)
+	// Fetch any available result.
+	GetResult(context.Context, *GetResultRequest) (*GetResultResponse, error)
+	GetResultLRO(context.Context, *GetResultRequest) (*longrunning.Operation, error)
+	// Delete any available result.
+	DeleteResult(context.Context, *DeleteResultRequest) (*empty.Empty, error)
+	DeleteResultLRO(context.Context, *DeleteResultRequest) (*longrunning.Operation, error)
 }
 
 // UnimplementedFileProcessingServer can be embedded to have forward compatible implementations.
@@ -1633,23 +1637,23 @@ func (*UnimplementedFileProcessingServer) SplitTiff(ctx context.Context, req *Sp
 func (*UnimplementedFileProcessingServer) SplitTiffLRO(ctx context.Context, req *SplitTiffRequest) (*longrunning.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SplitTiffLRO not implemented")
 }
-func (*UnimplementedFileProcessingServer) ListProcessedObjects(ctx context.Context, req *ListProcessedObjectsRequest) (*ListProcessedObjectsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListProcessedObjects not implemented")
+func (*UnimplementedFileProcessingServer) ListResults(ctx context.Context, req *ListResultsRequest) (*ListResultsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListResults not implemented")
 }
-func (*UnimplementedFileProcessingServer) ListProcessedObjectsLRO(ctx context.Context, req *ListProcessedObjectsRequest) (*longrunning.Operation, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListProcessedObjectsLRO not implemented")
+func (*UnimplementedFileProcessingServer) ListResultsLRO(ctx context.Context, req *ListResultsRequest) (*longrunning.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListResultsLRO not implemented")
 }
-func (*UnimplementedFileProcessingServer) GetProcessedObject(ctx context.Context, req *GetProcessedObjectRequest) (*GetProcessedObjectResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetProcessedObject not implemented")
+func (*UnimplementedFileProcessingServer) GetResult(ctx context.Context, req *GetResultRequest) (*GetResultResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetResult not implemented")
 }
-func (*UnimplementedFileProcessingServer) GetProcessedObjectLRO(ctx context.Context, req *GetProcessedObjectRequest) (*longrunning.Operation, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetProcessedObjectLRO not implemented")
+func (*UnimplementedFileProcessingServer) GetResultLRO(ctx context.Context, req *GetResultRequest) (*longrunning.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetResultLRO not implemented")
 }
-func (*UnimplementedFileProcessingServer) DeleteProcessedObject(ctx context.Context, req *DeleteProcessedObjectRequest) (*empty.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteProcessedObject not implemented")
+func (*UnimplementedFileProcessingServer) DeleteResult(ctx context.Context, req *DeleteResultRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteResult not implemented")
 }
-func (*UnimplementedFileProcessingServer) DeleteProcessedObjectLRO(ctx context.Context, req *DeleteProcessedObjectRequest) (*longrunning.Operation, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteProcessedObjectLRO not implemented")
+func (*UnimplementedFileProcessingServer) DeleteResultLRO(ctx context.Context, req *DeleteResultRequest) (*longrunning.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteResultLRO not implemented")
 }
 
 func RegisterFileProcessingServer(s *grpc.Server, srv FileProcessingServer) {
@@ -1980,110 +1984,110 @@ func _FileProcessing_SplitTiffLRO_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _FileProcessing_ListProcessedObjects_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListProcessedObjectsRequest)
+func _FileProcessing_ListResults_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListResultsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(FileProcessingServer).ListProcessedObjects(ctx, in)
+		return srv.(FileProcessingServer).ListResults(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/nsys.api.file.FileProcessing/ListProcessedObjects",
+		FullMethod: "/nsys.api.file.FileProcessing/ListResults",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FileProcessingServer).ListProcessedObjects(ctx, req.(*ListProcessedObjectsRequest))
+		return srv.(FileProcessingServer).ListResults(ctx, req.(*ListResultsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _FileProcessing_ListProcessedObjectsLRO_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListProcessedObjectsRequest)
+func _FileProcessing_ListResultsLRO_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListResultsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(FileProcessingServer).ListProcessedObjectsLRO(ctx, in)
+		return srv.(FileProcessingServer).ListResultsLRO(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/nsys.api.file.FileProcessing/ListProcessedObjectsLRO",
+		FullMethod: "/nsys.api.file.FileProcessing/ListResultsLRO",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FileProcessingServer).ListProcessedObjectsLRO(ctx, req.(*ListProcessedObjectsRequest))
+		return srv.(FileProcessingServer).ListResultsLRO(ctx, req.(*ListResultsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _FileProcessing_GetProcessedObject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetProcessedObjectRequest)
+func _FileProcessing_GetResult_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetResultRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(FileProcessingServer).GetProcessedObject(ctx, in)
+		return srv.(FileProcessingServer).GetResult(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/nsys.api.file.FileProcessing/GetProcessedObject",
+		FullMethod: "/nsys.api.file.FileProcessing/GetResult",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FileProcessingServer).GetProcessedObject(ctx, req.(*GetProcessedObjectRequest))
+		return srv.(FileProcessingServer).GetResult(ctx, req.(*GetResultRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _FileProcessing_GetProcessedObjectLRO_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetProcessedObjectRequest)
+func _FileProcessing_GetResultLRO_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetResultRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(FileProcessingServer).GetProcessedObjectLRO(ctx, in)
+		return srv.(FileProcessingServer).GetResultLRO(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/nsys.api.file.FileProcessing/GetProcessedObjectLRO",
+		FullMethod: "/nsys.api.file.FileProcessing/GetResultLRO",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FileProcessingServer).GetProcessedObjectLRO(ctx, req.(*GetProcessedObjectRequest))
+		return srv.(FileProcessingServer).GetResultLRO(ctx, req.(*GetResultRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _FileProcessing_DeleteProcessedObject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteProcessedObjectRequest)
+func _FileProcessing_DeleteResult_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteResultRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(FileProcessingServer).DeleteProcessedObject(ctx, in)
+		return srv.(FileProcessingServer).DeleteResult(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/nsys.api.file.FileProcessing/DeleteProcessedObject",
+		FullMethod: "/nsys.api.file.FileProcessing/DeleteResult",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FileProcessingServer).DeleteProcessedObject(ctx, req.(*DeleteProcessedObjectRequest))
+		return srv.(FileProcessingServer).DeleteResult(ctx, req.(*DeleteResultRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _FileProcessing_DeleteProcessedObjectLRO_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteProcessedObjectRequest)
+func _FileProcessing_DeleteResultLRO_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteResultRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(FileProcessingServer).DeleteProcessedObjectLRO(ctx, in)
+		return srv.(FileProcessingServer).DeleteResultLRO(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/nsys.api.file.FileProcessing/DeleteProcessedObjectLRO",
+		FullMethod: "/nsys.api.file.FileProcessing/DeleteResultLRO",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FileProcessingServer).DeleteProcessedObjectLRO(ctx, req.(*DeleteProcessedObjectRequest))
+		return srv.(FileProcessingServer).DeleteResultLRO(ctx, req.(*DeleteResultRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2165,28 +2169,28 @@ var _FileProcessing_serviceDesc = grpc.ServiceDesc{
 			Handler:    _FileProcessing_SplitTiffLRO_Handler,
 		},
 		{
-			MethodName: "ListProcessedObjects",
-			Handler:    _FileProcessing_ListProcessedObjects_Handler,
+			MethodName: "ListResults",
+			Handler:    _FileProcessing_ListResults_Handler,
 		},
 		{
-			MethodName: "ListProcessedObjectsLRO",
-			Handler:    _FileProcessing_ListProcessedObjectsLRO_Handler,
+			MethodName: "ListResultsLRO",
+			Handler:    _FileProcessing_ListResultsLRO_Handler,
 		},
 		{
-			MethodName: "GetProcessedObject",
-			Handler:    _FileProcessing_GetProcessedObject_Handler,
+			MethodName: "GetResult",
+			Handler:    _FileProcessing_GetResult_Handler,
 		},
 		{
-			MethodName: "GetProcessedObjectLRO",
-			Handler:    _FileProcessing_GetProcessedObjectLRO_Handler,
+			MethodName: "GetResultLRO",
+			Handler:    _FileProcessing_GetResultLRO_Handler,
 		},
 		{
-			MethodName: "DeleteProcessedObject",
-			Handler:    _FileProcessing_DeleteProcessedObject_Handler,
+			MethodName: "DeleteResult",
+			Handler:    _FileProcessing_DeleteResult_Handler,
 		},
 		{
-			MethodName: "DeleteProcessedObjectLRO",
-			Handler:    _FileProcessing_DeleteProcessedObjectLRO_Handler,
+			MethodName: "DeleteResultLRO",
+			Handler:    _FileProcessing_DeleteResultLRO_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

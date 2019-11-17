@@ -17,9 +17,9 @@ service FileProcessing {
 
 	// Download a previously uploaded generic file.
 	rpc GetGenericFile (GetGenericFileRequest)
-					returns (GetGenericFileResponse) {}
+			returns (GetGenericFileResponse) {}
 	rpc GetGenericFileLRO (GetGenericFileRequest)
-					returns (google.longrunning.Operation) {}
+			returns (google.longrunning.Operation) {}
 
 	// Group any number of previously-uploaded files together into a 
 	// single fileset. Files may have membership in multiple filesets.
@@ -30,6 +30,8 @@ service FileProcessing {
 
 	// Begin processing a file or fileset in the specified way.
 	// This is a temporary hack (therefore this will be here forever ;-)
+	// The results of the processing are obtained by polling for them
+	// using the ListResults() RPC and fetching via GetResult().
 	rpc InitiateProcessing(InitiateProcessingRequest)
 			returns (google.protobuf.Empty) {}
 	rpc InitiateProcessingLRO (InitiateProcessingRequest)
@@ -71,61 +73,65 @@ service FileProcessing {
 	rpc SplitTiffLRO(SplitTiffRequest)
 			returns (google.longrunning.Operation) {}
 
-	// Returns a list of available objects that have been completely processed 
-	// by whatever client/application specific operations InitiateProcessing() 
-	// caused to occur. 
-	rpc ListProcessedObjects(ListProcessedObjectsRequest)
-			returns (ListProcessedObjectsResponse) {}
-	rpc ListProcessedObjectsLRO(ListProcessedObjectsRequest)
+	// Returns a list of available processed results (i.e., the final outputs
+	// of the client/application-specific operations triggered by InitiateProcessing()
+	rpc ListResults(ListResultsRequest)
+			returns (ListResultsResponse) {}
+	rpc ListResultsLRO(ListResultsRequest)
 			returns (google.longrunning.Operation) {}
 
-	// Fetch any of objects identified by ListProcessedObjects()
-	rpc GetProcessedObject(GetProcessedObjectRequest)
-			returns (GetProcessedObjectResponse) {}	
-	rpc GetProcessedObjectLRO(GetProcessedObjectRequest)
+	// Fetch any available result.
+	rpc GetResult(GetResultRequest)
+			returns (GetResultResponse) {}	
+	rpc GetResultLRO(GetResultRequest)
 			returns (google.longrunning.Operation) {}
 
-	// Delete a processed object (as identified by ListProcessedObjects()).
-	rpc DeleteProcessedObject(DeleteProcessedObjectRequest) 
+	// Delete any available result.
+	rpc DeleteResult(DeleteResultRequest) 
 			returns (google.protobuf.Empty) {}
-	rpc DeleteProcessedObjectLRO(DeleteProcessedObjectRequest)
+	rpc DeleteResultLRO(DeleteResultRequest)
 			returns (google.longrunning.Operation) {}
 }
 
-message ListProcessedObjectsRequest {
-	// Application-specific filter on returned object listing.
-	// If not specified, all object listings are returned.
+message ListResultsRequest {
+	// Application-specific filter on returned results.
+	// If not specified, all result listings are returned.
 	string filter = 1;
 }
 
-message ListProcessedObjectsResponse {
-	repeated ProcessedObjectListing list_entry = 1;
+message ListResultsResponse {
+	repeated AvailableResult available_results = 1;
 }
 
-message ProcessedObjectListing {
+message AvailableResult {
 	// The object's name / ID.
 	string name = 1;
-	// Application-specific description.
-	string description = 2;
-	// Application-specific extended meta information.
+	// Application-specific meta information.
+	google.protobuf.Any metadata = 2;
+}
+
+message GetResultRequest {
+	string name = 1;
+}
+
+message GetResultResponse {
+	// The result's ID.
+	string name = 1;
+
+	// The originating submission (the one specified to InitiateProcessing() which then
+	// caused this result (and perhaps others) to be generated.
+	string originating_name = 2;
+
+	// Application-specific metadata (identical to that returned in results listings).
 	google.protobuf.Any metadata = 3;
+
+	// Contents of the returned file are application-specific.
+	// The metadata within it does not necessarily have any relation to the metadata above.
+	ntypes.GenericFile generic_file = 4;
 }
 
-message GetProcessedObjectRequest {
-	string name = 1;
-}
-
-message GetProcessedObjectResponse {
-	// The object's name / ID.
-	string name = 1;
-	// Application-specific description (same as that returned in objec listings).
-	string description = 2;
-	// The arbitrary application-specific any-encoded object.
-	google.protobuf.Any object = 3;
-}
-
-message DeleteProcessedObjectRequest {
-	// The object to delete.
+message DeleteResultRequest {
+	// The available result to delete.
 	string name = 1;
 }
 
