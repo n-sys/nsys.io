@@ -13,73 +13,81 @@ service ImageProcessing {
 	// The common sequence of calls if one is trying to extract field 
 	// values from a submitted image:
 	//   (1) UploadImage    -- upload an image
-	//   (2) RegisterImage  -- find a matching exemplar and 
+	//   (2) DeskewImage    -- deskews an image
+	//   (3) RegisterImage  -- find a matching exemplar and 
 	//                         register the image against it
-	//   (3) SolveField(s)  -- find solutions to one or more of the 
+	//   (4) SolveField(s)  -- find solutions to one or more of the 
 	//                         fields defined on the matched exemplar
 	//	
 	// Whether or not one uses the LRO variant of each method is purely
 	// a choice dependent upon client architecture and developer tastes.
 	// There is no difference in implementation on the backend.
 
-	// Upload an image in preparation for DeskewImage and/or RegisterImage.
+	// UploadImage uploads an image.
 	rpc UploadImage (UploadImageRequest) 
 			returns (UploadImageResponse) {}
 	rpc UploadImageLRO (UploadImageRequest) 
 			returns (google.longrunning.Operation) {}
+	
+	// DeskewImage deskews an uploaded base image.
+	rpc DeskewImage (DeskewImageRequest)
+			returns(DeskewImageResponse) {}
+	rpc DeskewImageLRO (DeskewImageRequest)
+			returns (google.longrunning.Operation) {}
 
-	// Find the exemplar best matching a image then register that image
-	// against the exemplar, i.e., manipulate the image such that it lays
-	// cleanly over the exemplar. 
+	// RegisterImage finds the exemplar best matching a deskewed image then
+	// register that image against the exemplar, i.e., manipulate the image
+	// such that it lays cleanly over the exemplar. 
 	rpc RegisterImage (RegisterImageRequest) 
 			returns (RegisterImageResponse) {}
 	rpc RegisterImageLRO (RegisterImageRequest) 
 			returns (google.longrunning.Operation) {}
 
+	// GetExemplarSnapshot returns an exemplar snapshot of a registered image.
 	rpc GetExemplarSnapshot (GetExemplarSnapshotRequest)
 			returns (GetExemplarSnapshotResponse) {}
 	rpc GetExemplarSnapshotLRO (GetExemplarSnapshotRequest)
 			returns (google.longrunning.Operation) {}
 
-	// Solve a field on an image.
+	// SolveField solves a field on an image.
 	rpc SolveField (SolveFieldRequest) 
 			returns (SolveFieldResponse) {}
 	rpc SolveFieldLRO (SolveFieldRequest) 
 			returns (google.longrunning.Operation) {}
 	
-	// Returns a copy of the base uploaded image.
+	// GetBaseImage returns a copy of the base uploaded image.
 	rpc GetBaseImage (GetBaseImageRequest)
 			returns (GetBaseImageResponse) {}
 	rpc GetBaseImageLRO (GetBaseImageRequest)
 			returns (google.longrunning.Operation) {}
 
-	// Returns a copy of the deskewed and oriented version of an image.
+	// GetDeskewedImage returns a copy of the deskewed image.
 	rpc GetDeskewedImage (GetDeskewedImageRequest) 
 			returns (GetDeskewedImageResponse) {}
 	rpc GetDeskewedImageLRO (GetDeskewedImageRequest) 
 			returns (google.longrunning.Operation) {}
 
-	// Returns a copy of the exemplar-registered version of an image.
+	// GetRegisteredImage returns a copy of the exemplar-registered image.
 	rpc GetRegisteredImage (GetRegisteredImageRequest)
 			returns (GetRegisteredImageResponse) {}
 	rpc GetRegisteredImageLRO (GetRegisteredImageRequest)
 			returns (google.longrunning.Operation) {}
 
-	// Get a field cut from the exemplar-registered version of an image.
+	// GetFieldCut gets a field cut from the exemplar-registered image.
 	rpc GetFieldCut (GetFieldCutRequest) 
 			returns (GetFieldCutResponse) {}
 	rpc GetFieldCutLRO (GetFieldCutRequest) 
 			returns (google.longrunning.Operation) {}
 
-	// Return a list of fields which have solutions available.
-	// Only returns field identifiers.
+	// ListSolvedFields returns a list of fields which have solutions. It only 
+	// returns field identifiers.
 	rpc ListSolvedFields (ListSolvedFieldsRequest)
 			returns (ListSolvedFieldsResponse) {}
 	rpc ListSolvedFieldsLRO (ListSolvedFieldsRequest)
 			returns (google.longrunning.Operation) {}
 
-	// Query for previously-solved field solutions.  
-	// Returns the full solutions.
+	// GetFieldSolutions queries for previously-solved field solutions. It 
+	// returns the full solutions.
 	rpc GetFieldSolutions (GetFieldSolutionsRequest) 
 			returns (GetFieldSolutionsResponse) {}
 	rpc GetFieldSolutionsLRO (GetFieldSolutionsRequest) 
@@ -105,7 +113,13 @@ message UploadImageResponse {
 
 	// When the image and any derived products will be dropped by the system.
 	google.protobuf.Timestamp expire_time = 2;
+}
 
+message DeskewImageRequest {
+	string name = 1;
+}
+
+message DeskewImageResponse {
 	// Uploaded images are deskewed and oriented so that the bulk of the text 
 	// lines are /horizontal and "right side up". They are almost always a bit 
 	// larger in pixel area than the original due to rotation for any deskew. 
@@ -114,21 +128,21 @@ message UploadImageResponse {
 	// If true, the system was unable to unable to confidently deskew and/or
 	// orient the image. In this case, the image only goes through an encoding
 	// transform and the deskew and rotation angles are not set. 
-	bool deskew_failed = 3;
+	bool deskew_failed = 1;
 
 	// The number of degrees rotation that were required to bring the bulk of
 	// the longest text lines into a horizontal or vertical orientation. 
 	// Absolute values greater than 10 are strong indicator that something with 
 	// the original image is in really bad shape. 
-	double deskew_angle = 4;
+	double deskew_angle = 2;
 
 	// 0, 90, 180, or 270 -- the number of degrees the image had to be rotated 
 	// to get most of the printed lines "right side up" once deskewed.
-	int32 degrees_rotated = 5;
+	int32 degrees_rotated = 3;
 
 	// Computed background color (used for edge fill).  
 	// If multi-color, the color covering the most area generally wins.
-	ntypes.RGBA background_color = 6;
+	ntypes.RGBA background_color = 4;
 }
 
 message GetExemplarSnapshotRequest {
