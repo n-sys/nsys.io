@@ -52,4 +52,7 @@ message EmailAttachment {
 
 	// The supplied file name for the attachment, as found in the email.
 	string supplied_name = 2;
+
+	// The attachment size in bytes, if rejected it will be zero.
+	uint32 size = 3;
 }
