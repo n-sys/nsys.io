@@ -32,7 +32,7 @@ const (
 	ApiKeyKey = "NSYS_API_KEY"
 
 	// Maximum message size over gRPC
-	MaxMessageSize = 50 * 1024 * 1024
+	MaxMessageSize = 200 * 1024 * 1024
 )
 
 var (
