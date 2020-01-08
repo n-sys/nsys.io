@@ -218,6 +218,10 @@ message ParseEmailRequest{
 	// attachments will be saved. In any case a list of rejected attachments
 	// will be returned.
 	repeated string attachment_whitelist = 2;
+
+	// The whitelist of inline email attachment file extensions to save. If empty,
+	// then no inline attachments will be saved.
+	repeated string inline_whitelist = 3;
 }
 
 message ParseEmailResponse{

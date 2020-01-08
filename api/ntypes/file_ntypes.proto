@@ -43,6 +43,13 @@ message ParsedEmail {
 	// The attachments that were rejected due to their file extensions not
 	// being in the given whitelist.
 	repeated ntypes.EmailAttachment rejected_attachments = 4;
+
+	// The saved inline attachments
+	repeated ntypes.EmailAttachment inline_attachments = 5;
+
+	// The inline attachments that were rejected due to their file extensions 
+	// not being in the given whitelist.
+	repeated ntypes.EmailAttachment rejected_inline_attachments = 6;
 }
 
 message EmailAttachment {
