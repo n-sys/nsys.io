@@ -47,6 +47,87 @@ var (
 	mFetchOnce sync.Once
 )
 
+// NewInput supplies input parameters for the New() function.
+type NewInput struct {
+	Endpoint       string
+	ServerName     string
+	ApiKey         string
+	MaxMessageSize int
+	DialOptions    []grpc.DialOption
+}
+
+// New returns a grpc.ClientConn instance after having performed a grpc.Dial to
+// the nsys.io host complex with options set such TLS is used, a connection-specific
+// API key (aka ticket) is supplied with every RPC, and so on. Supplied dial options
+// are added to the base set. Parameters not set in the input structure are set to
+// package default values (or those zapped into the package's public globals) with
+// those defaults being overridden by anything found in the environment.
+func New(ctx context.Context, ni *NewInput) (*grpc.ClientConn, error) {
+	mFetchOnce.Do(fetchEnvironmentalOverrides)
+	if ni == nil {
+		ni = &NewInput{}
+	}
+	apiKey := ni.ApiKey
+	if apiKey == "" {
+		apiKey = ApiKey
+		if apiKey == "" {
+			return nil, fmt.Errorf("no API key (aka ticket) set")
+		}
+	}
+	endPoint := ni.Endpoint
+	if endPoint == "" {
+		endPoint = Endpoint
+		if endPoint == "" {
+			return nil, fmt.Errorf("no network endpoint set")
+		}
+	}
+	serverName := ni.ServerName
+	if serverName == "" {
+		serverName = ServerName
+		if serverName == "" {
+			return nil, fmt.Errorf("no server name set")
+		}
+	}
+	maxMessageSize := ni.MaxMessageSize
+	if maxMessageSize <= 0 {
+		maxMessageSize = MaxMessageSize
+	}
+	creds := credentials.NewTLS(
+		&tls.Config{
+			ServerName: serverName,
+		},
+	)
+	dopts := []grpc.DialOption{
+		grpc.WithDefaultCallOptions(
+			grpc.MaxCallRecvMsgSize(maxMessageSize),
+			grpc.MaxCallSendMsgSize(maxMessageSize),
+		),
+		grpc.WithTransportCredentials(creds),
+		grpc.WithPerRPCCredentials(tokenAuth{token: apiKey}),
+	}
+	return grpc.DialContext(ctx, endPoint, append(dopts, ni.DialOptions...)...)
+}
+
+// NewConn is a legacy function which is now a simple wrapper on New().
+// It is only appropriate for use when the application is using a single API key.
+func NewConn(ctx context.Context, xopts ...grpc.DialOption) (*grpc.ClientConn, error) {
+	return New(ctx, &NewInput{DialOptions: xopts})
+}
+
+// Per RPC credentials we use to get the API key into the headers.
+type tokenAuth struct {
+	token string
+}
+
+func (t tokenAuth) GetRequestMetadata(
+	ctx context.Context, in ...string) (map[string]string, error) {
+	return map[string]string{"x-api-key": t.token}, nil
+}
+
+func (tokenAuth) RequireTransportSecurity() bool {
+	return true
+}
+
 func fetchEnvironmentalOverrides() {
 	// Replace default or preset values for endpoint, server, and api key with
 	// any such values found in the environment.
@@ -63,53 +144,6 @@ func fetchEnvironmentalOverrides() {
 		ServerName = s
 	}
 	if ApiKey == "" {
-		ApiKey, ok = os.LookupEnv(ApiKeyKey)
-		if !ok {
-			log.Fatalf("FATAL: No value for %s found in the environment", ApiKeyKey)
-		}
+		ApiKey, _ = os.LookupEnv(ApiKeyKey)
 	}
-}
-
-// NewConn performs a grpc.Dial operation to the nsys.io host complex with appropriate
-// options set such that TLS is used and the nsys.io API key is supplied with every
-// RPC. Any needed additional configuration for proper operation with our service
-// will also be added here as need determines.
-//
-// Notes: Any supplied dial options are added to the set applied by default.
-// The endpoint dialed and TLS server expected there can be overridden with
-// environmental variables.
-//
-func NewConn(ctx context.Context, xopts ...grpc.DialOption) (*grpc.ClientConn, error) {
-	mFetchOnce.Do(fetchEnvironmentalOverrides)
-	if ApiKey == "" {
-		return nil, fmt.Errorf("missing API key; set %s", ApiKeyKey)
-	}
-	creds := credentials.NewTLS(
-		&tls.Config{
-			ServerName: ServerName,
-		},
-	)
-	dopts := []grpc.DialOption{
-		grpc.WithDefaultCallOptions(
-			grpc.MaxCallRecvMsgSize(MaxMessageSize),
-			grpc.MaxCallSendMsgSize(MaxMessageSize),
-		),
-		grpc.WithTransportCredentials(creds),
-		grpc.WithPerRPCCredentials(tokenAuth{token: ApiKey}),
-	}
-	return grpc.DialContext(ctx, Endpoint, append(dopts, xopts...)...)
-}
-
-// Per RPC credentials we use to get the API key into the headers.
-type tokenAuth struct {
-	token string
-}
-
-func (t tokenAuth) GetRequestMetadata(
-	ctx context.Context, in ...string) (map[string]string, error) {
-	return map[string]string{"x-api-key": t.token}, nil
-}
-
-func (tokenAuth) RequireTransportSecurity() bool {
-	return true
 }
