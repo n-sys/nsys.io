@@ -7,6 +7,7 @@ import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/any.proto";
 import "nsys.io/api/ntypes/file_ntypes.proto";
+import "nsys.io/api/ntypes/image_ntypes.proto";
 
 service FileProcessing {
 	// Upload a generic file for further processing later.
@@ -58,12 +59,20 @@ service FileProcessing {
 	rpc RenderEmailBodyLRO(RenderEmailBodyRequest)
 			returns (google.longrunning.Operation) {}
 
-	// Given a pdf file stored as a generic file, this renders the individual
-	// pages of the pdf as png files and stores them as new generic files. It
-	// will render them at 300 DPI.
+	// Using Adobe, given a pdf file stored as a generic file, this renders the
+	// individual pages of the pdf as image files and stores them as new generic 
+	// files.
 	rpc RenderPdf(RenderPdfRequest)
 			returns (RenderPdfResponse) {}
 	rpc RenderPdfLRO(RenderPdfRequest)
+			returns (google.longrunning.Operation) {}
+
+	// Using Ghostscript, given a pdf file stored as a generic file, this 
+	// renders the individual pages of the pdf as image files and stores them as
+	// new generic files.
+	rpc RenderPdfGS(RenderPdfGSRequest)
+			returns (RenderPdfGSResponse) {}
+	rpc RenderPdfGSLRO(RenderPdfGSRequest)
 			returns (google.longrunning.Operation) {}
 
 	// Given a tiff file stored as a generic file, this splits the pages into
@@ -247,9 +256,44 @@ message RenderEmailBodyResponse {
 	string email_pdf_name = 1;
 }
 
+
+// RenderPdfRequest is the adobe version of the RenderPdf rpc. The 
+// OutputEncoding must be set to either PNG or JPG.  All other parameters are
+// optional. 
+//
+// Use MaxLength and LongSideResize to protect against oversized pages.
+// Here is an example using the defaults of 14.5 inches and 11 respectively 
+// with a DPI of 300: 
+// Page one is 8.5x14 inches. Since both sides are less than 14.5 inches, 
+// it is not resized and the output image will be 2550x4200 pixels. 
+// Page two is 10x20 inches. Since one side is longer than 14.5 this will be
+// resized so the long side is 11. The short side is scaled appropiately at
+// 5.5 inches. The final size would by 5.5x11 inches or 1650x3300 pixels. 
 message RenderPdfRequest {
 	// The name of a generic file containing a pdf file
 	string pdf_name = 1;
+
+	// OutputEncoding is the image encoding of the output files. It could be
+	// jpg, png, or tiff.
+	ntypes.ImageEncoding output_encoding = 2;
+
+	// JpgQuality is the quality metric. It is only used when the OutputEncoding
+	// is jpg, otherwise it's ignored. If it's zero it will default to 90
+	int32 jpg_quality = 3;
+
+	// Dpi is the resolution of the output image in dots per inch. If zero it
+	// will default to 300. The max Dpi is 600.
+	float dpi = 4;
+
+	// MaxLength is the maximum page side length in inches. If a side is longer
+	// than this, it will resize the page to the below LongSideResize.
+	// If zero, a default of 14.5 inches will be used.
+	float max_length = 5;
+
+	// LongSideResize is the length in inches that that the long side of a page
+	// will be resized to in the event that the side length is greater than the
+	// above MaxLength. If zero, a default of 11 inches will be used.
+	float long_side_resize = 6;
 }
 
 message RenderPdfResponse {
@@ -260,6 +304,59 @@ message RenderPdfResponse {
 		SUCCESS = 0;
 		ENCRYPTED = 1;
 		CORRUPTED = 2;
+		NOT_PERMITTED = 3;
+	}
+	Error error = 2;
+}
+
+// RenderPdfGSRequest is the Ghostscript version of the RenderPdf rpc. The 
+// OutputEncoding must be set to either PNG or JPG.  All other parameters are
+// optional. 
+//
+// Use MaxLength and LongSideResize to protect against oversized pages.
+// Here is an example using the defaults of 14.5 inches and 11 respectively 
+// with a DPI of 300: 
+// Page one is 8.5x14 inches. Since both sides are less than 14.5 inches, 
+// it is not resized and the output image will be 2550x4200 pixels. 
+// Page two is 10x20 inches. Since one side is longer than 14.5 this will be
+// resized so the long side is 11. The short side is scaled appropiately at
+// 5.5 inches. The final size would by 5.5x11 inches or 1650x3300 pixels.
+message RenderPdfGSRequest {
+	// The name of a generic file containing a pdf file
+	string pdf_name = 1;
+
+	// OutputEncoding is the image encoding of the output files. It could be
+	// jpg, png, or tiff.
+	ntypes.ImageEncoding output_encoding = 2;
+
+	// JpgQuality is the quality metric. It is only used when the OutputEncoding
+	// is jpg, otherwise it's ignored. If it's zero it will default to 90
+	int32 jpg_quality = 3;
+
+	// Dpi is the resolution of the output image in dots per inch. If zero it
+	// will default to 300. The max Dpi is 600.
+	float dpi = 4;
+
+	// MaxLength is the maximum page side length in inches. If a side is longer
+	// than this, it will resize the page to the below LongSideResize.
+	// If zero, a default of 14.5 inches will be used.
+	float max_length = 5;
+
+	// LongSideResize is the length in inches that that the long side of a page
+	// will be resized in the event that a side length is greater than the
+	// above MaxLength. If zero, a default of 11 inches will be used.
+	float long_side_resize = 6;
+}
+
+message RenderPdfGSResponse {
+	// The generic file IDs of the rendered pages
+	repeated string page_names = 1;
+
+	enum Error {
+		SUCCESS = 0;
+		ENCRYPTED = 1;
+		CORRUPTED = 2;
+		NOT_PERMITTED = 3;
 	}
 	Error error = 2;
 }
