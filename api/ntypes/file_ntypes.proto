@@ -50,6 +50,10 @@ message ParsedEmail {
 	// The inline attachments that were rejected due to their file extensions 
 	// not being in the given whitelist.
 	repeated ntypes.EmailAttachment rejected_inline_attachments = 6;
+
+	// A specialized hash calculated from the email body and attachments (but 
+	// not the headers). It can be used to check for duplicated emails.
+	string email_hash = 7;
 }
 
 message EmailAttachment {
