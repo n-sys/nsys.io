@@ -369,4 +369,10 @@ message SplitTiffRequest {
 message SplitTiffResponse {
 	// The generic file IDs of the individual pages
 	repeated string page_names = 1;
+
+	enum Error {
+		SUCCESS = 0;
+		CORRUPTED = 1;
+	}
+	Error error = 2;
 }
