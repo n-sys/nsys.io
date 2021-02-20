@@ -294,6 +294,9 @@ message RenderPdfRequest {
 	// will be resized to in the event that the side length is greater than the
 	// above MaxLength. If zero, a default of 11 inches will be used.
 	float long_side_resize = 6;
+
+	// If true it will render grayscale images
+	bool grayscale = 7;
 }
 
 message RenderPdfResponse {
